@@ -4,15 +4,30 @@ using UnityEngine;
 
 public class Machine : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    private MachineStatus status;
+    protected float speed = 0; //速度
+    protected float chargeAmount = 0; //チャージ量
 
-    // Update is called once per frame
-    void Update()
+    private void OperationMachine()
     {
-        
+        //自動加速
+        if (status.MaxSpeed < speed)
+        {
+            speed += status.Acceleration;
+        }
+
+        if (InputManager.Instance.InputAButton())
+        {
+            if (status.Charge < chargeAmount)
+            {
+                speed /= status.Brake;
+                chargeAmount += 1 * status.ChargeSpeed;
+            }
+        }
+
+        if (InputManager.Instance.InputAButtonUp())
+        {
+
+        }
     }
 }

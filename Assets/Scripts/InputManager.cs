@@ -23,7 +23,7 @@ public class InputManager
     }
     #endregion
 
-    #region public
+    #region method
     /// <summary>
     /// メニュー画面の操作
     /// </summary>
@@ -38,28 +38,6 @@ public class InputManager
     public void InputTitle()
     {
 
-    }
-    #endregion
-
-    #region private
-    /// <summary>
-    /// 人状態のInput操作
-    /// </summary>
-    private void InputHuman()
-    {
-        float horizontal = InputLeftStick(true);
-        float vertical = InputLeftStick(false);
-
-        Vector3 velocity =  new Vector3(horizontal, 0, vertical);
-        
-    }
-
-    /// <summary>
-    /// マシンに乗っている状態のInput操作
-    /// </summary>
-    private void InputMachine()
-    {
-        
     }
 
     /// <summary>
@@ -82,8 +60,18 @@ public class InputManager
     /// <summary>
     /// ボタン入力
     /// </summary>
-    /// <returns></returns>
-    private bool InputButton()
+    /// <returns>入力しているかどうか</returns>
+    public bool InputAButtonDown()
+    {
+        return Input.GetButtonDown("A");
+    }
+
+    public bool InputAButtonUp()
+    {
+        return Input.GetButtonUp("A");
+    }
+
+    public bool InputAButton()
     {
         return Input.GetButton("A");
     }
