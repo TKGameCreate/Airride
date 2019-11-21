@@ -6,28 +6,32 @@ public class Machine : MonoBehaviour
 {
     private MachineStatus status;
     protected float speed = 0; //速度
-    protected float chargeAmount = 0; //チャージ量
+    protected float chargeAmount = 1; //チャージ量
 
     private void OperationMachine()
     {
-        //自動加速
-        if (status.MaxSpeed < speed)
-        {
-            speed += status.Acceleration;
-        }
-
+        //チャージ状態の処理
         if (InputManager.Instance.InputAButton())
         {
+            //チャージ
             if (status.Charge < chargeAmount)
             {
-                speed /= status.Brake;
                 chargeAmount += 1 * status.ChargeSpeed;
             }
+            //ブレーキ
+            if(status.MaxSpeed > speed)
+            {
+                speed /= status.Brake;
+            }
         }
-
-        if (InputManager.Instance.InputAButtonUp())
+        //チャージ状態じゃない時の処理
+        else
         {
-
+            //自動加速
+            if (status.MaxSpeed < speed)
+            {
+                speed += status.Acceleration * chargeAmount;
+            }
         }
     }
 }
