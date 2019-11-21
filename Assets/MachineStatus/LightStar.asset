@@ -13,12 +13,11 @@ MonoBehaviour:
   m_Name: LightStar
   m_EditorClassIdentifier: 
   machineName: 0
-  attack: 0
-  defense: 0
-  maxSpeed: 0
-  acceleration: 0
-  turning: 0
-  brake: 0
-  charge: 0
-  chargeSpeed: 0
-  weight: 0
+  attack: 10
+  defense: 1
+  maxSpeed: 25
+  acceleration: 7
+  turning: 15
+  brake: 7
+  chargeSpeed: 3
+  weight: 0.1

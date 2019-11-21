@@ -2610,7 +2610,7 @@ GameObject:
   - component: {fileID: 8215982298390309948}
   m_Layer: 0
   m_Name: SD_unitychan_humanoid
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2641,7 +2641,7 @@ Animator:
   m_GameObject: {fileID: 7682082085071305385}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: dd6ec75974b69a3409711f8110698bbb, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 83be2626f60fba24da43bb0bd84bac11, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -2663,9 +2663,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitPoint: 100
-  rbody: {fileID: 0}
-  speed: 5
+  rbody: {fileID: 8215982298390309948}
+  speed: 15
   rotSpeed: 10
+  jumpPower: 1.5
+  anim: {fileID: 7682082085078583393}
 --- !u!136 &784134225481711567
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2694,7 +2696,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!1 &7682082085071305633
 GameObject:
