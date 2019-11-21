@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Machine : MonoBehaviour
+public class Machine : Player
 {
     private MachineStatus status;
     protected float speed = 0; //速度
     protected float chargeAmount = 1; //チャージ量
 
-    private void OperationMachine()
+    protected override void Operation()
     {
         //チャージ状態の処理
         if (InputManager.Instance.InputAButton())
