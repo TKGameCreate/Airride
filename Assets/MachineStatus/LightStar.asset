@@ -18,6 +18,7 @@ MonoBehaviour:
   maxSpeed: 25
   acceleration: 7
   turning: 150
-  brake: 7
-  chargeSpeed: 3
+  brake: 13
+  maxCharge: 3.5
+  chargeSpeed: 1.75
   weight: 0.1

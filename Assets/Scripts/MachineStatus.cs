@@ -6,15 +6,15 @@ using UnityEngine;
 public class MachineStatus : ScriptableObject
 {
     [SerializeField] private MachineName machineName; //名前
-    [SerializeField] private float attack;              //攻撃力
-    [SerializeField] private float defense;           //守備力
-    [SerializeField] private float maxSpeed;       //最高速度
-    [SerializeField] private float acceleration;     //加速
-    [SerializeField] private float turning;            //旋回速度
-    [SerializeField] private float brake;               //ブレーキ速度倍率
-    [SerializeField] private float chargeSpeed;    //チャージ速度
-    [SerializeField] private float weight;           //重さ(飛行力)
-    private float maxCharge = 1;            //チャージ加速倍率
+    [SerializeField] private float attack = 10;              //攻撃力
+    [SerializeField] private float defense = 1;           //守備力
+    [SerializeField] private float maxSpeed = 25;       //最高速度
+    [SerializeField] private float acceleration = 1;     //加速
+    [SerializeField] private float turning = 15;            //旋回速度
+    [SerializeField] private float brake = 1;               //ブレーキ速度倍率
+    [SerializeField] private float maxCharge = 1;            //チャージ加速倍率
+    [SerializeField] private float chargeSpeed = 1;    //チャージ速度
+    [SerializeField] private float weight = 1;           //重さ(飛行力)
     private float hitPoint = 100;
 
     public MachineName MachineName { get { return machineName; } }
