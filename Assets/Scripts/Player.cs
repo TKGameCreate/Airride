@@ -13,7 +13,29 @@ public class Player : MonoBehaviour
     [SerializeField] private Human human;
     private Machine machine;
 
-    protected Condition condition = Condition.Human;
+    private Condition condition = Condition.Human;
+
+    #region プロパティ
+    public Machine Machine
+    {
+        set
+        {
+            machine = value;
+        }
+    }
+
+    public Condition PlayerCondition
+    {
+        set
+        {
+            condition = value;
+        }
+        get
+        {
+            return condition;
+        }
+    }
+    #endregion
 
     // Update is called once per frame
     private void Update()

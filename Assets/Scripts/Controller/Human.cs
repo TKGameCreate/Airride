@@ -5,17 +5,22 @@ using UnityEngine;
 public class Human : Control
 {
     [SerializeField] private Animator anim;
-    [SerializeField] private Rigidbody rbody;
-    [SerializeField] private float speed = 2.5f;
-    [SerializeField] private float rotSpeed = 10.0f;
+    [SerializeField] private CapsuleCollider capsuleCollider;
+    [SerializeField] private Player player;
+    [SerializeField] private float speed = 5.0f; //速度
+    [SerializeField] private float rotSpeed = 10.0f; //回転速度
     [SerializeField] private float jumpPower = 1.5f;
 
-    private Vector3 velocity;
     private bool jump = false;
+    private bool exitMachineProcess = true; //降車後処理をしたか
 
     #region public
     public override void Controller()
     {
+        if (!exitMachineProcess)
+        {
+            UndoHuman();
+        }
         AnimationControl();
         Move();
     }
@@ -27,33 +32,10 @@ public class Human : Control
     #endregion
 
     #region private and protected
-    private void AnimationControl()
-    {
-        //移動アニメーション
-        if (velocity.magnitude > 0.1f)
-        {
-            anim.SetFloat("speed", velocity.magnitude);
-        }
-        else
-        {
-            anim.SetFloat("speed", 0);
-        }
-        //ジャンプアニメーション
-        if (jump)
-        {
-             anim.SetBool("jump", true);
-        }
-        else
-        {
-            anim.SetBool("jump", false);
-        }
-
-        //マシンに乗るアニメーション
-    }
-
     protected override void Move()
     {
         base.Move();
+
         //移動処理
         //前進
         velocity = new Vector3(horizontal * speed, 0, vertical * speed);
@@ -78,6 +60,69 @@ public class Human : Control
         {
             jump = true;
             rbody.AddForce(Vector3.up * jumpPower);
+        }
+    }
+
+    private void AnimationControl()
+    {
+        //移動アニメーション
+        if (velocity.magnitude > 0.1f)
+        {
+            anim.SetFloat("speed", velocity.magnitude);
+        }
+        else
+        {
+            anim.SetFloat("speed", 0);
+        }
+        //ジャンプアニメーション
+        if (jump)
+        {
+            anim.SetBool("jump", true);
+        }
+        else
+        {
+            anim.SetBool("jump", false);
+        }
+
+        //マシンに乗るアニメーション
+    }
+
+    private void UndoHuman()
+    {
+        //当たり判定の復活
+        capsuleCollider.enabled = true;
+        //親子関係をPlayerの子供に
+        transform.parent = player.transform;
+        //高さの調整
+        Vector3 pos = transform.position;
+        Vector3 newPos = new Vector3(pos.x, 0.7f, pos.z);
+        transform.position = newPos;
+        //降車後処理の完了
+        exitMachineProcess = true;
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        //Machineの近くでAボタンを押す
+        if (other.gameObject.tag == "Machine" && InputManager.Instance.InputA(InputType.Down))
+        {
+            //自身(人)をマシンの子オブジェクトにする
+            transform.parent = other.transform;
+            //MachineをPlayerの子オブジェクトに
+            other.transform.parent = player.transform;
+            //位置をマシンの中心に
+            transform.localPosition = Vector3.zero;
+            transform.localRotation = new Quaternion(0, 0, 0, 0);
+            //PlayerのConditionをHumanからMachineに
+            player.PlayerCondition = Player.Condition.Machine;
+            //マシンを割り当て
+            Machine machine = other.GetComponent<Machine>();
+            player.Machine = machine;
+            //マシンのPlayerを割り当て
+            machine.Player = player;
+            capsuleCollider.enabled = false;
+            //降車後の処理フラグをFalseに
+            exitMachineProcess = false;
         }
     }
     #endregion

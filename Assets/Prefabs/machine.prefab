@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 345234244741364908}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.528, y: -0.11, z: 0.001}
+  m_LocalPosition: {x: -0.05, y: -0.11, z: 0.49}
   m_LocalScale: {x: 0.40000004, y: 1, z: 0.3}
   m_Children: []
   m_Father: {fileID: 8649667210069763172}
@@ -104,8 +104,8 @@ GameObject:
   - component: {fileID: 3222190044169464805}
   - component: {fileID: 4893474460134666053}
   - component: {fileID: 5856045197326043546}
+  - component: {fileID: 1890216870}
   - component: {fileID: 178377764}
-  - component: {fileID: 178377765}
   - component: {fileID: 178377763}
   m_Layer: 0
   m_Name: machine
@@ -188,6 +188,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!65 &1890216870
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4462805625543502119}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.5, y: 2, z: 2.5}
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!54 &178377764
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -202,21 +215,8 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 126
   m_CollisionDetection: 0
---- !u!65 &178377765
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4462805625543502119}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 0.99999994, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &178377763
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -229,6 +229,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15c20391fed24384d8619561e6575398, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitPoint: 100
   rbody: {fileID: 178377764}
   status: {fileID: 11400000, guid: 9fa21f887e59e594682328d834cdb990, type: 2}
+  exitMachineVertical: -0.8

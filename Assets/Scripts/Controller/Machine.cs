@@ -4,22 +4,47 @@ using UnityEngine;
 
 public class Machine : Control
 {
-    [SerializeField] private Rigidbody rbody;
     [SerializeField] private MachineStatus status;
-
-    private float speed = 0; //速度
+    [SerializeField] private float exitMachineVertical = -0.8f;
+    private Player player;
+    private float speed = 0; //現在の速度
     private float chargeAmount = 1; //チャージ量
 
-    private Vector3 velocity;
+    public Player Player
+    {
+        set
+        {
+            player = value;
+        }
+    }
 
     private void Start()
     {
         rbody.mass = status.Weight;
     }
 
-    public void Controller()
+    public override void Controller()
     {
-        horizontal = InputManager.Instance.Horizontal;
+        Move();
+    }
+
+    protected override void Move()
+    {
+        base.Move();
+
+        //Machineから降りる
+        if (InputManager.Instance.InputA(InputType.Down) && vertical < exitMachineVertical)
+        {
+            //speedを初期化
+            speed = 0;
+            //親子関係の解除
+            transform.parent = null;
+            //PlayerのConditionをMachineからHumanに
+            player.PlayerCondition = Player.Condition.Human;
+            //マシンの割り当てを削除
+            player.Machine = null;
+            Player = null;
+        }
 
         //Aボタンを押している
         if (InputManager.Instance.InputA(InputType.Hold))
@@ -37,7 +62,7 @@ public class Machine : Control
         }
 
         //移動量
-        velocity = new Vector3(speed, 0, 0);
+        velocity = new Vector3(0, 0, speed);
         velocity = transform.TransformDirection(velocity);
         transform.localPosition += velocity * Time.deltaTime;
         //旋回
@@ -58,6 +83,7 @@ public class Machine : Control
         {
             speed = 0;
         }
+
         //チャージ
         if (status.MaxCharge > chargeAmount)
         {
