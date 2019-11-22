@@ -10,18 +10,32 @@ public class Player : MonoBehaviour
         Machine
     }
 
-    [SerializeField] private float hitPoint = 100;
+    [SerializeField] private Human human;
+    private Machine machine;
 
-    private Condition condition = Condition.Machine;
+    protected Condition condition = Condition.Human;
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        Operation();
+        switch (condition)
+        {
+            case Condition.Human:
+                human.Controller();
+                break;
+            case Condition.Machine:
+                machine.Controller();
+                break;
+            default:
+                break;
+        }
     }
 
-    protected virtual void Operation()
+    private void FixedUpdate()
     {
-        Debug.Log("overrideしてください[Player.Operation()]");
+        if (condition == Condition.Human)
+        {
+            human.FixedController();
+        }
     }
 }

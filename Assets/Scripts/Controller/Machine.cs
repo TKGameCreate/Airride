@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Machine : Player
+public class Machine : Control
 {
     [SerializeField] private Rigidbody rbody;
     [SerializeField] private MachineStatus status;
 
     private float speed = 0; //速度
     private float chargeAmount = 1; //チャージ量
-    private float horizontal = 0;
+
     private Vector3 velocity;
 
     private void Start()
@@ -17,16 +17,16 @@ public class Machine : Player
         rbody.mass = status.Weight;
     }
 
-    private void Update()
+    public void Controller()
     {
-        horizontal = InputManager.Instance.InputLeftStick(true);
+        horizontal = InputManager.Instance.Horizontal;
 
         //Aボタンを押している
-        if (InputManager.Instance.InputAButton())
+        if (InputManager.Instance.InputA(InputType.Hold))
         {
             BrakeAndCharge();
         }
-        else if (InputManager.Instance.InputAButtonUp())
+        else if (InputManager.Instance.InputA(InputType.Up))
         {
             ChargeDash();
         }
@@ -36,8 +36,6 @@ public class Machine : Player
             Accelerator();
         }
 
-        Debug.Log("Charge : " + chargeAmount);
-        Debug.Log("Speed : " + speed);
         //移動量
         velocity = new Vector3(speed, 0, 0);
         velocity = transform.TransformDirection(velocity);
@@ -46,7 +44,10 @@ public class Machine : Player
         transform.Rotate(0, horizontal * status.Turning * Time.deltaTime, 0);
     }
 
-    private void BrakeAndCharge()
+    /// <summary>
+    /// ブレーキとチャージ
+    /// </summary>
+    protected virtual void BrakeAndCharge()
     {
         //ブレーキ
         if (speed > 0)
@@ -64,12 +65,19 @@ public class Machine : Player
         }
     }
 
-    private void ChargeDash()
+    /// <summary>
+    /// チャージダッシュ
+    /// </summary>
+    protected virtual void ChargeDash()
     {
         speed = status.Acceleration * chargeAmount;
     }
 
-    private void Accelerator()
+    /// <summary>
+    /// 通常加速処理
+    /// 最高速度以上の場合の減速処理も含む
+    /// </summary>
+    protected virtual void Accelerator()
     {
         if (status.MaxSpeed > speed)
         {

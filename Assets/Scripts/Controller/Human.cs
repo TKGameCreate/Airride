@@ -2,25 +2,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Human : Player
+public class Human : Control
 {
+    [SerializeField] private Animator anim;
     [SerializeField] private Rigidbody rbody;
-    [SerializeField] private float speed = 5.0f;
+    [SerializeField] private float speed = 2.5f;
     [SerializeField] private float rotSpeed = 10.0f;
     [SerializeField] private float jumpPower = 1.5f;
-    [SerializeField] private Animator anim;
 
     private Vector3 velocity;
-    private float horizontal = 0;
-    private float vertical = 0;
     private bool jump = false;
 
-    private void Update()
+    #region public
+    public override void Controller()
     {
         AnimationControl();
-        Operation();
+        Move();
     }
 
+    public void FixedController()
+    {
+        rbody.velocity = velocity;
+    }
+    #endregion
+
+    #region private and protected
     private void AnimationControl()
     {
         //移動アニメーション
@@ -45,17 +51,14 @@ public class Human : Player
         //マシンに乗るアニメーション
     }
 
-    protected override void Operation()
+    protected override void Move()
     {
-        //左スティック　キャラクターの移動
-        //Aボタン　ジャンプ
-        //Aボタン(マシンの近く)　マシンに乗る
-        horizontal = InputManager.Instance.InputLeftStick(true);
-        vertical = InputManager.Instance.InputLeftStick(false);
-
-        //移動量
+        base.Move();
+        //移動処理
+        //前進
         velocity = new Vector3(horizontal * speed, 0, vertical * speed);
 
+        //スティックの角度に回転
         //アナログスティックのグラつきを想定して±0.01以下をはじく
         if (Mathf.Abs(horizontal) + Mathf.Abs(vertical) > 0.1f)
         {
@@ -67,24 +70,22 @@ public class Human : Player
             float cameraAngle = Mathf.Atan2(camToPlayer.x, camToPlayer.z) * Mathf.Rad2Deg;
             Quaternion targetRotation = Quaternion.Euler(0, inputAngle + cameraAngle, 0);
             //deltaTimeを用いることで常に一定の速度になる
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotSpeed);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotSpeed * Time.deltaTime);
         }
 
-        if (InputManager.Instance.InputAButtonDown())
+        //ジャンプ処理
+        if (InputManager.Instance.InputA(InputType.Down))
         {
             jump = true;
             rbody.AddForce(Vector3.up * jumpPower);
         }
     }
+    #endregion
 
-    private void FixedUpdate()
-    {
-        rbody.velocity = velocity;
-    }
-
-    //AnimationEvent
+    #region AnimationEvent
     public void JumpEndAnimation()
     {
         jump = false;
     }
+    #endregion
 }
