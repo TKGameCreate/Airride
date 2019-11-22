@@ -21,20 +21,48 @@ public class Machine : Player
     {
         horizontal = InputManager.Instance.InputLeftStick(true);
 
-        //自動加速
-        if (status.MaxSpeed > speed)
+        //Aボタンを押している
+        if (InputManager.Instance.InputAButton())
         {
-            speed += status.Acceleration * chargeAmount;
+            //ブレーキ
+            if (speed > 0)
+            {
+                speed -= status.Brake * Time.deltaTime;
+            }
+            else
+            {
+                speed = 0;
+            }
+            //チャージ
+
         }
+        //Aボタンを押していない
         else
         {
-            //徐々に速度を落とす
+            //自動加速
+            if (status.MaxSpeed > speed)
+            {
+                speed += status.Acceleration * chargeAmount * Time.deltaTime;
+            }
+            else if (status.MaxSpeed + 1 > speed)
+            {
+                //速度を一定に保つ
+                speed = status.MaxSpeed;
+            }
+            else
+            {
+                //徐々に速度を落とす
+                speed -= status.Acceleration * chargeAmount * Time.deltaTime;
+            }
         }
-        Debug.Log("速度" + speed);
+
+        Debug.Log("速度 : " + speed);
         //移動量
-        velocity = new Vector3(speed, 0, horizontal * status.Turning);
+        velocity = new Vector3(speed, 0, 0);
         velocity = transform.TransformDirection(velocity);
         transform.localPosition += velocity * Time.deltaTime;
+        //旋回
+        transform.Rotate(0, horizontal * status.Turning * Time.deltaTime, 0);
     }
 
     protected void OperationMachine()
