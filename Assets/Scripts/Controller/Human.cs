@@ -21,7 +21,7 @@ public class Human : Control
         {
             UndoHuman();
         }
-        AnimationControl();
+        AnimationControl(false);
         Move();
     }
 
@@ -63,8 +63,16 @@ public class Human : Control
         }
     }
 
-    private void AnimationControl()
+    private void AnimationControl(bool ride)
     {
+        if (ride)
+        {
+            anim.SetFloat("speed", 0);
+            anim.SetBool("jump", false);
+            anim.SetTrigger("ride");
+            return;
+        }
+
         //移動アニメーション
         if (velocity.magnitude > 0.1f)
         {
@@ -106,17 +114,20 @@ public class Human : Control
         //Machineの近くでAボタンを押す
         if (other.gameObject.tag == "Machine" && InputManager.Instance.InputA(InputType.Down))
         {
+            GameObject machineObject = other.transform.root.gameObject;
+            //アニメーションリセット
+            AnimationControl(true);
             //自身(人)をマシンの子オブジェクトにする
-            transform.parent = other.transform;
+            transform.parent = machineObject.transform;
             //MachineをPlayerの子オブジェクトに
-            other.transform.parent = player.transform;
+            machineObject.transform.parent = player.transform;
             //位置をマシンの中心に
             transform.localPosition = Vector3.zero;
             transform.localRotation = new Quaternion(0, 0, 0, 0);
             //PlayerのConditionをHumanからMachineに
             player.PlayerCondition = Player.Condition.Machine;
             //マシンを割り当て
-            Machine machine = other.GetComponent<Machine>();
+            Machine machine = machineObject.GetComponent<Machine>();
             player.Machine = machine;
             //マシンのPlayerを割り当て
             machine.Player = player;

@@ -12,7 +12,6 @@ public class Player : MonoBehaviour
 
     [SerializeField] private Human human;
     private Machine machine;
-
     private Condition condition = Condition.Human;
 
     #region プロパティ

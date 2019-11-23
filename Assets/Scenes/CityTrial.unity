@@ -219,7 +219,8 @@ MonoBehaviour:
   playerRootPosition: {fileID: 1140868214}
   player: {fileID: 1500626812}
   playerScript: {fileID: 1524715795}
-  cameraPosition: {x: 0, y: -0.5, z: 3}
+  humanCameraPosition: {x: 0, y: -1, z: 3}
+  machineCameraPosition: {x: 0, y: 5, z: -5}
 --- !u!1 &932693344
 GameObject:
   m_ObjectHideFlags: 0
@@ -758,6 +759,11 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1524715795}
+    - target: {fileID: 977900557727319620, guid: 0e72edcf6bfdedc4daeb4432e57c3ad0,
+        type: 3}
+      propertyPath: rotSpeed
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0e72edcf6bfdedc4daeb4432e57c3ad0, type: 3}
 --- !u!1 &1500626812 stripped
@@ -1079,6 +1085,10 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1476667768, guid: c0e7864ad310ef14ba3547871b85c907, type: 3}
+      propertyPath: m_TagString
+      value: BackTrigger
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c0e7864ad310ef14ba3547871b85c907, type: 3}
