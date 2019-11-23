@@ -22,6 +22,10 @@ public class Player : MonoBehaviour
         {
             machine = value;
         }
+        get
+        {
+            return machine;
+        }
     }
 
     public Condition PlayerCondition
