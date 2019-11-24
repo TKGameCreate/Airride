@@ -10,6 +10,7 @@ public class Machine : Control
     private float speed = 0; //現在の速度
     private float chargeAmount = 1; //チャージ量
 
+    #region プロパティ
     public Player Player
     {
         set
@@ -17,6 +18,9 @@ public class Machine : Control
             player = value;
         }
     }
+    public float Speed { get { return speed; } }
+    public float Charge { get { return chargeAmount; } }
+    #endregion
 
     private void Start()
     {
@@ -97,6 +101,8 @@ public class Machine : Control
     protected virtual void ChargeDash()
     {
         speed = status.Acceleration * chargeAmount;
+        //チャージ量をリセット
+        chargeAmount = 1;
     }
 
     /// <summary>
