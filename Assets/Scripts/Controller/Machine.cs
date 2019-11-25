@@ -93,6 +93,9 @@ public class Machine : Control
         {
             chargeAmount += status.ChargeSpeed * Time.deltaTime;
         }
+
+        //チャージ中は重くなる
+        rbody.mass = 1.0f;
     }
 
     /// <summary>
@@ -103,6 +106,8 @@ public class Machine : Control
         speed = status.Acceleration * chargeAmount;
         //チャージ量をリセット
         chargeAmount = 1;
+        //重量のリセット
+        rbody.mass = status.Weight;
     }
 
     /// <summary>
