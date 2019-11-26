@@ -2,17 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AccelerationItem : MonoBehaviour
+/// <summary>
+/// カソクアイテム
+/// </summary>
+public class AccelerationItem : Item
 {
-    // Start is called before the first frame update
-    void Start()
+    public override void CatchItem(ref MachineStatus status)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        switch (mode)
+        {
+            case ItemMode.Buff:
+                status.Acceleration++;
+                return;
+            case ItemMode.Debuff:
+                status.Acceleration--;
+                return;
+            default:
+                return;
+        }
     }
 }

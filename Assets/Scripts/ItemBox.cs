@@ -34,7 +34,7 @@ public class ItemBox : MonoBehaviour
             Debug.Log(hitPoint < 1);
             Destroy(gameObject);
         }
-        else if (hitPoint < defHP / firstMaterialDiv)
+        else if (hitPoint < defHP / firstMaterialDiv && hitPoint > defHP / secondMaterialDiv)
         {
             myRenderer.material = materialList[1];
         }
