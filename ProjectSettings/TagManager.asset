@@ -6,7 +6,7 @@ TagManager:
   tags:
   - Machine
   - StageObject
-  - BackTrigger
+  - FrontTrigger
   layers:
   - Default
   - TransparentFX

@@ -18,6 +18,7 @@ public class Machine : Control
             player = value;
         }
     }
+    public MachineStatus Status { get { return status; } }
     public float Speed { get { return speed; } }
     public float Charge { get { return chargeAmount; } }
     #endregion

@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 1476667769}
   - component: {fileID: 1476667770}
   m_Layer: 0
-  m_Name: BackTrigger
-  m_TagString: Machine
+  m_Name: FrontTrigger
+  m_TagString: FrontTrigger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -29,7 +29,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8649667210069763172}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1476667770
 BoxCollider:
@@ -75,7 +75,7 @@ Transform:
   m_LocalScale: {x: 0.40000004, y: 1, z: 0.3}
   m_Children: []
   m_Father: {fileID: 8649667210069763172}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4667498025194435217
 MeshFilter:
@@ -168,9 +168,9 @@ Transform:
   m_LocalPosition: {x: 0.00000008940697, y: 0.897, z: -0.211899}
   m_LocalScale: {x: 0.75, y: 0.3, z: 0.75}
   m_Children:
+  - {fileID: 1476667769}
   - {fileID: 2159510662659279165}
   - {fileID: 794953814570147914}
-  - {fileID: 1476667769}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -293,7 +293,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8649667210069763172}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1856487961047905778
 BoxCollider:
