@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class MachineFrontCollider : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private MachineStatus machineStatus;
 
-    // Update is called once per frame
-    void Update()
+    private void OnCollisionEnter(Collision collision)
     {
-        
+        if (collision.gameObject.tag == "Item")
+        {
+            Item item =collision.gameObject.GetComponent<Item>();
+            item.CatchItem(ref machineStatus);
+        }
     }
 }

@@ -10,6 +10,11 @@ public class Machine : Control
     private float speed = 0; //現在の速度
     private float chargeAmount = 1; //チャージ量
 
+    public struct UpStatus
+    {
+
+    }
+
     #region プロパティ
     public Player Player
     {
