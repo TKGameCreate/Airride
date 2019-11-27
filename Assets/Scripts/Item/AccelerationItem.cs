@@ -7,15 +7,13 @@ using UnityEngine;
 /// </summary>
 public class AccelerationItem : Item
 {
-    public override void CatchItem(ref MachineStatus status)
+    public override void CatchItem()
     {
         switch (mode)
         {
             case ItemMode.Buff:
-                status.Acceleration++;
                 return;
             case ItemMode.Debuff:
-                status.Acceleration--;
                 return;
             default:
                 return;

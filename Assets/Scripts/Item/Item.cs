@@ -15,7 +15,7 @@ public abstract class Item : MonoBehaviour
     /// <summary>
     /// 取得時効果
     /// </summary>
-    public virtual void CatchItem(ref MachineStatus status)
+    public virtual void CatchItem()
     {
         Debug.Log("override");
     }

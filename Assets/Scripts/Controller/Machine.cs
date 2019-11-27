@@ -4,16 +4,25 @@ using UnityEngine;
 
 public class Machine : Control
 {
-    [SerializeField] private MachineStatus status;
-    [SerializeField] private float exitMachineVertical = -0.8f;
-    private Player player;
-    private float speed = 0; //現在の速度
-    private float chargeAmount = 1; //チャージ量
-
     public struct UpStatus
     {
-
+        public float attack;
+        public float defence;
+        public float maxSpeed;
+        public float acceleration;
+        public float turning;
+        public float brake;
+        public float maxCharge;
+        public float weight;
     }
+
+    [SerializeField] private MachineStatus status;
+    [SerializeField] private float exitMachineVertical = -0.8f;
+    [SerializeField] private float maxStatus;
+    private Player player;
+    private UpStatus upStatus;
+    private float speed = 0; //現在の速度
+    private float chargeAmount = 1; //チャージ量
 
     #region プロパティ
     public Player Player
@@ -36,6 +45,24 @@ public class Machine : Control
     public override void Controller()
     {
         Move();
+    }
+
+    public bool CheckMaxStatus(float check)
+    {
+        if(check > maxStatus)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public bool CheckMinStatus(float check)
+    {
+        if(check < 0)
+        {
+            return true;
+        }
+        return false;
     }
 
     protected override void Move()
@@ -137,5 +164,10 @@ public class Machine : Control
             //徐々に速度を落とす
             speed -= status.Acceleration * Time.deltaTime;
         }
+    }
+
+    public void CatchAcceleration()
+    {
+
     }
 }
