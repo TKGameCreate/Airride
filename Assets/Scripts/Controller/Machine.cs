@@ -8,6 +8,7 @@ public class Machine : Control
     #region const
     const float chargeMass = 5.0f; //チャージ中の重力
     const float upStatusMag = 0.75f; //ステータスバフ倍率
+    const float upMaxSpeedMag = 0.5f; //Maxスピードバフ倍率
     const float maxStatus = 18; //ステータス上昇上限
     const float exitMachineVertical = -0.8f; //降車時スティック最低入力量
     #endregion
@@ -76,11 +77,6 @@ public class Machine : Control
         return false;
     }
 
-    public override void FixedController()
-    {
-        //rbody.AddRelativeForce(velocity * Time.deltaTime);
-    }
-
     protected override void Move()
     {
         base.Move();
@@ -122,13 +118,18 @@ public class Machine : Control
         transform.Rotate(0, horizontal * status.Turning * Time.deltaTime, 0);
     }
 
+    public override void FixedController()
+    {
+        //rbody.AddRelativeForce(velocity);
+    }
+
     /// <summary>
     /// ブレーキとチャージ
     /// </summary>
     protected virtual void BrakeAndCharge()
     {
-        float brakeMag = MagCheck(upStatus[5]);
-        float chargeMag = MagCheck(upStatus[6]);
+        float brakeMag = MagCheck(StatusName.Brake);
+        float chargeMag = MagCheck(StatusName.MaxCharge);
 
         //ブレーキ
         if (speed > 0)
@@ -139,6 +140,9 @@ public class Machine : Control
         {
             speed = 0;
         }
+        Debug.Log(status.Brake * brakeMag);
+        Debug.Log("Brake:" + status.Brake);
+        Debug.Log("brakeMag:" + brakeMag);
 
         //チャージ
         if (status.MaxCharge * chargeMag > chargeAmount)
@@ -155,7 +159,7 @@ public class Machine : Control
     /// </summary>
     protected virtual void ChargeDash()
     {
-        float mag = MagCheck(upStatus[3]);
+        float mag = MagCheck(StatusName.Acceleration);
         speed = status.Acceleration * mag * chargeAmount;
         //チャージ量をリセット
         chargeAmount = 1;
@@ -169,13 +173,18 @@ public class Machine : Control
     /// </summary>
     protected virtual void Accelerator()
     {
-        float mag = MagCheck(upStatus[3]);
-        if (status.MaxSpeed > speed)
+        float speedMag = MagCheck(StatusName.MaxSpeed);
+        float accMag = MagCheck(StatusName.Acceleration);
+        float maxSpeed = status.MaxSpeed * speedMag;
+
+        Debug.Log(maxSpeed);
+
+        if (maxSpeed > speed)
         {
             //自動加速
-            speed += status.Acceleration * mag * Time.deltaTime;
+            speed += status.Acceleration * accMag * Time.deltaTime;
         }
-        else if (status.MaxSpeed + 1 > speed)
+        else if (maxSpeed + 1 > speed)
         {
             //速度を一定に保つ
             speed = status.MaxSpeed;
@@ -183,7 +192,7 @@ public class Machine : Control
         else
         {
             //徐々に速度を落とす
-            speed -= status.Acceleration * mag * Time.deltaTime;
+            speed -= status.Acceleration * accMag * Time.deltaTime;
         }
     }
 
@@ -216,6 +225,13 @@ public class Machine : Control
     {
         upStatus[(int)name] += changeNum;
         upStatus[(int)name] = UpStatusCheck(upStatus[(int)name]);
+
+        if (debug)
+        {
+            Debug.Log("UpItem : " + name);
+            Debug.Log("上昇量 : " + upStatus[(int)name]);
+            Debug.Log("配列番号 : " + (int)name);
+        }
     }
 
     /// <summary>
@@ -225,12 +241,12 @@ public class Machine : Control
     /// <returns>チェック後の値</returns>
     private float UpStatusCheck(float up)
     {
-        if(up > maxStatus)
+        if(up >= maxStatus)
         {
             return maxStatus;
         }
 
-        if(up < 0)
+        if(up < 1)
         {
             return 0;
         }
@@ -238,11 +254,15 @@ public class Machine : Control
         return up;
     }
 
-    private float MagCheck(float checkNum)
+    private float MagCheck(StatusName name)
     {
-        if (upStatus[3] > 1)
+        if (upStatus[(int)name] > 1)
         {
-            return upStatus[3] * upStatusMag;
+            if(name == StatusName.MaxSpeed)
+            {
+                return upStatus[(int)name] * upMaxSpeedMag;
+            }
+            return upStatus[(int)name] * upStatusMag;
         }
         else
         {

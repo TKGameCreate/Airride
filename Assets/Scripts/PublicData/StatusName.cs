@@ -4,12 +4,12 @@ using UnityEngine;
 
 public enum StatusName : int
 {
-    Attack,
-    Defence,
-    MaxSpeed,
-    Acceleration,
-    Turning,
-    Brake,
-    MaxCharge,
-    Weight
+    Attack = 0,
+    Defence = 1,
+    MaxSpeed = 2,
+    Acceleration = 3,
+    Turning = 4,
+    Brake = 5,
+    MaxCharge = 6,
+    Weight = 7
 }
