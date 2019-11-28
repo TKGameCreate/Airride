@@ -12,8 +12,7 @@ public class AccelerationItem : Item
         switch (mode)
         {
             case ItemMode.Buff:
-                Debug.Log("in");
-                machine.ChangeStatus(StatusName.Acceleration, 5);
+                machine.ChangeStatus(StatusName.Acceleration, 1);
                 return;
             case ItemMode.Debuff:
                 machine.ChangeStatus(StatusName.Acceleration, -1);

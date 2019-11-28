@@ -28,7 +28,6 @@ public class ItemBox : MonoBehaviour
 
     void SetTexture()
     {
-        Debug.Log("ItemBox HP : " + hitPoint);
         if (hitPoint < 1)
         {
             Destroy(gameObject);
