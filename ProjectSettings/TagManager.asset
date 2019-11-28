@@ -6,7 +6,9 @@ TagManager:
   tags:
   - Machine
   - StageObject
-  - FrontTrigger
+  - Item
+  - ItemBox
+  - MachineFront
   layers:
   - Default
   - TransparentFX

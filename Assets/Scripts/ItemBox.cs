@@ -18,7 +18,7 @@ public class ItemBox : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "FrontTrigger")
+        if (other.gameObject.tag == "MachineFront")
         {
             Machine machine = other.transform.parent.gameObject.GetComponent<Machine>();
             hitPoint -= machine.Status.Attack * 2;
@@ -28,10 +28,9 @@ public class ItemBox : MonoBehaviour
 
     void SetTexture()
     {
-        Debug.Log("HP : " + hitPoint);
+        Debug.Log("ItemBox HP : " + hitPoint);
         if (hitPoint < 1)
         {
-            Debug.Log(hitPoint < 1);
             Destroy(gameObject);
         }
         else if (hitPoint < defHP / firstMaterialDiv && hitPoint > defHP / secondMaterialDiv)

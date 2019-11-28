@@ -10,9 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1476667769}
   - component: {fileID: 1476667770}
+  - component: {fileID: 1572593030}
   m_Layer: 0
   m_Name: FrontTrigger
-  m_TagString: FrontTrigger
+  m_TagString: MachineFront
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -42,8 +43,21 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 0.1}
-  m_Center: {x: 0, y: 0, z: 0.55}
+  m_Size: {x: 1, y: 3, z: 0.1}
+  m_Center: {x: 0, y: 1, z: 0.55}
+--- !u!114 &1572593030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1476667768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68e0a6d1b8b9c2d48baca56990ff38fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  machine: {fileID: 178377763}
 --- !u!1 &345234244741364908
 GameObject:
   m_ObjectHideFlags: 0
@@ -262,8 +276,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rbody: {fileID: 178377764}
+  debug: 1
   status: {fileID: 11400000, guid: 9fa21f887e59e594682328d834cdb990, type: 2}
   exitMachineVertical: -0.8
+  maxStatus: 18
+  textObject: {fileID: 0}
+  upStatusText: {fileID: 0}
+  statusText: {fileID: 0}
 --- !u!1 &6288027891468284197
 GameObject:
   m_ObjectHideFlags: 0

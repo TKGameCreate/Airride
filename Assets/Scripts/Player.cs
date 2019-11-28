@@ -13,8 +13,6 @@ public class Player : MonoBehaviour
 
     [SerializeField] private Human human;
     [SerializeField] private GameObject machineText;
-    [SerializeField] private TextMeshProUGUI speedText;
-    [SerializeField] private TextMeshProUGUI chargeText;
 
     //conditionが切り替わった時に処理させる条件式に使う比較変数
     private Condition changeCondition = Condition.Human;
@@ -81,11 +79,7 @@ public class Player : MonoBehaviour
             case Condition.Machine:
                 if (machine != null)
                 {
-                    //テキスト
-                    //chargeの表示を0基準にする
-                    float charge = machine.Charge - 1;
-                    speedText.text = "Speed : " + machine.Speed.ToString("F1");
-                    chargeText.text = "Charge : " + charge.ToString("F1");
+                    machine.TextDisplay();
                     machine.Controller();
                 }
                 break;

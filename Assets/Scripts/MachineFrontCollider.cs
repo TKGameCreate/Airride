@@ -6,11 +6,13 @@ public class MachineFrontCollider : MonoBehaviour
 {
     [SerializeField] private Machine machine;
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.tag == "Item")
+        if (other.gameObject.tag == "Item")
         {
-            Item item =collision.gameObject.GetComponent<Item>();
+            Item item = other.gameObject.GetComponent<Item>();
+            item.CatchItem(machine); //入手したときの処理
+            Destroy(other.gameObject); //触れたアイテムの削除
         }
     }
 }

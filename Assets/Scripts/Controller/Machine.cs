@@ -1,26 +1,38 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Machine : Control
 {
-    public struct UpStatus
-    {
-        public float attack;
-        public float defence;
-        public float maxSpeed;
-        public float acceleration;
-        public float turning;
-        public float brake;
-        public float maxCharge;
-        public float weight;
-    }
+    #region const
+    const float chargeMass = 5.0f; //チャージ中の重力
+    const float upStatusMag = 0.75f; //ステータスバフ倍率
+    const float maxStatus = 18; //ステータス上昇上限
+    const float exitMachineVertical = -0.8f; //降車時スティック最低入力量
+    #endregion
 
+    #region Serialize
+    [SerializeField] private bool debug = false;
     [SerializeField] private MachineStatus status;
-    [SerializeField] private float exitMachineVertical = -0.8f;
-    [SerializeField] private float maxStatus;
+    [SerializeField] private GameObject textObject; //Machineに関するテキストを表示するテキスト群
+    [SerializeField] private TextMeshProUGUI upStatusText; //デバッグ用UpStatus表示Text
+    [SerializeField] private TextMeshProUGUI statusText; //速度とチャージ量を表示するText
+    #endregion
+
+    //Statusのバフ状態
+    private float[] upStatus = new float[8] 
+    {
+        1, //Attack [0]
+        1, //Defence [1]
+        1, //MaxSpeed [2]
+        1, //Acceleration [3]
+        1, //Turning [4]
+        1, //Brake [5]
+        1, //Charge [6]
+        1, //Weight [7]
+    };
     private Player player;
-    private UpStatus upStatus;
     private float speed = 0; //現在の速度
     private float chargeAmount = 1; //チャージ量
 
@@ -33,8 +45,6 @@ public class Machine : Control
         }
     }
     public MachineStatus Status { get { return status; } }
-    public float Speed { get { return speed; } }
-    public float Charge { get { return chargeAmount; } }
     #endregion
 
     private void Start()
@@ -111,10 +121,12 @@ public class Machine : Control
     /// </summary>
     protected virtual void BrakeAndCharge()
     {
+        float brakeMag = MagCheck(upStatus[5]);
+        float chargeMag = MagCheck(upStatus[6]);
         //ブレーキ
         if (speed > 0)
         {
-            speed -= status.Brake * Time.deltaTime;
+            speed -= status.Brake * brakeMag  * Time.deltaTime;
         }
         else
         {
@@ -122,13 +134,13 @@ public class Machine : Control
         }
 
         //チャージ
-        if (status.MaxCharge > chargeAmount)
+        if (status.MaxCharge * upStatus[6] > chargeAmount)
         {
-            chargeAmount += status.ChargeSpeed * Time.deltaTime;
+            chargeAmount += status.ChargeSpeed * chargeMag * Time.deltaTime;
         }
 
         //チャージ中は重くなる
-        rbody.mass = 1.0f;
+        rbody.mass = chargeMass;
     }
 
     /// <summary>
@@ -136,7 +148,8 @@ public class Machine : Control
     /// </summary>
     protected virtual void ChargeDash()
     {
-        speed = status.Acceleration * chargeAmount;
+        float mag = MagCheck(upStatus[3]);
+        speed = status.Acceleration * mag * chargeAmount;
         //チャージ量をリセット
         chargeAmount = 1;
         //重量のリセット
@@ -149,10 +162,11 @@ public class Machine : Control
     /// </summary>
     protected virtual void Accelerator()
     {
+        float mag = MagCheck(upStatus[3]);
         if (status.MaxSpeed > speed)
         {
             //自動加速
-            speed += status.Acceleration * Time.deltaTime;
+            speed += status.Acceleration * mag * Time.deltaTime;
         }
         else if (status.MaxSpeed + 1 > speed)
         {
@@ -162,12 +176,70 @@ public class Machine : Control
         else
         {
             //徐々に速度を落とす
-            speed -= status.Acceleration * Time.deltaTime;
+            speed -= status.Acceleration * mag * Time.deltaTime;
         }
     }
 
-    public void CatchAcceleration()
+    public void TextDisplay()
     {
+        if (debug)
+        {
+            upStatusText.text = "Attack : " + upStatus[0]
+                + " \nDefence : " + upStatus[1]
+                + "\nMaxSpeed : " + upStatus[2]
+                + "\nAcceleration : " + upStatus[3]
+                + "\nTurning : " + upStatus[4]
+                + "\nBrake : " + upStatus[5]
+                + "\nMaxCharge : " + upStatus[6]
+                + "\nWeight : " + upStatus[7];
+        }
 
+        float charge = chargeAmount - 1;
+        statusText.text = 
+            "Speed : " + speed.ToString("F1") +
+            "\nCharge : " + charge.ToString("F1");
+    }
+
+    /// <summary>
+    /// アイテムを取得した際のステータス変動
+    /// </summary>
+    /// <param name="name">変動させるステータス</param>
+    /// <param name="changeNum">変更値</param>
+    public void ChangeStatus(StatusName name, float changeNum)
+    {
+        upStatus[(int)name] += changeNum;
+        upStatus[(int)name] = UpStatusCheck(upStatus[(int)name]);
+    }
+
+    /// <summary>
+    /// UpStatusの下限上限チェック
+    /// </summary>
+    /// <param name="up">チェックする値</param>
+    /// <returns>チェック後の値</returns>
+    private float UpStatusCheck(float up)
+    {
+        if(up > maxStatus)
+        {
+            return maxStatus;
+        }
+
+        if(up < 0)
+        {
+            return 0;
+        }
+
+        return up;
+    }
+
+    private float MagCheck(float checkNum)
+    {
+        if (upStatus[3] > 1)
+        {
+            return upStatus[3] * upStatusMag;
+        }
+        else
+        {
+            return upStatus[3];
+        }
     }
 }
