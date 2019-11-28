@@ -25,7 +25,7 @@ public class Human : Control
         Move();
     }
 
-    public void FixedController()
+    public override void FixedController()
     {
         rbody.velocity = velocity;
     }

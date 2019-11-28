@@ -919,6 +919,10 @@ PrefabInstance:
       propertyPath: statusText
       value: 
       objectReference: {fileID: 832356185}
+    - target: {fileID: 178377763, guid: c0e7864ad310ef14ba3547871b85c907, type: 3}
+      propertyPath: debug
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c0e7864ad310ef14ba3547871b85c907, type: 3}
 --- !u!1 &1867606803
@@ -1087,6 +1091,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 153928271494070494, guid: a1c982910eefbeb45a71683de9c8f192,
+        type: 3}
+      propertyPath: m_Constraints
+      value: 122
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1c982910eefbeb45a71683de9c8f192, type: 3}
 --- !u!1001 &393630305233500925
@@ -1174,6 +1183,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: MachineText
+      objectReference: {fileID: 0}
+    - target: {fileID: 7306165725614159186, guid: c7b7b854cd381fa47a6a857170b32362,
+        type: 3}
+      propertyPath: m_text
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7306165725483324278, guid: c7b7b854cd381fa47a6a857170b32362,
         type: 3}

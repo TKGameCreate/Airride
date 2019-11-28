@@ -90,9 +90,19 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (condition == Condition.Human)
+        Control control;
+        switch (condition)
         {
-            human.FixedController();
+            case Condition.Human:
+                control = human;
+                break;
+            case Condition.Machine:
+                control = machine;
+                break;
+            default:
+                control = null;
+                break;
         }
+        control.FixedController();
     }
 }

@@ -14,7 +14,12 @@ public class Control : MonoBehaviour
     /// </summary>
     public virtual void Controller()
     {
-        Debug.Log("overrideしてください。");
+        Debug.Log("【Controller】overrideしてください。");
+    }
+
+    public virtual void FixedController()
+    {
+        Debug.Log("【FixedController】overrideしてください。");
     }
 
     protected virtual void Move()

@@ -23,18 +23,19 @@ public class Machine : Control
     //Statusのバフ状態
     private float[] upStatus = new float[8] 
     {
-        1, //Attack [0]
-        1, //Defence [1]
-        1, //MaxSpeed [2]
-        1, //Acceleration [3]
-        1, //Turning [4]
-        1, //Brake [5]
-        1, //Charge [6]
-        1, //Weight [7]
+        0, //Attack [0]
+        0, //Defence [1]
+        0, //MaxSpeed [2]
+        0, //Acceleration [3]
+        0, //Turning [4]
+        0, //Brake [5]
+        0, //Charge [6]
+        0 //Weight [7]
     };
     private Player player;
     private float speed = 0; //現在の速度
     private float chargeAmount = 1; //チャージ量
+    private Vector3 force;
 
     #region プロパティ
     public Player Player
@@ -73,6 +74,11 @@ public class Machine : Control
             return true;
         }
         return false;
+    }
+
+    public override void FixedController()
+    {
+        //rbody.AddRelativeForce(velocity * Time.deltaTime);
     }
 
     protected override void Move()
@@ -123,6 +129,7 @@ public class Machine : Control
     {
         float brakeMag = MagCheck(upStatus[5]);
         float chargeMag = MagCheck(upStatus[6]);
+
         //ブレーキ
         if (speed > 0)
         {
@@ -134,7 +141,7 @@ public class Machine : Control
         }
 
         //チャージ
-        if (status.MaxCharge * upStatus[6] > chargeAmount)
+        if (status.MaxCharge * chargeMag > chargeAmount)
         {
             chargeAmount += status.ChargeSpeed * chargeMag * Time.deltaTime;
         }
@@ -196,7 +203,7 @@ public class Machine : Control
 
         float charge = chargeAmount - 1;
         statusText.text = 
-            "Speed : " + speed.ToString("F1") +
+            "Speed : " + speed.ToString("000.00") +
             "\nCharge : " + charge.ToString("F1");
     }
 
@@ -239,7 +246,7 @@ public class Machine : Control
         }
         else
         {
-            return upStatus[3];
+            return 1;
         }
     }
 }
