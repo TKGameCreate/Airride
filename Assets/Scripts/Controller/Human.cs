@@ -105,7 +105,7 @@ public class Human : Control
     {
         //当たり判定の復活
         capsuleCollider.enabled = true;
-        rbody.isKinematic = false;
+        rbody.constraints = RigidbodyConstraints.FreezeRotation;
         //親子関係をPlayerの子供に
         transform.parent = player.transform;
         //高さの調整
@@ -139,7 +139,7 @@ public class Human : Control
             //マシンのPlayerを割り当て
             machine.Player = player;
             capsuleCollider.enabled = false;
-            rbody.isKinematic = true;
+            rbody.constraints = RigidbodyConstraints.FreezeAll;
             //降車後の処理フラグをFalseに
             exitMachineProcess = false;
         }
