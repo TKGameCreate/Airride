@@ -191,8 +191,12 @@ public class Machine : Control
     /// </summary>
     protected virtual void ChargeDash()
     {
-        float mag = MagCheck(StatusName.Acceleration);
-        speed += status.Acceleration * mag * chargeAmount;
+        //チャージダッシュはチャージがMAXの時のみ発動する
+        if(chargeAmount >= status.MaxCharge)
+        {
+            float mag = MagCheck(StatusName.Acceleration);
+            speed += status.Acceleration * mag * chargeAmount;
+        }
         //チャージ量をリセット
         chargeAmount = 1;
         //重量のリセット
