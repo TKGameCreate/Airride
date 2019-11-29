@@ -9,11 +9,17 @@ public class ItemBox : MonoBehaviour
     [Range(1.1f, 5.0f)][SerializeField] private float firstMaterialDiv; //2段階目マテリアルを判定する際に割る数
     [Range(1.1f, 5.0f)][SerializeField] private float secondMaterialDiv; //３段階目マテリアルを判定する際に割る数
     [SerializeField] private float defHP = 30; //初期HP
+    [SerializeField] private float rotSpeed = 1;
     private float hitPoint = 30; //現在のHP
 
     private void Start()
     {
         hitPoint = defHP;
+    }
+
+    private void Update()
+    {
+        transform.Rotate(0, rotSpeed, 0);
     }
 
     private void OnTriggerEnter(Collider other)
