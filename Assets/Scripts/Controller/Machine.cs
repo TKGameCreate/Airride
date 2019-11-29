@@ -36,7 +36,6 @@ public class Machine : Control
     private Player player;
     private float speed = 0; //現在の速度
     private float chargeAmount = 1; //チャージ量
-    private Vector3 force;
     #endregion
 
     #region プロパティ
@@ -182,7 +181,7 @@ public class Machine : Control
     protected virtual void ChargeDash()
     {
         float mag = MagCheck(StatusName.Acceleration);
-        speed = status.Acceleration * mag * chargeAmount;
+        speed += status.Acceleration * mag * chargeAmount;
         //チャージ量をリセット
         chargeAmount = 1;
         //重量のリセット
