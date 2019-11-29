@@ -195,9 +195,11 @@ public class Machine : Control
     /// </summary>
     protected virtual void Accelerator()
     {
+        //最高速度
         float speedMag = MagCheck(StatusName.MaxSpeed);
-        float accMag = MagCheck(StatusName.Acceleration);
         float maxSpeed = status.MaxSpeed * speedMag;
+        //加速
+        float accMag = MagCheck(StatusName.Acceleration);
 
         if (maxSpeed  > speed)
         {

@@ -11,6 +11,7 @@ public class Human : Control
     [SerializeField] private float rotSpeed = 10.0f; //回転速度
     [SerializeField] private float jumpPower = 1.5f;
 
+    private bool jumpPushButton = false;
     private bool jump = false;
     private bool exitMachineProcess = true; //降車後処理をしたか
 
@@ -27,6 +28,11 @@ public class Human : Control
 
     public override void FixedController()
     {
+        if (jumpPushButton)
+        {
+            rbody.AddForce(Vector3.up * jumpPower);
+            jumpPushButton = false;
+        }
         rbody.velocity = velocity;
     }
     #endregion
@@ -59,7 +65,7 @@ public class Human : Control
         if (InputManager.Instance.InputA(InputType.Down))
         {
             jump = true;
-            rbody.AddForce(Vector3.up * jumpPower);
+            jumpPushButton = true;
         }
     }
 
@@ -99,6 +105,7 @@ public class Human : Control
     {
         //当たり判定の復活
         capsuleCollider.enabled = true;
+        rbody.isKinematic = false;
         //親子関係をPlayerの子供に
         transform.parent = player.transform;
         //高さの調整
@@ -132,6 +139,7 @@ public class Human : Control
             //マシンのPlayerを割り当て
             machine.Player = player;
             capsuleCollider.enabled = false;
+            rbody.isKinematic = true;
             //降車後の処理フラグをFalseに
             exitMachineProcess = false;
         }
