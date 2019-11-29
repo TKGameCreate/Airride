@@ -7,7 +7,7 @@ public class Machine : Control
 {
     #region const
     const float chargeMass = 5.0f; //チャージ中の重力
-    const float upStatusMag = 0.48f; //ステータスバフ倍率
+    const float upStatusMag = 0.23f; //ステータスバフ倍率
     const float maxStatus = 18; //ステータス上昇上限
     const float exitMachineVertical = -0.8f; //降車時スティック最低入力量
     #endregion
@@ -63,7 +63,8 @@ public class Machine : Control
 
     public override void FixedController()
     {
-        //rbody.AddRelativeForce(velocity);
+        //移動量
+        rbody.velocity = transform.forward * speed;
     }
 
     /// <summary>
@@ -146,11 +147,7 @@ public class Machine : Control
             Accelerator();
         }
 
-        //移動量
-        velocity = new Vector3(0, 0, speed);
-        velocity = transform.TransformDirection(velocity);
-        transform.localPosition += velocity * Time.deltaTime;
-        //旋回
+        //transform.localPosition += velocity * Time.deltaTime;
         transform.Rotate(0, horizontal * status.Turning * Time.deltaTime, 0);
     }
 
@@ -202,15 +199,15 @@ public class Machine : Control
         float accMag = MagCheck(StatusName.Acceleration);
         float maxSpeed = status.MaxSpeed * speedMag;
 
-        if (maxSpeed > speed)
+        if (maxSpeed  > speed)
         {
             //自動加速
             speed += status.Acceleration * accMag * Time.deltaTime;
         }
-        else if (maxSpeed + 1 > speed)
+        else if (maxSpeed + 1.0f > speed)
         {
             //速度を一定に保つ
-            speed = status.MaxSpeed;
+            speed = maxSpeed;
         }
         else
         {
@@ -248,14 +245,18 @@ public class Machine : Control
     /// <returns>倍率</returns>
     private float MagCheck(StatusName name)
     {
-        if (upStatus[(int)name] > 1)
+        float mag = 1;//倍率
+
+        //アイテムの獲得数が1以上の場合
+        if (upStatus[(int)name] > 0)
         {
-            return upStatus[(int)name] * upStatusMag;
+            //アイテムの獲得数だけ倍率(mag)に加算倍率(0.23)を足す
+            for (int i = 0; i < upStatus[(int)name]; i++)
+            {
+                mag += upStatusMag;
+            }
         }
-        else
-        {
-            return 1;
-        }
+        return mag;
     }
     #endregion
 }
