@@ -52,6 +52,10 @@ public class Machine : Control
     private void Start()
     {
         rbody.mass = status.Weight;
+        if(player == null)
+        {
+            //rigidbodyをフリーズ
+        }
     }
 
     #region public
@@ -117,6 +121,11 @@ public class Machine : Control
     {
         base.Move();
 
+        if(player != null)
+        {
+            //Rigidbodyをフリーズしない
+        }
+
         //Machineから降りる
         if (InputManager.Instance.InputA(InputType.Down) && vertical < exitMachineVertical)
         {
@@ -129,6 +138,8 @@ public class Machine : Control
             //マシンの割り当てを削除
             player.Machine = null;
             Player = null;
+            //Rigidbodyをフリーズ
+
         }
 
         //Aボタンを押している
