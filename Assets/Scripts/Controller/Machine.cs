@@ -36,6 +36,8 @@ public class Machine : Control
     private Player player;
     private float speed = 0; //現在の速度
     private float chargeAmount = 1; //チャージ量
+    private bool nowCharge = false; //charge中かどうか
+    private Vector3 chargePos;
     #endregion
 
     #region プロパティ
@@ -52,10 +54,6 @@ public class Machine : Control
     private void Start()
     {
         rbody.mass = status.Weight;
-        if(player == null)
-        {
-            //rigidbodyをフリーズ
-        }
     }
 
     #region public
@@ -66,8 +64,17 @@ public class Machine : Control
 
     public override void FixedController()
     {
-        //移動量
-        rbody.velocity = transform.forward * speed;
+        Debug.Log("nowCharge : " + nowCharge);
+        Debug.Log("chargePos" + chargePos);
+        if (nowCharge)
+        {
+            rbody.velocity = chargePos * speed;
+        }
+        else
+        {
+            //移動量
+            rbody.velocity = transform.forward * speed;
+        }
     }
 
     /// <summary>
@@ -121,9 +128,14 @@ public class Machine : Control
     {
         base.Move();
 
+        //プレイヤー操作中か否かでRigidBodyの状態を切り替える
         if(player != null)
         {
-            //Rigidbodyをフリーズしない
+            rbody.constraints = RigidbodyConstraints.FreezeRotation;
+        }
+        else
+        {
+            rbody.constraints = RigidbodyConstraints.FreezeAll;
         }
 
         //Machineから降りる
@@ -139,7 +151,8 @@ public class Machine : Control
             player.Machine = null;
             Player = null;
             //Rigidbodyをフリーズ
-
+            rbody.constraints = RigidbodyConstraints.FreezeAll;
+            chargePos = new Vector3(0, 0, 0);
         }
 
         //Aボタンを押している
@@ -157,14 +170,20 @@ public class Machine : Control
             Accelerator();
         }
 
-        //transform.localPosition += velocity * Time.deltaTime;
         transform.Rotate(0, horizontal * status.Turning * Time.deltaTime, 0);
+        //transform.localPosition += velocity * Time.deltaTime;
     }
 
     protected virtual void BrakeAndCharge()
     {
         float brakeMag = MagCheck(StatusName.Brake);
         float chargeMag = MagCheck(StatusName.MaxCharge);
+
+        if (!nowCharge)
+        {
+            chargePos = transform.forward;
+            nowCharge = true;
+        }
 
         //ブレーキ
         if (speed > 0)
@@ -201,6 +220,7 @@ public class Machine : Control
         chargeAmount = 1;
         //重量のリセット
         rbody.mass = status.Weight;
+        nowCharge = false;
     }
 
     /// <summary>
@@ -214,6 +234,11 @@ public class Machine : Control
         float maxSpeed = status.MaxSpeed * speedMag;
         //加速
         float accMag = MagCheck(StatusName.Acceleration);
+
+        if (nowCharge)
+        {
+            nowCharge = false;
+        }
 
         if (maxSpeed  > speed)
         {

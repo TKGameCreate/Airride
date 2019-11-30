@@ -16,9 +16,9 @@ MonoBehaviour:
   attack: 10
   defense: 1
   maxSpeed: 25
-  acceleration: 7
+  acceleration: 7.5
   turning: 80
-  brake: 15
+  brake: 25
   maxCharge: 3.5
   chargeSpeed: 1.75
   weight: 0.1
