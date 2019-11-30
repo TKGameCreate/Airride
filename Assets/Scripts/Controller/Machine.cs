@@ -6,7 +6,6 @@ using TMPro;
 public class Machine : Control
 {
     #region const
-    const float chargeMass = 5.0f; //チャージ中の重力
     const float upStatusMag = 0.23f; //ステータスバフ倍率
     const float maxStatus = 18; //ステータス上昇上限
     const float exitMachineVertical = -0.8f; //降車時スティック最低入力量
@@ -71,14 +70,20 @@ public class Machine : Control
 
     public override void FixedController()
     {
+        //移動量
         if (nowCharge)
         {
             rbody.velocity = chargePos * speed;
         }
         else
         {
-            //移動量
             rbody.velocity = transform.forward * speed;
+        }
+
+        //チャージ中の下に力を入れる処理
+        if (nowCharge)
+        {
+
         }
     }
 
@@ -89,14 +94,14 @@ public class Machine : Control
     {
         if (debug)
         {
-            upStatusText.text = "Attack : " + upStatus[0]
-                + " \nDefence : " + upStatus[1]
-                + "\nMaxSpeed : " + upStatus[2]
-                + "\nAcceleration : " + upStatus[3]
-                + "\nTurning : " + upStatus[4]
-                + "\nBrake : " + upStatus[5]
-                + "\nMaxCharge : " + upStatus[6]
-                + "\nWeight : " + upStatus[7];
+            upStatusText.text = "Attack : " + getItemNum[0]
+                + " \nDefence : " + getItemNum[1]
+                + "\nMaxSpeed : " + getItemNum[2]
+                + "\nAcceleration : " + getItemNum[3]
+                + "\nTurning : " + getItemNum[4]
+                + "\nBrake : " + getItemNum[5]
+                + "\nMaxCharge : " + getItemNum[6]
+                + "\nWeight : " + getItemNum[7];
         }
 
         float charge = chargeAmount - 1;
@@ -228,9 +233,6 @@ public class Machine : Control
         {
             chargeAmount += status.ChargeSpeed * chargeMag * Time.deltaTime;
         }
-
-        //チャージ中は重くなる
-        rbody.mass = chargeMass;
     }
 
     /// <summary>
@@ -248,8 +250,6 @@ public class Machine : Control
         }
         //チャージ量をリセット
         chargeAmount = 1;
-        //重量のリセット
-        rbody.mass = status.Weight;
         nowCharge = false;
     }
 
@@ -264,6 +264,8 @@ public class Machine : Control
         float maxSpeed = status.MaxSpeed * speedMag;
         //加速
         float accMag = StatusMag(StatusName.Acceleration);
+        //Maxスピードオーバーの許容範囲
+        float tolerance = 1.0f;
 
         if (nowCharge)
         {
@@ -275,15 +277,15 @@ public class Machine : Control
             //自動加速
             speed += status.Acceleration * accMag * Time.deltaTime;
         }
-        else if (maxSpeed + 1.0f > speed)
+        else if (maxSpeed + tolerance > speed)
         {
             //速度を一定に保つ
             speed = maxSpeed;
         }
         else
         {
-            //徐々に速度を落とす(ブレーキの2倍の速度)
-            speed -= status.Acceleration * accMag * 2.0f * Time.deltaTime;
+            //徐々に速度を落とす
+            speed -= status.Acceleration * accMag * Time.deltaTime;
         }
     }
     #endregion
