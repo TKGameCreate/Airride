@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8300316149063929035}
   - component: {fileID: 8300316149063929034}
   - component: {fileID: 8300316149063929046}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Acceleration
   m_TagString: Item
   m_Icon: {fileID: 0}

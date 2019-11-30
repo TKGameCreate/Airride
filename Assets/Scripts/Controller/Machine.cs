@@ -21,8 +21,8 @@ public class Machine : Control
     #endregion
 
     #region 変数
-    //Statusのバフ状態
-    private float[] upStatus = new float[8] 
+    //アイテムの取得状態
+    private float[] getItemNum = new float[8] 
     {
         0, //Attack [0]
         0, //Defence [1]
@@ -32,6 +32,18 @@ public class Machine : Control
         0, //Brake [5]
         0, //Charge [6]
         0 //Weight [7]
+    };
+    //ステータスのバフ状態
+    private float[] upStatus = new float[8]
+    {
+        1, //Attack [0]
+        1, //Defence [1]
+        1, //MaxSpeed [2]
+        1, //Acceleration [3]
+        1, //Turning [4]
+        1, //Brake [5]
+        1, //Charge [6]
+        1 //Weight [7]
     };
     private Player player;
     private float speed = 0; //現在の速度
@@ -51,11 +63,6 @@ public class Machine : Control
     public MachineStatus Status { get { return status; } }
     #endregion
 
-    private void Start()
-    {
-        rbody.mass = status.Weight;
-    }
-
     #region public
     public override void Controller()
     {
@@ -64,8 +71,6 @@ public class Machine : Control
 
     public override void FixedController()
     {
-        Debug.Log("nowCharge : " + nowCharge);
-        Debug.Log("chargePos" + chargePos);
         if (nowCharge)
         {
             rbody.velocity = chargePos * speed;
@@ -105,10 +110,34 @@ public class Machine : Control
     /// </summary>
     /// <param name="name">変動させるステータス</param>
     /// <param name="changeNum">変更値</param>
-    public void ChangeStatus(StatusName name, float changeNum)
+    public void ChangeStatus(StatusName name,  ItemMode mode)
     {
-        upStatus[(int)name] += changeNum;
-        upStatus[(int)name] = UpStatusCheck(upStatus[(int)name]);
+        //バフアイテム
+        if(mode == ItemMode.Buff)
+        {
+            getItemNum[(int)name]++; //アイテムの取得数を増やす
+            //上限チェック
+            if (getItemNum[(int)name] > maxStatus)
+            {
+                getItemNum[(int)name] = maxStatus;
+                return;
+            }
+            //ステータスの倍率を増加
+            upStatus[(int)name] += upStatusMag;
+        }
+        //デバフアイテム
+        else
+        {
+            getItemNum[(int)name]--; //アイテム取得数を減らす
+            //下限チェック
+            if(getItemNum[(int)name] < 0)
+            {
+                getItemNum[(int)name] = 0;
+                return;
+            }
+            //ステータスの倍率を減少
+            upStatus[(int)name] -= upStatusMag;
+        }
     }
 
     /// <summary>
@@ -152,7 +181,6 @@ public class Machine : Control
             Player = null;
             //Rigidbodyをフリーズ
             rbody.constraints = RigidbodyConstraints.FreezeAll;
-            chargePos = new Vector3(0, 0, 0);
         }
 
         //Aボタンを押している
@@ -176,8 +204,8 @@ public class Machine : Control
 
     protected virtual void BrakeAndCharge()
     {
-        float brakeMag = MagCheck(StatusName.Brake);
-        float chargeMag = MagCheck(StatusName.MaxCharge);
+        float brakeMag = StatusMag(StatusName.Brake);
+        float chargeMag = StatusMag(StatusName.MaxCharge);
 
         if (!nowCharge)
         {
@@ -186,7 +214,7 @@ public class Machine : Control
         }
 
         //ブレーキ
-        if (speed > 0)
+        if (speed - status.Brake * brakeMag * Time.deltaTime > 0)
         {
             speed -= status.Brake * brakeMag  * Time.deltaTime;
         }
@@ -210,10 +238,12 @@ public class Machine : Control
     /// </summary>
     protected virtual void ChargeDash()
     {
+        float chargeMag = StatusMag(StatusName.MaxCharge);
+
         //チャージダッシュはチャージがMAXの時のみ発動する
-        if(chargeAmount >= status.MaxCharge)
+        if (chargeAmount >= status.MaxCharge * chargeMag)
         {
-            float mag = MagCheck(StatusName.Acceleration);
+            float mag = StatusMag(StatusName.Acceleration);
             speed += status.Acceleration * mag * chargeAmount;
         }
         //チャージ量をリセット
@@ -230,10 +260,10 @@ public class Machine : Control
     protected virtual void Accelerator()
     {
         //最高速度
-        float speedMag = MagCheck(StatusName.MaxSpeed);
+        float speedMag = StatusMag(StatusName.MaxSpeed);
         float maxSpeed = status.MaxSpeed * speedMag;
         //加速
-        float accMag = MagCheck(StatusName.Acceleration);
+        float accMag = StatusMag(StatusName.Acceleration);
 
         if (nowCharge)
         {
@@ -259,45 +289,9 @@ public class Machine : Control
     #endregion
 
     #region private
-    /// <summary>
-    /// UpStatusの下限上限チェック
-    /// </summary>
-    /// <param name="up">チェックする値</param>
-    /// <returns>チェック後の値</returns>
-    private float UpStatusCheck(float up)
+    private float StatusMag(StatusName name)
     {
-        if(up >= maxStatus)
-        {
-            return maxStatus;
-        }
-
-        if(up < 1)
-        {
-            return 0;
-        }
-
-        return up;
-    }
-
-    /// <summary>
-    /// 倍率チェック
-    /// </summary>
-    /// <param name="name">チェックするUpStatus</param>
-    /// <returns>倍率</returns>
-    private float MagCheck(StatusName name)
-    {
-        float mag = 1;//倍率
-
-        //アイテムの獲得数が1以上の場合
-        if (upStatus[(int)name] > 0)
-        {
-            //アイテムの獲得数だけ倍率(mag)に加算倍率(0.23)を足す
-            for (int i = 0; i < upStatus[(int)name]; i++)
-            {
-                mag += upStatusMag;
-            }
-        }
-        return mag;
+        return upStatus[(int)name];
     }
     #endregion
 }

@@ -15,10 +15,10 @@ public abstract class Item : MonoBehaviour
         switch (mode)
         {
             case ItemMode.Buff:
-                machine.ChangeStatus(statusName, 1);
+                machine.ChangeStatus(statusName, ItemMode.Buff);
                 return;
             case ItemMode.Debuff:
-                machine.ChangeStatus(statusName, -1);
+                machine.ChangeStatus(statusName, ItemMode.Debuff);
                 return;
             default:
                 return;
