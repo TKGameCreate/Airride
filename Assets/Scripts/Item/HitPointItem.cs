@@ -2,17 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HitPointItem : MonoBehaviour
+public class HitPointItem : Item
 {
-    // Start is called before the first frame update
-    void Start()
+    public override void CatchItem(Machine machine)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        base.CatchItem(machine);
     }
 }

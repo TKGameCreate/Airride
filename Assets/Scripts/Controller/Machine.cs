@@ -6,9 +6,11 @@ using TMPro;
 public class Machine : Control
 {
     #region const
+    const float chargeDashPossible = 0.8f; //チャージダッシュ可能量
     const float upStatusMag = 0.23f; //ステータスバフ倍率
     const float maxStatus = 18; //ステータス上昇上限
     const float exitMachineVertical = -0.8f; //降車時スティック最低入力量
+    const float chargeUnderPower = 10.0f; //charge中に下に加える力
     #endregion
 
     #region Serialize
@@ -81,10 +83,10 @@ public class Machine : Control
         }
 
         //チャージ中の下に力を入れる処理
-        if (nowCharge)
-        {
-
-        }
+        //if (nowCharge)
+        //{
+        //    rbody.AddForce(Vector3.down * chargeUnderPower);
+        //}
     }
 
     /// <summary>
@@ -106,7 +108,7 @@ public class Machine : Control
 
         float charge = chargeAmount - 1;
         statusText.text =
-            "Speed : " + speed.ToString("000.00") +
+            "Speed : " + rbody.velocity.magnitude.ToString("000.00") +
             "\nCharge : " + charge.ToString("F1");
     }
 
@@ -242,8 +244,8 @@ public class Machine : Control
     {
         float chargeMag = StatusMag(StatusName.MaxCharge);
 
-        //チャージダッシュはチャージがMAXの時のみ発動する
-        if (chargeAmount >= status.MaxCharge * chargeMag)
+        //チャージダッシュはチャージが一定以上でなければ発動しない
+        if (chargeAmount >= status.MaxCharge * chargeMag * chargeDashPossible)
         {
             float mag = StatusMag(StatusName.Acceleration);
             speed += status.Acceleration * mag * chargeAmount;

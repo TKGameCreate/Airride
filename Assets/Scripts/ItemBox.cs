@@ -32,7 +32,7 @@ public class ItemBox : MonoBehaviour
         }
     }
 
-    void SetTexture()
+    private void SetTexture()
     {
         if (hitPoint < 1)
         {

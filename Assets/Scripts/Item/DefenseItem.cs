@@ -2,17 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DefenseItem : MonoBehaviour
+public class DefenseItem : Item
 {
-    // Start is called before the first frame update
-    void Start()
+    public override void CatchItem(Machine machine)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        statusName = StatusName.Defence;
+        base.CatchItem(machine);
     }
 }

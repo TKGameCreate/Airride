@@ -2,17 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackItem : MonoBehaviour
+public class AttackItem : Item
 {
-    // Start is called before the first frame update
-    void Start()
+    public override void CatchItem(Machine machine)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        statusName = StatusName.Attack;
+        base.CatchItem(machine);
     }
 }
