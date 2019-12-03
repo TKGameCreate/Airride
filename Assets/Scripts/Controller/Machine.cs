@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
 
 public class Machine : Control
@@ -16,9 +14,9 @@ public class Machine : Control
     #region Serialize
     [SerializeField] private bool debug = false;
     [SerializeField] private MachineStatus status;
-    [SerializeField] private GameObject textObject; //Machineに関するテキストを表示するテキスト群
-    [SerializeField] private TextMeshProUGUI upStatusText; //デバッグ用UpStatus表示Text
-    [SerializeField] private TextMeshProUGUI statusText; //速度とチャージ量を表示するText
+    [SerializeField] private TextMeshProUGUI speedText;
+    [SerializeField] private GameObject debugTextObject; //Machineに関するテキストを表示するテキスト群
+    [SerializeField] private TextMeshProUGUI debugText; //デバッグ用UpStatus表示Text
     #endregion
 
     #region 変数
@@ -50,6 +48,7 @@ public class Machine : Control
     private float speed = 0; //現在の速度
     private float chargeAmount = 1; //チャージ量
     private bool nowCharge = false; //charge中かどうか
+    private bool setSpeedMater = false;
     private Vector3 chargePos;
     #endregion
 
@@ -67,6 +66,11 @@ public class Machine : Control
     #region public
     public override void Controller()
     {
+        if (debug)
+        {
+            DebugTextDisplay();
+        }
+        SpeedAndChargeMater();
         Move();
     }
 
@@ -87,29 +91,6 @@ public class Machine : Control
         //{
         //    rbody.AddForce(Vector3.down * chargeUnderPower);
         //}
-    }
-
-    /// <summary>
-    /// 画面に表示するテキスト処理
-    /// </summary>
-    public void TextDisplay()
-    {
-        if (debug)
-        {
-            upStatusText.text = "Attack : " + getItemNum[0]
-                + " \nDefence : " + getItemNum[1]
-                + "\nMaxSpeed : " + getItemNum[2]
-                + "\nAcceleration : " + getItemNum[3]
-                + "\nTurning : " + getItemNum[4]
-                + "\nBrake : " + getItemNum[5]
-                + "\nMaxCharge : " + getItemNum[6]
-                + "\nWeight : " + getItemNum[7];
-        }
-
-        float charge = chargeAmount - 1;
-        statusText.text =
-            "Speed : " + rbody.velocity.magnitude.ToString("000.00") +
-            "\nCharge : " + charge.ToString("F1");
     }
 
     /// <summary>
@@ -188,6 +169,8 @@ public class Machine : Control
             Player = null;
             //Rigidbodyをフリーズ
             rbody.constraints = RigidbodyConstraints.FreezeAll;
+            //スピードメーターセットフラグを初期化
+            setSpeedMater = false;
         }
 
         //Aボタンを押している
@@ -290,12 +273,63 @@ public class Machine : Control
             speed -= status.Acceleration * accMag * Time.deltaTime;
         }
     }
+
+    protected override void SpeedAndChargeMater()
+    {
+        if (!setSpeedMater)
+        {
+            speedMaterPlayerImage.SetActive(false);
+            speedMaterTextObject.SetActive(true);
+            setSpeedMater = true;
+        }
+
+        float moveSpeed = velocity.magnitude;
+        float charge = chargeAmount / status.MaxCharge; //0~1の範囲に正規化
+        float intSpeed = moveSpeed - moveSpeed % 1; //整数部分のみ抽出
+        float fewSpeed = moveSpeed % 1; //小数部分のみ抽出
+        //chargeGageの表示
+        foreach (var chargeGage in chargeGages)
+        {
+            chargeGage.fillAmount = charge;
+        }
+        //SpeedMaterの表示
+        speedText.text = intSpeed.ToString("000")
+            + "\n"
+            + "<size=30>"
+            + fewSpeed.ToString(".00")
+            + "</size>";
+    }
     #endregion
 
     #region private
     private float StatusMag(StatusName name)
     {
         return upStatus[(int)name];
+    }
+
+    /// <summary>
+    /// デバッグテキスト処理
+    /// </summary>
+    private void DebugTextDisplay()
+    {
+        if(player == null)
+        {
+            debugTextObject.SetActive(false);
+            return;
+        }
+        else
+        {
+            debugTextObject.SetActive(true);
+        }
+
+        debugText.text = "Attack : " + getItemNum[0]
+            + " \nDefence : " + getItemNum[1]
+            + "\nMaxSpeed : " + getItemNum[2]
+            + "\nAcceleration : " + getItemNum[3]
+            + "\nTurning : " + getItemNum[4]
+            + "\nBrake : " + getItemNum[5]
+            + "\nMaxCharge : " + getItemNum[6]
+            + "\nWeight : " + getItemNum[7];
     }
     #endregion
 }

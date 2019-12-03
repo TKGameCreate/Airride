@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Human : Control
 {
@@ -18,10 +16,13 @@ public class Human : Control
     #region public
     public override void Controller()
     {
+        //降車時処理
         if (!exitMachineProcess)
         {
             UndoHuman();
+            SpeedAndChargeMater();
         }
+
         AnimationControl(false);
         Move();
     }
@@ -37,7 +38,7 @@ public class Human : Control
     }
     #endregion
 
-    #region private and protected
+    #region protected
     protected override void Move()
     {
         base.Move();
@@ -69,6 +70,21 @@ public class Human : Control
         }
     }
 
+    protected override void SpeedAndChargeMater()
+    {
+        //スピードメーターにUnityちゃんの画像を表示
+        speedMaterPlayerImage.SetActive(true);
+        //スピードメーターを非表示に
+        speedMaterPlayerImage.SetActive(false);
+        //chargeGageのリセット
+        foreach (var chargeGage in chargeGages)
+        {
+             chargeGage.fillAmount = 0;
+        }
+    }
+    #endregion
+
+    #region private
     private void AnimationControl(bool ride)
     {
         if (ride)

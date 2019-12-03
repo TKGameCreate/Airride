@@ -1,10 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
 
-public class Control : MonoBehaviour
+public abstract class Control : MonoBehaviour
 {
     [SerializeField] protected Rigidbody rbody;
+    [SerializeField] protected Image[] chargeGages;
+    [SerializeField] protected GameObject speedMaterTextObject;
+    [SerializeField] protected GameObject speedMaterPlayerImage;
     protected float horizontal = 0;
     protected float vertical = 0;
     protected Vector3 velocity;
@@ -20,6 +22,11 @@ public class Control : MonoBehaviour
     public virtual void FixedController()
     {
         Debug.Log("【FixedController】overrideしてください。");
+    }
+
+    protected virtual void SpeedAndChargeMater()
+    {
+        Debug.Log("【SpeedAndChargeMater】overrideしてください。");
     }
 
     protected virtual void Move()

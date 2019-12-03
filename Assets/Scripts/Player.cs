@@ -12,7 +12,6 @@ public class Player : MonoBehaviour
     }
 
     [SerializeField] private Human human;
-    [SerializeField] private GameObject machineText;
 
     //conditionが切り替わった時に処理させる条件式に使う比較変数
     private Condition changeCondition = Condition.Human;
@@ -54,23 +53,6 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        //テキストの表示/非表示
-        if(changeCondition != condition)
-        {
-            changeCondition = condition;
-            switch (condition)
-            {
-                case Condition.Human:
-                    machineText.SetActive(false);
-                    break;
-                case Condition.Machine:
-                    machineText.SetActive(true);
-                    break;
-                default:
-                    break;
-            }
-        }
-
         switch (condition)
         {
             case Condition.Human:
@@ -79,7 +61,6 @@ public class Player : MonoBehaviour
             case Condition.Machine:
                 if (machine != null)
                 {
-                    machine.TextDisplay();
                     machine.Controller();
                 }
                 break;
@@ -101,7 +82,7 @@ public class Player : MonoBehaviour
                 break;
             default:
                 control = null;
-                break;
+                return;
         }
         control.FixedController();
     }
