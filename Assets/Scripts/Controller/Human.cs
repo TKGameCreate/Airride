@@ -75,7 +75,7 @@ public class Human : Control
         //スピードメーターにUnityちゃんの画像を表示
         speedMaterPlayerImage.SetActive(true);
         //スピードメーターを非表示に
-        speedMaterPlayerImage.SetActive(false);
+        speedMaterTextObject.SetActive(false);
         //chargeGageのリセット
         foreach (var chargeGage in chargeGages)
         {

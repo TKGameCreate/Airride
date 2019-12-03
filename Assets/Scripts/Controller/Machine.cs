@@ -283,10 +283,11 @@ public class Machine : Control
             setSpeedMater = true;
         }
 
-        float moveSpeed = velocity.magnitude;
-        float charge = chargeAmount / status.MaxCharge; //0~1の範囲に正規化
+        float moveSpeed = rbody.velocity.magnitude;
+        float charge = (chargeAmount - 1) / (status.MaxCharge - 1); //0~1の範囲に正規化
         float intSpeed = moveSpeed - moveSpeed % 1; //整数部分のみ抽出
         float fewSpeed = moveSpeed % 1; //小数部分のみ抽出
+
         //chargeGageの表示
         foreach (var chargeGage in chargeGages)
         {
