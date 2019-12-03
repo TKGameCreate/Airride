@@ -14,7 +14,6 @@ public class Machine : Control
     #region Serialize
     [SerializeField] private bool debug = false;
     [SerializeField] private MachineStatus status;
-    [SerializeField] private TextMeshProUGUI speedText;
     [SerializeField] private GameObject debugTextObject; //Machineに関するテキストを表示するテキスト群
     [SerializeField] private TextMeshProUGUI debugText; //デバッグ用UpStatus表示Text
     #endregion
@@ -48,7 +47,6 @@ public class Machine : Control
     private float speed = 0; //現在の速度
     private float chargeAmount = 1; //チャージ量
     private bool nowCharge = false; //charge中かどうか
-    private bool setSpeedMater = false;
     private Vector3 chargePos;
     #endregion
 
@@ -66,12 +64,12 @@ public class Machine : Control
     #region public
     public override void Controller()
     {
+        Move();
+
         if (debug)
         {
             DebugTextDisplay();
         }
-        SpeedAndChargeMater();
-        Move();
     }
 
     public override void FixedController()
@@ -129,6 +127,34 @@ public class Machine : Control
     }
 
     /// <summary>
+    /// SpeedMaterに表示するSpeed
+    /// </summary>
+    /// <returns>Textに表示するSpeed</returns>
+    public string SpeedMaterText()
+    {
+        float moveSpeed = rbody.velocity.magnitude;
+        float intSpeed = moveSpeed - moveSpeed % 1; //整数部分のみ抽出
+        float fewSpeed = moveSpeed % 1; //小数部分のみ抽出
+
+        return intSpeed.ToString("000")
+            + "\n"
+            + "<size=30>"
+            + fewSpeed.ToString(".00")
+            + "</size>";
+    }
+
+    /// <summary>
+    /// 正規化したチャージ量
+    /// </summary>
+    /// <returns>チャージ量</returns>
+    public float NormalizeCharge()
+    {
+        //0~1の範囲に正規化
+        float charge = (chargeAmount - 1) / (status.MaxCharge - 1);
+        return charge;
+    }
+
+    /// <summary>
     /// 壁や、アイテムボックスにぶつかった時に跳ね返る処理
     /// </summary>
     public void BackForce()
@@ -169,8 +195,6 @@ public class Machine : Control
             Player = null;
             //Rigidbodyをフリーズ
             rbody.constraints = RigidbodyConstraints.FreezeAll;
-            //スピードメーターセットフラグを初期化
-            setSpeedMater = false;
         }
 
         //Aボタンを押している
@@ -272,33 +296,6 @@ public class Machine : Control
             //徐々に速度を落とす
             speed -= status.Acceleration * accMag * Time.deltaTime;
         }
-    }
-
-    protected override void SpeedAndChargeMater()
-    {
-        if (!setSpeedMater)
-        {
-            speedMaterPlayerImage.SetActive(false);
-            speedMaterTextObject.SetActive(true);
-            setSpeedMater = true;
-        }
-
-        float moveSpeed = rbody.velocity.magnitude;
-        float charge = (chargeAmount - 1) / (status.MaxCharge - 1); //0~1の範囲に正規化
-        float intSpeed = moveSpeed - moveSpeed % 1; //整数部分のみ抽出
-        float fewSpeed = moveSpeed % 1; //小数部分のみ抽出
-
-        //chargeGageの表示
-        foreach (var chargeGage in chargeGages)
-        {
-            chargeGage.fillAmount = charge;
-        }
-        //SpeedMaterの表示
-        speedText.text = intSpeed.ToString("000")
-            + "\n"
-            + "<size=30>"
-            + fewSpeed.ToString(".00")
-            + "</size>";
     }
     #endregion
 

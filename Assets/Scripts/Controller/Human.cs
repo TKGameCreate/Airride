@@ -20,7 +20,6 @@ public class Human : Control
         if (!exitMachineProcess)
         {
             UndoHuman();
-            SpeedAndChargeMater();
         }
 
         AnimationControl(false);
@@ -67,19 +66,6 @@ public class Human : Control
         {
             jump = true;
             jumpPushButton = true;
-        }
-    }
-
-    protected override void SpeedAndChargeMater()
-    {
-        //スピードメーターにUnityちゃんの画像を表示
-        speedMaterPlayerImage.SetActive(true);
-        //スピードメーターを非表示に
-        speedMaterTextObject.SetActive(false);
-        //chargeGageのリセット
-        foreach (var chargeGage in chargeGages)
-        {
-             chargeGage.fillAmount = 0;
         }
     }
     #endregion
