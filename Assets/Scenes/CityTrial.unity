@@ -2699,12 +2699,12 @@ GameObject:
   - component: {fileID: 2044515007}
   - component: {fileID: 2044515006}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: CountDown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2044515005
 RectTransform:
   m_ObjectHideFlags: 0

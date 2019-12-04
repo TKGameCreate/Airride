@@ -229,7 +229,6 @@ public class Machine : Control
 
         if (!onGround)
         {
-            Debug.Log(status.ChargeSpeed / onGroundChargeSpeed);
             chargeAmount += status.ChargeSpeed / onGroundChargeSpeed;
         }
 
