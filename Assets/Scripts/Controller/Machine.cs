@@ -9,6 +9,7 @@ public class Machine : Control
     const float maxStatus = 18; //ステータス上昇上限
     const float exitMachineVertical = -0.8f; //降車時スティック最低入力量
     const float chargeUnderPower = 25000.0f; //charge中に下に加える力
+    const float onGroundChargeSpeed = 1500f; //滑空中の自動チャージ速度倍率
     #endregion
 
     #region Serialize
@@ -224,6 +225,12 @@ public class Machine : Control
         else
         {
             Accelerator();
+        }
+
+        if (!onGround)
+        {
+            Debug.Log(status.ChargeSpeed / onGroundChargeSpeed);
+            chargeAmount += status.ChargeSpeed / onGroundChargeSpeed;
         }
 
         transform.Rotate(0, horizontal * status.Turning * Time.deltaTime, 0);
