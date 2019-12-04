@@ -11,6 +11,9 @@ using TMPro;
 public class MainTime : MonoBehaviour
 {
     [SerializeField] private EventSystem eventSystem;
+    [SerializeField] private TextMeshProUGUI countDownText;
+    [SerializeField] private TextMeshProUGUI timeText;
+    [SerializeField] private float time = 180;
 
     // Start is called before the first frame update
     void Start()
@@ -21,6 +24,6 @@ public class MainTime : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        time -= Time.deltaTime;
     }
 }
