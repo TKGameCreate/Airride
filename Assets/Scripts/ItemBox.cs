@@ -26,12 +26,12 @@ public class ItemBox : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "MachineFront")
+        if (other.gameObject.tag == "Machine")
         {
             Machine machine = other.transform.parent.gameObject.GetComponent<Machine>();
-            rbody.AddForce(Vector3.up * machine.SaveSpeed * boundUpPower);
             hitPoint -= machine.Status.Attack * 2;
             SetTexture();
+            rbody.AddForce(Vector3.up * machine.SaveSpeed * boundUpPower);
         }
     }
 

@@ -48,9 +48,9 @@ public class Machine : Control
     private float speed = 0; //現在の速度
     private float chargeAmount = 1; //チャージ量
     private bool nowCharge = false; //charge中かどうか
+    private bool onGround = true; //接地フラグ
     private Vector3 chargePos;
     private float saveSpeed = 0; //衝突時のスピードを保存する
-    private bool onGround = true; //接地フラグ
     #endregion
 
     #region プロパティ
@@ -93,8 +93,6 @@ public class Machine : Control
         {
             rbody.velocity = transform.forward * speed;
         }
-
-        Debug.Log(onGround);
 
         //チャージ中の下に力を入れる処理
         if (nowCharge && !onGround)
