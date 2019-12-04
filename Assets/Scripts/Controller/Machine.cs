@@ -4,16 +4,17 @@ using TMPro;
 public class Machine : Control
 {
     #region const
-    const float chargeDashPossible = 0.8f; //チャージダッシュ可能量
+    const float chargeDashPossible = 0.75f; //チャージダッシュ可能量
     const float upStatusMag = 0.23f; //ステータスバフ倍率
     const float maxStatus = 18; //ステータス上昇上限
     const float exitMachineVertical = -0.8f; //降車時スティック最低入力量
-    const float chargeUnderPower = 10.0f; //charge中に下に加える力
+    const float chargeUnderPower = 25000.0f; //charge中に下に加える力
     #endregion
 
     #region Serialize
     [SerializeField] private bool debug = false;
     [SerializeField] private MachineStatus status;
+    [SerializeField] private float boundPower = 0;
     [SerializeField] private GameObject debugTextObject; //Machineに関するテキストを表示するテキスト群
     [SerializeField] private TextMeshProUGUI debugText; //デバッグ用UpStatus表示Text
     #endregion
@@ -48,6 +49,8 @@ public class Machine : Control
     private float chargeAmount = 1; //チャージ量
     private bool nowCharge = false; //charge中かどうか
     private Vector3 chargePos;
+    private float saveSpeed = 0; //衝突時のスピードを保存する
+    private bool onGround = true; //接地フラグ
     #endregion
 
     #region プロパティ
@@ -59,6 +62,13 @@ public class Machine : Control
         }
     }
     public MachineStatus Status { get { return status; } }
+    public float SaveSpeed
+    {
+        get
+        {
+            return saveSpeed;
+        }
+    }
     #endregion
 
     #region public
@@ -84,11 +94,13 @@ public class Machine : Control
             rbody.velocity = transform.forward * speed;
         }
 
+        Debug.Log(onGround);
+
         //チャージ中の下に力を入れる処理
-        //if (nowCharge)
-        //{
-        //    rbody.AddForce(Vector3.down * chargeUnderPower);
-        //}
+        if (nowCharge && !onGround)
+        {
+            rbody.AddForce(Vector3.down * chargeUnderPower);
+        }
     }
 
     /// <summary>
@@ -159,7 +171,11 @@ public class Machine : Control
     /// </summary>
     public void BackForce()
     {
-        //rbody.AddForce();
+        saveSpeed = speed;
+        //speedを0にする
+        speed = 0;
+        //speedの半分の力を後ろに加える
+        rbody.AddRelativeForce(-Vector3.forward * saveSpeed * boundPower);
     }
     #endregion
 
@@ -328,6 +344,22 @@ public class Machine : Control
             + "\nBrake : " + getItemNum[5]
             + "\nMaxCharge : " + getItemNum[6]
             + "\nWeight : " + getItemNum[7];
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        if(collision.transform.tag == "StageObject" || collision.transform.tag == "NotBackSObject")
+        {
+            onGround = true;
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.transform.tag == "StageObject" || collision.transform.tag == "NotBackSObject")
+        {
+            onGround = false;
+        }
     }
     #endregion
 }

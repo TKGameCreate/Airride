@@ -15,9 +15,9 @@ public class MachineFrontCollider : MonoBehaviour
             Destroy(other.gameObject); //触れたアイテムの削除
         }
 
-        if (other.gameObject.tag == "StageObject")
+        if (other.gameObject.tag == "StageObject" || other.gameObject.tag == "ItemBox")
         {
-
+            machine.BackForce();
         }
     }
 }

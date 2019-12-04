@@ -58,33 +58,28 @@ public class SpeedMater : MonoBehaviour
 
                 Color color;
                 int r = 255, g = 255, b = 255;
-
                 if(charge > 0)
                 {
                     if (charge < 0.25)
                     {
-                        Debug.Log("r");
                         //青
                         r = 40; //濃さの固定
                         g = Random.Range(0, 255);
                     }
                     else if (charge < 0.5)
                     {
-                        Debug.Log("g");
                         //緑
                         r = Random.Range(0, 200);
                         b = 0;
                     }
                     else if (charge < 0.75)
                     {
-                        Debug.Log("orenge");
                         //オレンジ
                         g = Random.Range(100, 255);
                         b = g - 100;
                     }
                     else
                     {
-                        Debug.Log("red");
                         //赤
                         int colorNum = Random.Range(0, 200);
                         g = colorNum;

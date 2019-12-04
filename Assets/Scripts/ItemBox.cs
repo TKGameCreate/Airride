@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class ItemBox : MonoBehaviour
 {
+    [SerializeField] private Rigidbody rbody;
     [SerializeField] private Renderer myRenderer;
     [SerializeField] private List<Material> materialList = new List<Material>(); //セットするマテリアルのリスト
     [Range(1.1f, 5.0f)][SerializeField] private float firstMaterialDiv; //2段階目マテリアルを判定する際に割る数
     [Range(1.1f, 5.0f)][SerializeField] private float secondMaterialDiv; //３段階目マテリアルを判定する際に割る数
     [SerializeField] private float defHP = 30; //初期HP
     [SerializeField] private float rotSpeed = 1;
+    [SerializeField] private float boundUpPower = 500;
     private float hitPoint = 30; //現在のHP
 
     private void Start()
@@ -27,6 +29,7 @@ public class ItemBox : MonoBehaviour
         if (other.gameObject.tag == "MachineFront")
         {
             Machine machine = other.transform.parent.gameObject.GetComponent<Machine>();
+            rbody.AddForce(Vector3.up * machine.SaveSpeed * boundUpPower);
             hitPoint -= machine.Status.Attack * 2;
             SetTexture();
         }

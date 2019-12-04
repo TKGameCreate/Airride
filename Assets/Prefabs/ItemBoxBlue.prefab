@@ -122,6 +122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3ebcfc24b211af4f9b36d03d88580cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rbody: {fileID: 153928271494070494}
   myRenderer: {fileID: 153928271494070493}
   materialList:
   - {fileID: 2100000, guid: 708033d055f9d494e95eedabcbf98ff2, type: 2}
@@ -131,3 +132,4 @@ MonoBehaviour:
   secondMaterialDiv: 3
   defHP: 75
   rotSpeed: 0.4
+  boundUpPower: 7.5
