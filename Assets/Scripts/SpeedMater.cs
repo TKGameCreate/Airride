@@ -11,6 +11,7 @@ public class SpeedMater : MonoBehaviour
     [SerializeField] private GameObject playerImage; //Human時表示するPlayer画像
     [SerializeField] private TextMeshProUGUI speedText; //Speed
     [SerializeField] private Image[] chargeGages; //ChargeGage
+
     private bool humanCharge = false;
 
     // Update is called once per frame
@@ -58,36 +59,35 @@ public class SpeedMater : MonoBehaviour
 
                 Color color;
                 int r = 255, g = 255, b = 255;
-                if(charge > 0)
-                {
-                    if (charge < 0.25)
-                    {
-                        //青
-                        r = 40; //濃さの固定
-                        g = Random.Range(0, 255);
-                    }
-                    else if (charge < 0.5)
-                    {
-                        //緑
-                        r = Random.Range(0, 200);
-                        b = 0;
-                    }
-                    else if (charge < 0.75)
-                    {
-                        //オレンジ
-                        g = Random.Range(100, 255);
-                        b = g - 100;
-                    }
-                    else
-                    {
-                        //赤
-                        int colorNum = Random.Range(0, 200);
-                        g = colorNum;
-                        b = colorNum;
-                    }
-                }
-                
+
+                //if (charge > 0 && charge < 0.25)
+                //{
+                //    //青
+                //    r = 40; //濃さの固定
+                //    g = Random.Range(0, 255);
+                //}
+                //else if (charge < 0.5)
+                //{
+                //    //緑
+                //    r = Random.Range(0, 200);
+                //    b = 0;
+                //}
+                //else if (charge < 0.75)
+                //{
+                //    //オレンジ
+                //    g = Random.Range(100, 255);
+                //    b = g - 100;
+                //}
+                //else
+                //{
+                //    //赤
+                //    int colorNum = Random.Range(0, 200);
+                //    g = colorNum;
+                //    b = colorNum;
+                //}
+
                 color = new Color(r, g, b);
+                Debug.Log(color.ToString());
 
                 //chargeGageの表示
                 foreach (var chargeGage in chargeGages)

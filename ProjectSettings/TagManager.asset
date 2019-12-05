@@ -9,6 +9,9 @@ TagManager:
   - Item
   - ItemBox
   - NotBackSObject
+  - MachineFront
+  - InfluenceObject
+  - RideTrigger
   layers:
   - Default
   - TransparentFX

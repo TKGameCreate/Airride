@@ -10,6 +10,7 @@ public class Machine : Control
     const float exitMachineVertical = -0.8f; //降車時スティック最低入力量
     const float chargeUnderPower = 25000.0f; //charge中に下に加える力
     const float onGroundChargeSpeed = 1500f; //滑空中の自動チャージ速度倍率
+    const float dashBoardMag = 2.5f; //ダッシュボード倍率
     #endregion
 
     #region Serialize
@@ -50,6 +51,7 @@ public class Machine : Control
     private float chargeAmount = 1; //チャージ量
     private bool nowCharge = false; //charge中かどうか
     private bool onGround = true; //接地フラグ
+    private bool dashBoard = false;
     private Vector3 chargePos;
     private float saveSpeed = 0; //衝突時のスピードを保存する
     #endregion
@@ -197,7 +199,8 @@ public class Machine : Control
         }
 
         //Machineから降りる
-        if (InputManager.Instance.InputA(InputType.Down) && vertical < exitMachineVertical)
+        //スティック下+Aボタンかつ接地しているとき
+        if (InputManager.Instance.InputA(InputType.Down) && vertical < exitMachineVertical && onGround)
         {
             //speedを初期化
             speed = 0;
@@ -348,6 +351,20 @@ public class Machine : Control
             + "\nBrake : " + getItemNum[5]
             + "\nMaxCharge : " + getItemNum[6]
             + "\nWeight : " + getItemNum[7];
+    }
+
+    /// <summary>
+    /// マシン影響オブジェクトに接触した際の処理
+    /// </summary>
+    /// <param name="other">接触した物体</param>
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.tag == "InfluenceObject")
+        {
+            Debug.Log("in");
+            //ダッシュボードに触れたときの速度に倍率をかける
+            //speed *= dashBoardMag;
+        }
     }
 
     private void OnCollisionStay(Collision collision)

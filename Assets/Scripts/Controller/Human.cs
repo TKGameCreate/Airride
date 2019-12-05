@@ -121,7 +121,7 @@ public class Human : Control
     private void OnTriggerStay(Collider other)
     {
         //Machineの近くでAボタンを押す
-        if (other.gameObject.tag == "Machine" && InputManager.Instance.InputA(InputType.Down))
+        if (other.gameObject.tag == "RideTrigger" && InputManager.Instance.InputA(InputType.Down))
         {
             GameObject machineObject = other.transform.root.gameObject;
             //アニメーションリセット
