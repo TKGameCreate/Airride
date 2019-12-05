@@ -9,9 +9,9 @@ TagManager:
   - Item
   - ItemBox
   - NotBackSObject
-  - MachineFront
   - InfluenceObject
   - RideTrigger
+  - Front
   layers:
   - Default
   - TransparentFX
@@ -23,8 +23,8 @@ TagManager:
   - 
   - Human
   - Item
-  - 
-  - 
+  - Machine
+  - InfluenceObject
   - 
   - 
   - 

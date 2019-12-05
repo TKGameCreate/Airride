@@ -684,7 +684,7 @@ GameObject:
   - component: {fileID: 709002118}
   - component: {fileID: 709002117}
   - component: {fileID: 709002116}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: DashBoard
   m_TagString: InfluenceObject
   m_Icon: {fileID: 0}
@@ -1613,6 +1613,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: machine
       objectReference: {fileID: 0}
+    - target: {fileID: 4462805625543502119, guid: c0e7864ad310ef14ba3547871b85c907,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 8649667210069763172, guid: c0e7864ad310ef14ba3547871b85c907,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1678,17 +1683,21 @@ PrefabInstance:
       objectReference: {fileID: 886603606}
     - target: {fileID: 1476667768, guid: c0e7864ad310ef14ba3547871b85c907, type: 3}
       propertyPath: m_TagString
-      value: Untagged
+      value: Front
+      objectReference: {fileID: 0}
+    - target: {fileID: 1476667768, guid: c0e7864ad310ef14ba3547871b85c907, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6288027891468284197, guid: c0e7864ad310ef14ba3547871b85c907,
         type: 3}
-      propertyPath: m_TagString
-      value: RideTrigger
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 345234244741364908, guid: c0e7864ad310ef14ba3547871b85c907,
         type: 3}
-      propertyPath: m_TagString
-      value: Untagged
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c0e7864ad310ef14ba3547871b85c907, type: 3}

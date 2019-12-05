@@ -15,7 +15,7 @@ public class MachineStatus : ScriptableObject
     [SerializeField] private float maxCharge = 1;            //チャージ加速倍率
     [SerializeField] private float chargeSpeed = 1;    //チャージ速度
     [SerializeField] private float weight = 1;           //重さ
-    [SerializeField] private float flySpeed = 0;        //飛行時の最高速度
+    [SerializeField] private float flyMag = 0;        //飛行時の最高速度
     private float hitPoint = 100;
 
     public MachineName MachineName { get { return machineName; } }
@@ -28,5 +28,6 @@ public class MachineStatus : ScriptableObject
     public float MaxCharge { set { maxCharge = value; } get { return maxCharge; } }
     public float ChargeSpeed { set { chargeSpeed = value; } get { return chargeSpeed; } }
     public float Weight { set { weight = value; } get { return weight; } }
+    public float FlyMag { set { flyMag = value; } get { return flyMag; } }
     public float HitPoint { get { return hitPoint; } }
 }

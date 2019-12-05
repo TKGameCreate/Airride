@@ -12,6 +12,7 @@ public class ItemBox : MonoBehaviour
     [SerializeField] private float defHP = 30; //初期HP
     [SerializeField] private float rotSpeed = 1;
     [SerializeField] private float boundUpPower = 500;
+    [SerializeField] private List<GameObject> itemList = new List<GameObject>();
     private float hitPoint = 30; //現在のHP
 
     private void Start()
@@ -26,12 +27,15 @@ public class ItemBox : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Machine")
+        if (other.gameObject.tag == "Machine" || other.gameObject.tag == "Front")
         {
             Machine machine = other.transform.parent.gameObject.GetComponent<Machine>();
             hitPoint -= machine.Status.Attack * 2;
             SetTexture();
-            rbody.AddForce(Vector3.up * machine.SaveSpeed * boundUpPower);
+            if(other.gameObject.tag == "Front")
+            {
+                rbody.AddForce(Vector3.up * machine.SaveSpeed * boundUpPower);
+            }
         }
     }
 

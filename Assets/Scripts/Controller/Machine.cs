@@ -9,21 +9,22 @@ public class Machine : Control
     const float maxStatus = 18; //ステータス上昇上限
     const float exitMachineVertical = -0.8f; //降車時スティック最低入力量
     const float chargeUnderPower = 25000.0f; //charge中に下に加える力
-    const float onGroundChargeSpeed = 1500f; //滑空中の自動チャージ速度倍率
+    const float flyWeightMag = 100f; //滑空時の落下倍率
+    const float flyChargeSpeed = 1500f; //滑空中の自動チャージ速度分率
     const float dashBoardMag = 2.5f; //ダッシュボード倍率
+    const float boundPower = 1500f; //跳ね返る力
     #endregion
 
     #region Serialize
     [SerializeField] private bool debug = false;
     [SerializeField] private MachineStatus status;
-    [SerializeField] private float boundPower = 0;
     [SerializeField] private GameObject debugTextObject; //Machineに関するテキストを表示するテキスト群
     [SerializeField] private TextMeshProUGUI debugText; //デバッグ用UpStatus表示Text
     #endregion
 
     #region 変数
     //アイテムの取得状態
-    private float[] getItemNum = new float[8] 
+    private float[] getItemNum = new float[10] 
     {
         0, //Attack [0]
         0, //Defence [1]
@@ -32,10 +33,12 @@ public class Machine : Control
         0, //Turning [4]
         0, //Brake [5]
         0, //Charge [6]
-        0 //Weight [7]
+        0, //Weight [7]
+        0, //Fly[8]
+        0 //All[9]
     };
     //ステータスのバフ状態
-    private float[] upStatus = new float[8]
+    private float[] upStatus = new float[9]
     {
         1, //Attack [0]
         1, //Defence [1]
@@ -44,14 +47,14 @@ public class Machine : Control
         1, //Turning [4]
         1, //Brake [5]
         1, //Charge [6]
-        1 //Weight [7]
+        1, //Weight [7]
+        1 //FlySpeed[8]
     };
     private Player player;
     private float speed = 0; //現在の速度
     private float chargeAmount = 1; //チャージ量
     private bool nowCharge = false; //charge中かどうか
     private bool onGround = true; //接地フラグ
-    private bool dashBoard = false;
     private Vector3 chargePos;
     private float saveSpeed = 0; //衝突時のスピードを保存する
     #endregion
@@ -97,10 +100,15 @@ public class Machine : Control
             rbody.velocity = transform.forward * speed;
         }
 
-        //チャージ中の下に力を入れる処理
-        if (nowCharge && !onGround)
+        //空中時の処理
+        if (!onGround)
         {
-            rbody.AddForce(Vector3.down * chargeUnderPower);
+            rbody.AddForce(Vector3.down * status.Weight * flyWeightMag);
+            //チャージ中の下に力を入れる処理
+            if (nowCharge)
+            {
+                rbody.AddForce(Vector3.down * chargeUnderPower);
+            }
         }
     }
 
@@ -176,7 +184,7 @@ public class Machine : Control
         //speedを0にする
         speed = 0;
         //speedの半分の力を後ろに加える
-        rbody.AddRelativeForce(-Vector3.forward * saveSpeed * boundPower);
+        rbody.AddRelativeForce((-Vector3.forward * saveSpeed * boundPower) / (status.Weight * StatusMag(StatusName.Weight)));
     }
     #endregion
 
@@ -230,13 +238,7 @@ public class Machine : Control
             Accelerator();
         }
 
-        if (!onGround)
-        {
-            chargeAmount += status.ChargeSpeed / onGroundChargeSpeed;
-        }
-
         transform.Rotate(0, horizontal * status.Turning * Time.deltaTime, 0);
-        //transform.localPosition += velocity * Time.deltaTime;
     }
 
     protected virtual void BrakeAndCharge()
@@ -293,7 +295,16 @@ public class Machine : Control
     {
         //最高速度
         float speedMag = StatusMag(StatusName.MaxSpeed);
-        float maxSpeed = status.MaxSpeed * speedMag;
+        float max = status.MaxSpeed * speedMag;
+        float maxSpeed = max;
+        //地面に接地していないときの処理
+        if (!onGround)
+        {
+            maxSpeed = max * status.FlyMag * StatusMag(StatusName.FlySpeed);
+            //徐々にチャージがたまる
+            chargeAmount += status.ChargeSpeed / flyChargeSpeed;
+        }
+
         //加速
         float accMag = StatusMag(StatusName.Acceleration);
         //Maxスピードオーバーの許容範囲
@@ -316,6 +327,10 @@ public class Machine : Control
         }
         else
         {
+            if (speed > 999)
+            {
+                speed = 999;
+            }
             //徐々に速度を落とす
             speed -= status.Acceleration * accMag * Time.deltaTime;
         }
@@ -350,7 +365,9 @@ public class Machine : Control
             + "\nTurning : " + getItemNum[4]
             + "\nBrake : " + getItemNum[5]
             + "\nMaxCharge : " + getItemNum[6]
-            + "\nWeight : " + getItemNum[7];
+            + "\nWeight : " + getItemNum[7]
+            + "\nFly : " + getItemNum[8]
+            + "\nAll : " + getItemNum[9];
     }
 
     /// <summary>
@@ -361,12 +378,15 @@ public class Machine : Control
     {
         if(other.gameObject.tag == "InfluenceObject")
         {
-            Debug.Log("in");
             //ダッシュボードに触れたときの速度に倍率をかける
-            //speed *= dashBoardMag;
+            speed *= dashBoardMag;
         }
     }
 
+    /// <summary>
+    /// 接地判定
+    /// </summary>
+    /// <param name="collision">地面</param>
     private void OnCollisionStay(Collision collision)
     {
         if(collision.transform.tag == "StageObject" || collision.transform.tag == "NotBackSObject")

@@ -11,5 +11,6 @@ public enum StatusName : int
     Turning = 4,
     Brake = 5,
     MaxCharge = 6,
-    Weight = 7
+    Weight = 7,
+    FlySpeed = 8
 }
