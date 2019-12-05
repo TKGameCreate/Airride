@@ -15,19 +15,83 @@ public class MachineStatus : ScriptableObject
     [SerializeField] private float maxCharge = 1;            //チャージ加速倍率
     [SerializeField] private float chargeSpeed = 1;    //チャージ速度
     [SerializeField] private float weight = 1;           //重さ
-    [SerializeField] private float flyMag = 0;        //飛行時の最高速度
-    private float hitPoint = 100;
+    [SerializeField] private float flySpeed = 32.5f;        //飛行時の最高速度
 
-    public MachineName MachineName { get { return machineName; } }
-    public float Attack { set { attack = value; } get { return attack; } }
-    public float Defense { set { defense = value; } get { return defense; } }
-    public float MaxSpeed { set { maxSpeed = value; } get { return maxSpeed; } }
-    public float Acceleration { set { acceleration = value; } get { return acceleration; } }
-    public float Turning { set { turning = value; } get { return turning; } }
-    public float Brake { set { brake = value; } get { return brake; } }
-    public float MaxCharge { set { maxCharge = value; } get { return maxCharge; } }
-    public float ChargeSpeed { set { chargeSpeed = value; } get { return chargeSpeed; } }
-    public float Weight { set { weight = value; } get { return weight; } }
-    public float FlyMag { set { flyMag = value; } get { return flyMag; } }
-    public float HitPoint { get { return hitPoint; } }
+    public MachineName MachineName
+    {
+        get
+        {
+            return machineName;
+        }
+    }
+    public float Attack
+    {
+        get
+        {
+            return attack;
+        }
+    }
+    public float Defense
+    {
+        get
+        {
+            return defense;
+        }
+    }
+    public float MaxSpeed
+    {
+        get
+        {
+            return maxSpeed;
+        }
+    }
+    public float Acceleration
+    {
+        get
+        {
+            return acceleration;
+        }
+    }
+    public float Turning
+    {
+        get
+        {
+            return turning;
+        }
+    }
+    public float Brake
+    {
+        get
+        {
+            return brake;
+        }
+    }
+    public float MaxCharge
+    {
+        get
+        {
+            return maxCharge;
+        }
+    }
+    public float ChargeSpeed
+    {
+        get
+        {
+            return chargeSpeed;
+        }
+    }
+    public float Weight
+    {
+        get
+        {
+            return weight;
+        }
+    }
+    public float FlySpeed
+    {
+        get
+        {
+            return flySpeed;
+        }
+    }
 }

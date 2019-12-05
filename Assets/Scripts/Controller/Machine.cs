@@ -12,7 +12,7 @@ public class Machine : Control
     const float flyWeightMag = 100f; //滑空時の落下倍率
     const float flyChargeSpeed = 1500f; //滑空中の自動チャージ速度分率
     const float dashBoardMag = 2.5f; //ダッシュボード倍率
-    const float boundPower = 1500f; //跳ね返る力
+    const float boundPower = 500f; //跳ね返る力
     #endregion
 
     #region Serialize
@@ -300,7 +300,7 @@ public class Machine : Control
         //地面に接地していないときの処理
         if (!onGround)
         {
-            maxSpeed = max * status.FlyMag * StatusMag(StatusName.FlySpeed);
+            maxSpeed = status.FlySpeed * StatusMag(StatusName.FlySpeed);
             //徐々にチャージがたまる
             chargeAmount += status.ChargeSpeed / flyChargeSpeed;
         }
