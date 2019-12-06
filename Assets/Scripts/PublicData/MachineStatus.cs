@@ -13,14 +13,14 @@ public class MachineStatus : ScriptableObject
     }
 
     [SerializeField] private MachineName machineName; //名前
-    [SerializeField] private float[] maxSpeed;//最高速度
-    [SerializeField] private float[] acceleration;//加速度
-    [SerializeField] private float[] turning;//回転速度
-    [SerializeField] private float[] brake;//減速度
-    [SerializeField] private float[] charge;//チャージ量
-    [SerializeField] private float[] chargeSpeed;//チャージ速度
-    [SerializeField] private float[] weight;//重さ
-    [SerializeField] private float[] flySpeed;//滑空速度
+    [SerializeField] private float[] maxSpeed = new float[3];//最高速度
+    [SerializeField] private float[] acceleration = new float[3];//加速度
+    [SerializeField] private float[] turning = new float[3];//回転速度
+    [SerializeField] private float[] brake = new float[3];//減速度
+    [SerializeField] private float[] charge = new float[3];//チャージ量
+    [SerializeField] private float[] chargeSpeed = new float[3];//チャージ速度
+    [SerializeField] private float[] weight = new float[3];//重さ
+    [SerializeField] private float[] flySpeed = new float[3];//滑空速度
 
     public MachineName MachineName
     {

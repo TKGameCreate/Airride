@@ -12,11 +12,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6df5f49a99385cd4c91f4f04fb2391da, type: 3}
   m_Name: TurboStar
   m_EditorClassIdentifier: 
-  machineName: 
-  hitPoint: 0
-  attack: 0
-  defense: 0
-  acceleration: 0
-  turning: 0
-  charge: 0
-  weight: 0
+  machineName: 0
+  maxSpeed:
+  - 0
+  - 0
+  - 0
+  acceleration:
+  - 0
+  - 0
+  - 0
+  turning:
+  - 0
+  - 0
+  - 0
+  brake:
+  - 0
+  - 0
+  - 0
+  charge:
+  - 0
+  - 0
+  - 0
+  chargeSpeed:
+  - 0
+  - 0
+  - 0
+  weight:
+  - 0
+  - 0
+  - 0
+  flySpeed:
+  - 0
+  - 0
+  - 0

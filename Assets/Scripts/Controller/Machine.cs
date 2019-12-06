@@ -372,28 +372,23 @@ public class Machine : Control
         }
 
         debugTextGetItem.text = "GET ITEM"
-            + "Attack : " + getItemList[0]
-            + "\nDefence : " + getItemList[1]
-            + "\nMaxSpeed : " + getItemList[2]
-            + "\nAcceleration : " + getItemList[3]
-            + "\nTurning : " + getItemList[4]
-            + "\nBrake : " + getItemList[5]
-            + "\nMaxCharge : " + getItemList[6]
-            + "\nWeight : " + getItemList[7]
-            + "\nFly : " + getItemList[8]
-            + "\nAll : " + getItemList[9];
+            + "\nMaxSpeed : " + getItemList[0]
+            + "\nAcceleration : " + getItemList[1]
+            + "\nTurning : " + getItemList[2]
+            + "\nCharge : " + getItemList[3]
+            + "\nWeight : " + getItemList[4]
+            + "\Fly : " + getItemList[5]
+            + "\nAll : " + getItemList[6];
 
-        debugTextStatus.text = "UPSTATUS"
-            + "\nAttack : " + statusList[0]
-            + "\nDefence : " + statusList[1]
-            + "\nMaxSpeed : " + statusList[2]
-            + "\nAcceleration : " + statusList[3]
-            + "\nTurning : " + statusList[4]
-            + "\nBrake : " + statusList[5]
-            + "\nMaxCharge : " + statusList[6]
-            + "\nWeight : " + statusList[7]
-            + "\nFly : " + statusList[8]
-            + "\nAll : " + statusList[9];
+        debugTextStatus.text = "STATUS\n"
+            + "\nMaxSpeed : " + statusList[0]
+            + "\nAcceleration : " + statusList[1]
+            + "\nTurning : " + statusList[2]
+            + "\nBrake : " + statusList[3]
+            + "\nCharge : " + statusList[4]
+            + "\nChargeSpeed : " + statusList[5]
+            + "\nWeight : " + statusList[6]
+            + "\nFlySpeed : " + statusList[7];
     }
 
     /// <summary>
