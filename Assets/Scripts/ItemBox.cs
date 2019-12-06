@@ -9,7 +9,7 @@ public class ItemBox : MonoBehaviour
     [SerializeField] private List<Material> materialList = new List<Material>(); //セットするマテリアルのリスト
     [Range(1.1f, 5.0f)][SerializeField] private float firstMaterialDiv; //2段階目マテリアルを判定する際に割る数
     [Range(1.1f, 5.0f)][SerializeField] private float secondMaterialDiv; //３段階目マテリアルを判定する際に割る数
-    [SerializeField] private float defHP = 30; //初期HP
+    [SerializeField] private float defHP = 100; //初期HP
     [SerializeField] private float rotSpeed = 1;
     [SerializeField] private float boundUpPower = 500;
     [SerializeField] private List<GameObject> itemList = new List<GameObject>();
@@ -30,7 +30,7 @@ public class ItemBox : MonoBehaviour
         if (other.gameObject.tag == "Machine" || other.gameObject.tag == "Front")
         {
             Machine machine = other.transform.parent.gameObject.GetComponent<Machine>();
-            hitPoint -= machine.Status.Attack * 2;
+            hitPoint -= machine.Status(StatusType.MaxSpeed) / 2;
             SetTexture();
             if(other.gameObject.tag == "Front")
             {

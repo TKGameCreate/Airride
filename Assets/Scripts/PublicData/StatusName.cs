@@ -1,16 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public enum StatusName : int
+﻿public enum StatusType : int
 {
-    Attack = 0,
-    Defence = 1,
-    MaxSpeed = 2,
-    Acceleration = 3,
-    Turning = 4,
-    Brake = 5,
-    MaxCharge = 6,
-    Weight = 7,
-    FlySpeed = 8
+    MaxSpeed = 0,
+    Acceleration = 1,
+    Turning = 2,
+    Brake = 3,
+    Charge = 4,
+    ChargeSpeed = 5,
+    Weight = 6,
+    FlySpeed = 7
 }

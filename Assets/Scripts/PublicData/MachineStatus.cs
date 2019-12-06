@@ -5,17 +5,22 @@ using UnityEngine;
 [CreateAssetMenu]
 public class MachineStatus : ScriptableObject
 {
+    public enum Type
+    {
+        Min = 0,
+        Max = 1,
+        Default = 2
+    }
+
     [SerializeField] private MachineName machineName; //名前
-    [SerializeField] private float attack = 10;              //攻撃力
-    [SerializeField] private float defense = 1;           //守備力
-    [SerializeField] private float maxSpeed = 25;       //最高速度
-    [SerializeField] private float acceleration = 1;     //加速
-    [SerializeField] private float turning = 15;            //旋回速度
-    [SerializeField] private float brake = 1;               //ブレーキ速度倍率
-    [SerializeField] private float maxCharge = 1;            //チャージ加速倍率
-    [SerializeField] private float chargeSpeed = 1;    //チャージ速度
-    [SerializeField] private float weight = 1;           //重さ
-    [SerializeField] private float flySpeed = 32.5f;        //飛行時の最高速度
+    [SerializeField] private float[] maxSpeed;//最高速度
+    [SerializeField] private float[] acceleration;//加速度
+    [SerializeField] private float[] turning;//回転速度
+    [SerializeField] private float[] brake;//減速度
+    [SerializeField] private float[] charge;//チャージ量
+    [SerializeField] private float[] chargeSpeed;//チャージ速度
+    [SerializeField] private float[] weight;//重さ
+    [SerializeField] private float[] flySpeed;//滑空速度
 
     public MachineName MachineName
     {
@@ -24,74 +29,30 @@ public class MachineStatus : ScriptableObject
             return machineName;
         }
     }
-    public float Attack
+
+    public float GetStatus(StatusType statusType,Type type)
     {
-        get
+        int num = (int)type;
+        switch (statusType)
         {
-            return attack;
-        }
-    }
-    public float Defense
-    {
-        get
-        {
-            return defense;
-        }
-    }
-    public float MaxSpeed
-    {
-        get
-        {
-            return maxSpeed;
-        }
-    }
-    public float Acceleration
-    {
-        get
-        {
-            return acceleration;
-        }
-    }
-    public float Turning
-    {
-        get
-        {
-            return turning;
-        }
-    }
-    public float Brake
-    {
-        get
-        {
-            return brake;
-        }
-    }
-    public float MaxCharge
-    {
-        get
-        {
-            return maxCharge;
-        }
-    }
-    public float ChargeSpeed
-    {
-        get
-        {
-            return chargeSpeed;
-        }
-    }
-    public float Weight
-    {
-        get
-        {
-            return weight;
-        }
-    }
-    public float FlySpeed
-    {
-        get
-        {
-            return flySpeed;
+            case StatusType.MaxSpeed:
+                return maxSpeed[num];
+            case StatusType.Acceleration:
+                return acceleration[num];
+            case StatusType.Turning:
+                return turning[num];
+            case StatusType.Brake:
+                return brake[num];
+            case StatusType.Charge:
+                return charge[num];
+            case StatusType.ChargeSpeed:
+                return chargeSpeed[num];
+            case StatusType.Weight:
+                return weight[num];
+            case StatusType.FlySpeed:
+                return flySpeed[num];
+            default:
+                return 0;
         }
     }
 }

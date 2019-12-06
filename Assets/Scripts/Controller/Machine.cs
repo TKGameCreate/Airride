@@ -1,12 +1,13 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 using TMPro;
 
 public class Machine : Control
 {
     #region const
     const float chargeDashPossible = 0.75f; //チャージダッシュ可能量
-    const float upStatusMag = 0.23f; //ステータスバフ倍率
-    const float maxStatus = 18; //ステータス上昇上限
+    const float limitStatus = 16; //ステータス下限上限
     const float exitMachineVertical = -0.8f; //降車時スティック最低入力量
     const float chargeUnderPower = 25000.0f; //charge中に下に加える力
     const float flyWeightMag = 100f; //滑空時の落下倍率
@@ -19,37 +20,13 @@ public class Machine : Control
     [SerializeField] private bool debug = false;
     [SerializeField] private MachineStatus status;
     [SerializeField] private GameObject debugTextObject; //Machineに関するテキストを表示するテキスト群
-    [SerializeField] private TextMeshProUGUI debugText; //デバッグ用UpStatus表示Text
+    [SerializeField] private TextMeshProUGUI debugTextGetItem; //(デバッグ用)UpStatus表示Text
+    [SerializeField] private TextMeshProUGUI debugTextStatus; //(デバッグ用)ステータス倍率表示Text
     #endregion
 
     #region 変数
-    //アイテムの取得状態
-    private float[] getItemNum = new float[10] 
-    {
-        0, //Attack [0]
-        0, //Defence [1]
-        0, //MaxSpeed [2]
-        0, //Acceleration [3]
-        0, //Turning [4]
-        0, //Brake [5]
-        0, //Charge [6]
-        0, //Weight [7]
-        0, //Fly[8]
-        0 //All[9]
-    };
-    //ステータスのバフ状態
-    private float[] upStatus = new float[9]
-    {
-        1, //Attack [0]
-        1, //Defence [1]
-        1, //MaxSpeed [2]
-        1, //Acceleration [3]
-        1, //Turning [4]
-        1, //Brake [5]
-        1, //Charge [6]
-        1, //Weight [7]
-        1 //FlySpeed[8]
-    };
+    private List<float> getItemList = new List<float>();    //アイテムの取得状態
+    private List<float> statusList = new List<float>();    //ステータスのバフ状態
     private Player player;
     private float speed = 0; //現在の速度
     private float chargeAmount = 1; //チャージ量
@@ -68,7 +45,7 @@ public class Machine : Control
             player = value;
         }
     }
-    public MachineStatus Status
+    public MachineStatus MachineStatus
     {
         get
         {
@@ -110,7 +87,7 @@ public class Machine : Control
         //空中時の処理
         if (!onGround)
         {
-            rbody.AddForce(Vector3.down * status.Weight * flyWeightMag);
+            rbody.AddForce(Vector3.down * Status(StatusType.Weight) * flyWeightMag);
             //チャージ中の下に力を入れる処理
             if (nowCharge)
             {
@@ -120,11 +97,11 @@ public class Machine : Control
     }
 
     /// <summary>
-    /// アイテムを取得した際のステータス変動
+    /// 取得したアイテムのカウント
     /// </summary>
-    /// <param name="name">変動させるステータス</param>
+    /// <param name="item">変動させるステータス</param>
     /// <param name="changeNum">変更値</param>
-    public void ChangeStatus(StatusName name,  ItemMode mode = ItemMode.None, float upNum = 0)
+    public void ItemCount(ItemName item, ItemMode mode)
     {
         switch (mode)
         {
@@ -132,42 +109,45 @@ public class Machine : Control
             case ItemMode.Buff:
                 if (mode == ItemMode.Buff)
                 {
-                    getItemNum[(int)name]++; //アイテムの取得数を増やす
                     //上限チェック
-                    if (getItemNum[(int)name] > maxStatus)
+                    if (getItemList[(int)item] < limitStatus)
                     {
-                        getItemNum[(int)name] = maxStatus;
+                        getItemList[(int)item]++; //アイテムの取得数を増やす
                         return;
                     }
-                    //ステータスの倍率を増加
-                    upStatus[(int)name] += upStatusMag;
                 }
-                break;
+                return;
             //デバフアイテム
             case ItemMode.Debuff:
-                getItemNum[(int)name]--; //アイテム取得数を減らす
                 //下限チェック
-                if (getItemNum[(int)name] < 0)
+                if (getItemList[(int)item] > -limitStatus)
                 {
-                    getItemNum[(int)name] = 0;
+                    getItemList[(int)item]--; //アイテム取得数を減らす
                     return;
                 }
-                //ステータスの倍率を減少
-                upStatus[(int)name] -= upStatusMag;
-                break;
-            case ItemMode.None:
-                getItemNum[(int)name]++; //アイテムの取得数を増やす
-                //上限チェック
-                if (getItemNum[(int)name] > maxStatus)
-                {
-                    getItemNum[(int)name] = maxStatus;
-                    return;
-                }
-                //上昇値分増加
-                upStatus[(int)name] += upNum;
-                break;
+                return;
             default:
-                break;
+                return;
+        }
+    }
+
+    /// <summary>
+    /// ステータスの変動
+    /// </summary>
+    /// <param name="name">変更するステータスタイプ</param>
+    /// <param name="mag">変化倍率</param>
+    public void ChangeStatus(StatusType name, float mag = 1)
+    {
+        //Defaultより数値が高い場合
+        if(statusList[(int)name] >= status.GetStatus(name, MachineStatus.Type.Default))
+        {
+            //ステータスの上昇
+            statusList[(int)name] += status.GetStatus(name, MachineStatus.Type.Max) / limitStatus * mag;
+        }
+        else
+        {
+            //ステータスの減少
+            statusList[(int)name] += status.GetStatus(name, MachineStatus.Type.Min) / -limitStatus * mag;
         }
     }
 
@@ -195,7 +175,7 @@ public class Machine : Control
     public float NormalizeCharge()
     {
         //0~1の範囲に正規化
-        float charge = (chargeAmount - 1) / (status.MaxCharge - 1);
+        float charge = (chargeAmount - 1) / (Status(StatusType.Charge) - 1);
         return charge;
     }
 
@@ -205,11 +185,16 @@ public class Machine : Control
     public void Bound()
     {
         saveSpeed = speed;
-        speed = 0;
+        speed /= 2;
         rbody.AddRelativeForce(
             (-Vector3.forward * saveSpeed * boundPower) 
-            / (status.Weight * StatusMag(StatusName.Weight)),
+            / Status(StatusType.Weight),
             ForceMode.Impulse);
+    }
+
+    public float Status(StatusType name)
+    {
+        return statusList[(int)name];
     }
     #endregion
 
@@ -263,14 +248,11 @@ public class Machine : Control
             Accelerator();
         }
 
-        transform.Rotate(0, horizontal * status.Turning * Time.deltaTime, 0);
+        transform.Rotate(0, horizontal * Status(StatusType.Turning) * Time.deltaTime, 0);
     }
 
     protected virtual void BrakeAndCharge()
     {
-        float brakeMag = StatusMag(StatusName.Brake);
-        float chargeMag = StatusMag(StatusName.MaxCharge);
-
         if (!nowCharge)
         {
             chargePos = transform.forward;
@@ -278,9 +260,9 @@ public class Machine : Control
         }
 
         //ブレーキ
-        if (speed - status.Brake * brakeMag * Time.deltaTime > 0)
+        if (speed - Status(StatusType.Brake) * Time.deltaTime > 0)
         {
-            speed -= status.Brake * brakeMag  * Time.deltaTime;
+            speed -= Status(StatusType.Brake) * Time.deltaTime;
         }
         else
         {
@@ -288,9 +270,9 @@ public class Machine : Control
         }
 
         //チャージ
-        if (status.MaxCharge * chargeMag > chargeAmount)
+        if (Status(StatusType.MaxSpeed) > chargeAmount)
         {
-            chargeAmount += status.ChargeSpeed * chargeMag * Time.deltaTime;
+            chargeAmount += Status(StatusType.ChargeSpeed) * Time.deltaTime;
         }
     }
 
@@ -299,13 +281,10 @@ public class Machine : Control
     /// </summary>
     protected virtual void ChargeDash()
     {
-        float chargeMag = StatusMag(StatusName.MaxCharge);
-
         //チャージダッシュはチャージが一定以上でなければ発動しない
-        if (chargeAmount >= status.MaxCharge * chargeMag * chargeDashPossible)
+        if (chargeAmount >= Status(StatusType.Charge) * chargeDashPossible)
         {
-            float mag = StatusMag(StatusName.Acceleration);
-            speed += status.Acceleration * mag * chargeAmount;
+            speed += Status(StatusType.Acceleration) * chargeAmount;
         }
         //チャージ量をリセット
         chargeAmount = 1;
@@ -319,19 +298,16 @@ public class Machine : Control
     protected virtual void Accelerator()
     {
         //最高速度
-        float speedMag = StatusMag(StatusName.MaxSpeed);
-        float max = status.MaxSpeed * speedMag;
+        float max = Status(StatusType.MaxSpeed);
         float maxSpeed = max;
         //地面に接地していないときの処理
         if (!onGround)
         {
-            maxSpeed = status.FlySpeed * StatusMag(StatusName.FlySpeed);
+            maxSpeed = Status(StatusType.FlySpeed);
             //徐々にチャージがたまる
-            chargeAmount += status.ChargeSpeed / flyChargeSpeed;
+            chargeAmount += Status(StatusType.ChargeSpeed) / flyChargeSpeed;
         }
 
-        //加速
-        float accMag = StatusMag(StatusName.Acceleration);
         //Maxスピードオーバーの許容範囲
         float tolerance = 1.0f;
 
@@ -343,7 +319,7 @@ public class Machine : Control
         if (maxSpeed  > speed)
         {
             //自動加速
-            speed += status.Acceleration * accMag * Time.deltaTime;
+            speed += Status(StatusType.Acceleration) * Time.deltaTime;
         }
         else if (maxSpeed + tolerance > speed)
         {
@@ -357,15 +333,27 @@ public class Machine : Control
                 speed = 999;
             }
             //徐々に速度を落とす
-            speed -= status.Acceleration * accMag * Time.deltaTime;
+            speed -= Status(StatusType.Brake) * Time.deltaTime;
         }
     }
     #endregion
 
     #region private
-    private float StatusMag(StatusName name)
+    private void Start()
     {
-        return upStatus[(int)name];
+        //ステータス倍率リストの初期化
+        Array statusType = Enum.GetValues(typeof(StatusType));
+        for(int i = 0; i < statusType.Length; i++)
+        {
+            statusList.Add(status.GetStatus((StatusType)i, MachineStatus.Type.Default)); //初期値
+        }
+
+        //アイテム取得リストの初期化
+        var itemType = Enum.GetValues(typeof(ItemName));
+        foreach(var item in itemType)
+        {
+            getItemList.Add(0); //初期値は0個
+        }
     }
 
     /// <summary>
@@ -383,16 +371,29 @@ public class Machine : Control
             debugTextObject.SetActive(true);
         }
 
-        debugText.text = "Attack : " + getItemNum[0]
-            + " \nDefence : " + getItemNum[1]
-            + "\nMaxSpeed : " + getItemNum[2]
-            + "\nAcceleration : " + getItemNum[3]
-            + "\nTurning : " + getItemNum[4]
-            + "\nBrake : " + getItemNum[5]
-            + "\nMaxCharge : " + getItemNum[6]
-            + "\nWeight : " + getItemNum[7]
-            + "\nFly : " + getItemNum[8]
-            + "\nAll : " + getItemNum[9];
+        debugTextGetItem.text = "GET ITEM"
+            + "Attack : " + getItemList[0]
+            + "\nDefence : " + getItemList[1]
+            + "\nMaxSpeed : " + getItemList[2]
+            + "\nAcceleration : " + getItemList[3]
+            + "\nTurning : " + getItemList[4]
+            + "\nBrake : " + getItemList[5]
+            + "\nMaxCharge : " + getItemList[6]
+            + "\nWeight : " + getItemList[7]
+            + "\nFly : " + getItemList[8]
+            + "\nAll : " + getItemList[9];
+
+        debugTextStatus.text = "UPSTATUS"
+            + "\nAttack : " + statusList[0]
+            + "\nDefence : " + statusList[1]
+            + "\nMaxSpeed : " + statusList[2]
+            + "\nAcceleration : " + statusList[3]
+            + "\nTurning : " + statusList[4]
+            + "\nBrake : " + statusList[5]
+            + "\nMaxCharge : " + statusList[6]
+            + "\nWeight : " + statusList[7]
+            + "\nFly : " + statusList[8]
+            + "\nAll : " + statusList[9];
     }
 
     /// <summary>

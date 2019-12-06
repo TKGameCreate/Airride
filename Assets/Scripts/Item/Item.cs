@@ -3,7 +3,7 @@
 public abstract class Item : MonoBehaviour
 {
     [SerializeField] protected ItemMode mode = ItemMode.Buff;
-    protected StatusName statusName = StatusName.Attack;
+    protected ItemName itemName;
 
     private void Update()
     {
@@ -29,13 +29,13 @@ public abstract class Item : MonoBehaviour
         switch (mode)
         {
             case ItemMode.Buff:
-                machine.ChangeStatus(statusName, ItemMode.Buff);
+
                 break;
             case ItemMode.Debuff:
-                machine.ChangeStatus(statusName, ItemMode.Debuff);
+
                 break;
             case ItemMode.None:
-                machine.ChangeStatus(statusName, ItemMode.None, upNum);
+
                 break;
             default:
                 break;
