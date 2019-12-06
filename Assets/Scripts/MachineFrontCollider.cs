@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MachineFrontCollider : MonoBehaviour
 {
@@ -12,12 +10,11 @@ public class MachineFrontCollider : MonoBehaviour
         {
             Item item = other.gameObject.GetComponent<Item>();
             item.CatchItem(machine); //入手したときの処理
-            Destroy(other.gameObject); //触れたアイテムの削除
         }
 
         if (other.gameObject.tag == "StageObject" || other.gameObject.tag == "ItemBox")
         {
-            machine.BackForce();
+            machine.Bound();
         }
     }
 }

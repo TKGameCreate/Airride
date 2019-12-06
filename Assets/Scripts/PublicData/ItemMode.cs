@@ -5,5 +5,6 @@ using UnityEngine;
 public enum ItemMode
 {
     Buff,
-    Debuff
+    Debuff,
+    None
 }

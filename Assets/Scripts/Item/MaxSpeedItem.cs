@@ -7,6 +7,9 @@ public class MaxSpeedItem : Item
     public override void CatchItem(Machine machine)
     {
         statusName = StatusName.MaxSpeed;
+        ChangeStatus(machine);
+        statusName = StatusName.FlySpeed;
+        ChangeStatus(machine);
         base.CatchItem(machine);
     }
 }

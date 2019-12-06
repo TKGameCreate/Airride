@@ -12,7 +12,7 @@ public class Machine : Control
     const float flyWeightMag = 100f; //滑空時の落下倍率
     const float flyChargeSpeed = 1500f; //滑空中の自動チャージ速度分率
     const float dashBoardMag = 2.5f; //ダッシュボード倍率
-    const float boundPower = 500f; //跳ね返る力
+    const float boundPower = 20f; //跳ね返る力
     #endregion
 
     #region Serialize
@@ -55,6 +55,7 @@ public class Machine : Control
     private float chargeAmount = 1; //チャージ量
     private bool nowCharge = false; //charge中かどうか
     private bool onGround = true; //接地フラグ
+    private bool bound = false; //跳ね返り処理を行うフラグ
     private Vector3 chargePos;
     private float saveSpeed = 0; //衝突時のスピードを保存する
     #endregion
@@ -67,7 +68,13 @@ public class Machine : Control
             player = value;
         }
     }
-    public MachineStatus Status { get { return status; } }
+    public MachineStatus Status
+    {
+        get
+        {
+            return status;
+        }
+    }
     public float SaveSpeed
     {
         get
@@ -117,33 +124,50 @@ public class Machine : Control
     /// </summary>
     /// <param name="name">変動させるステータス</param>
     /// <param name="changeNum">変更値</param>
-    public void ChangeStatus(StatusName name,  ItemMode mode)
+    public void ChangeStatus(StatusName name,  ItemMode mode = ItemMode.None, float upNum = 0)
     {
-        //バフアイテム
-        if(mode == ItemMode.Buff)
+        switch (mode)
         {
-            getItemNum[(int)name]++; //アイテムの取得数を増やす
-            //上限チェック
-            if (getItemNum[(int)name] > maxStatus)
-            {
-                getItemNum[(int)name] = maxStatus;
-                return;
-            }
-            //ステータスの倍率を増加
-            upStatus[(int)name] += upStatusMag;
-        }
-        //デバフアイテム
-        else
-        {
-            getItemNum[(int)name]--; //アイテム取得数を減らす
-            //下限チェック
-            if(getItemNum[(int)name] < 0)
-            {
-                getItemNum[(int)name] = 0;
-                return;
-            }
-            //ステータスの倍率を減少
-            upStatus[(int)name] -= upStatusMag;
+            //バフアイテム
+            case ItemMode.Buff:
+                if (mode == ItemMode.Buff)
+                {
+                    getItemNum[(int)name]++; //アイテムの取得数を増やす
+                    //上限チェック
+                    if (getItemNum[(int)name] > maxStatus)
+                    {
+                        getItemNum[(int)name] = maxStatus;
+                        return;
+                    }
+                    //ステータスの倍率を増加
+                    upStatus[(int)name] += upStatusMag;
+                }
+                break;
+            //デバフアイテム
+            case ItemMode.Debuff:
+                getItemNum[(int)name]--; //アイテム取得数を減らす
+                //下限チェック
+                if (getItemNum[(int)name] < 0)
+                {
+                    getItemNum[(int)name] = 0;
+                    return;
+                }
+                //ステータスの倍率を減少
+                upStatus[(int)name] -= upStatusMag;
+                break;
+            case ItemMode.None:
+                getItemNum[(int)name]++; //アイテムの取得数を増やす
+                //上限チェック
+                if (getItemNum[(int)name] > maxStatus)
+                {
+                    getItemNum[(int)name] = maxStatus;
+                    return;
+                }
+                //上昇値分増加
+                upStatus[(int)name] += upNum;
+                break;
+            default:
+                break;
         }
     }
 
@@ -178,13 +202,14 @@ public class Machine : Control
     /// <summary>
     /// 壁や、アイテムボックスにぶつかった時に跳ね返る処理
     /// </summary>
-    public void BackForce()
+    public void Bound()
     {
         saveSpeed = speed;
-        //speedを0にする
         speed = 0;
-        //speedの半分の力を後ろに加える
-        rbody.AddRelativeForce((-Vector3.forward * saveSpeed * boundPower) / (status.Weight * StatusMag(StatusName.Weight)));
+        rbody.AddRelativeForce(
+            (-Vector3.forward * saveSpeed * boundPower) 
+            / (status.Weight * StatusMag(StatusName.Weight)),
+            ForceMode.Impulse);
     }
     #endregion
 
@@ -376,7 +401,13 @@ public class Machine : Control
     /// <param name="other">接触した物体</param>
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "InfluenceObject")
+        if (other.gameObject.tag == "Item")
+        {
+            Item item = other.gameObject.GetComponent<Item>();
+            item.CatchItem(this); //入手したときの処理
+        }
+
+        if (other.gameObject.tag == "InfluenceObject")
         {
             //ダッシュボードに触れたときの速度に倍率をかける
             speed *= dashBoardMag;

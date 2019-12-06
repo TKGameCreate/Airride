@@ -1,15 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class FlyItem : Item
+﻿public class FlyItem : Item
 {
     public override void CatchItem(Machine machine)
     {
-        //滑空スピードを上げる
-        statusName = StatusName.FlySpeed;
-        //重さを下げる
-        machine.ChangeStatus(StatusName.Weight, ItemMode.Debuff);
+        if(mode == ItemMode.Buff)
+        {
+            //重さを下げる
+            machine.ChangeStatus(StatusName.Weight, ItemMode.Debuff);
+            //滑空速度を上げる
+            machine.ChangeStatus(StatusName.FlySpeed, ItemMode.Buff);
+        }
+        else
+        {
+            //重さを上げる
+            machine.ChangeStatus(StatusName.Weight, ItemMode.Buff);
+            //滑空速度を下げる
+            machine.ChangeStatus(StatusName.FlySpeed, ItemMode.Debuff);
+        }
         base.CatchItem(machine);
     }
 }

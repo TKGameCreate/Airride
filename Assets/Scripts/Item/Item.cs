@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public abstract class Item : MonoBehaviour
 {
@@ -23,16 +21,24 @@ public abstract class Item : MonoBehaviour
     /// </summary>
     public virtual void CatchItem(Machine machine)
     {
+        Destroy(gameObject);
+    }
+
+    protected void ChangeStatus(Machine machine, float upNum = 0)
+    {
         switch (mode)
         {
             case ItemMode.Buff:
                 machine.ChangeStatus(statusName, ItemMode.Buff);
-                return;
+                break;
             case ItemMode.Debuff:
                 machine.ChangeStatus(statusName, ItemMode.Debuff);
-                return;
+                break;
+            case ItemMode.None:
+                machine.ChangeStatus(statusName, ItemMode.None, upNum);
+                break;
             default:
-                return;
+                break;
         }
     }
 }
