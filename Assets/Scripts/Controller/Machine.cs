@@ -352,7 +352,7 @@ public class Machine : Control
         var itemType = Enum.GetValues(typeof(ItemName));
         foreach(var item in itemType)
         {
-            getItemList.Add(0); //初期値は0個
+            getItemList.Add(-2); //初期値は0個
         }
     }
 
@@ -377,7 +377,7 @@ public class Machine : Control
             + "\nTurning : " + getItemList[2]
             + "\nCharge : " + getItemList[3]
             + "\nWeight : " + getItemList[4]
-            + "\Fly : " + getItemList[5]
+            + "\nFly : " + getItemList[5]
             + "\nAll : " + getItemList[6];
 
         debugTextStatus.text = "STATUS\n"

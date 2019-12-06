@@ -2534,6 +2534,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: DebugMachineText
       objectReference: {fileID: 0}
+    - target: {fileID: 7306165725483324277, guid: c7b7b854cd381fa47a6a857170b32362,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7306165725483324278, guid: c7b7b854cd381fa47a6a857170b32362,
         type: 3}
       propertyPath: m_LocalPosition.x
