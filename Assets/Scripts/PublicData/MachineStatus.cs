@@ -8,8 +8,8 @@ public class MachineStatus : ScriptableObject
     public enum Type
     {
         Min = 0,
-        Max = 1,
-        Default = 2
+        Default = 1,
+        Max = 2
     }
 
     [SerializeField] private MachineName machineName; //名前
@@ -22,6 +22,20 @@ public class MachineStatus : ScriptableObject
     [SerializeField] private float[] weight = new float[3];//重さ
     [SerializeField] private float[] flySpeed = new float[3];//滑空速度
 
+    //ALLがある為、基準は２
+    //ステータスに干渉するアイテムの数+(独自倍率のものはその)倍率
+    private float[] changeNumMag = new float[8]
+    {
+        2.1f,
+        2,
+        2,
+        3,
+        2,
+        2,
+        2,
+        3
+    };
+
     public MachineName MachineName
     {
         get
@@ -30,6 +44,17 @@ public class MachineStatus : ScriptableObject
         }
     }
 
+    public float WeightChangeMaxSpeed()
+    {
+        return changeNumMag[0] - 2;
+    }
+
+    /// <summary>
+    /// 各ステータスの取得
+    /// </summary>
+    /// <param name="statusType">ステータスタイプ</param>
+    /// <param name="type">値のタイプ</param>
+    /// <returns>取得したいステータスの値</returns>
     public float GetStatus(StatusType statusType,Type type)
     {
         int num = (int)type;
@@ -54,5 +79,57 @@ public class MachineStatus : ScriptableObject
             default:
                 return 0;
         }
+    }
+
+    /// <summary>
+    /// ステータスの上昇値
+    /// </summary>
+    /// <param name="statusType">ステータスタイプ</param>
+    /// <returns>アイテム1つにつき、上昇する値</returns>
+    public float PlusStatus(StatusType statusType, float spMag = 0)
+    {
+        float max = GetStatus(statusType, Type.Max);
+        float dNum = GetStatus(statusType, Type.Default);
+        float limit = Machine.limitStatus;
+        if(spMag <= 0)
+        {
+            return (max - dNum) / (limit * changeNumMag[(int)statusType]);
+        }
+        else
+        {
+            return (max - dNum) / (limit * spMag);
+        }
+    }
+
+    /// <summary>
+    /// ステータス下降値
+    /// </summary>
+    /// <param name="statusType">ステータスタイプ</param>
+    /// <returns>アイテム1つにつき、下降する値</returns>
+    public float MinusStatus(StatusType statusType, float spMag = 0)
+    {
+        float min = GetStatus(statusType, Type.Min);
+        float dNum = GetStatus(statusType, Type.Default);
+        float limit = Machine.limitStatus;
+        if (spMag <= 0)
+        {
+            return (dNum - min) / (limit * changeNumMag[(int)statusType]);
+        }
+        else
+        {
+            return (dNum - min) / (limit * spMag);
+        }
+    }
+
+    /// <summary>
+    /// ゲーム開始時のステータス値
+    /// </summary>
+    /// <param name="statusType">ステータスタイプ</param>
+    /// <returns>ゲーム開始時のステータス(-2)の値</returns>
+    public float StartStatus(StatusType statusType)
+    {
+        float dNum = GetStatus(statusType, Type.Default);
+        float down = MinusStatus(statusType);
+        return dNum - down * 2;
     }
 }

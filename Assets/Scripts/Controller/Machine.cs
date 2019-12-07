@@ -7,13 +7,13 @@ public class Machine : Control
 {
     #region const
     const float chargeDashPossible = 0.75f; //チャージダッシュ可能量
-    const float limitStatus = 16; //ステータス下限上限
     const float exitMachineVertical = -0.8f; //降車時スティック最低入力量
     const float chargeUnderPower = 25000.0f; //charge中に下に加える力
     const float flyWeightMag = 100f; //滑空時の落下倍率
     const float flyChargeSpeed = 1500f; //滑空中の自動チャージ速度分率
     const float dashBoardMag = 2.5f; //ダッシュボード倍率
     const float boundPower = 20f; //跳ね返る力
+    public const float limitStatus = 16; //ステータス下限上限
     #endregion
 
     #region Serialize
@@ -100,8 +100,9 @@ public class Machine : Control
     /// 取得したアイテムのカウント
     /// </summary>
     /// <param name="item">変動させるステータス</param>
-    /// <param name="changeNum">変更値</param>
-    public void ItemCount(ItemName item, ItemMode mode)
+    /// <param name="mode">変更値</param>
+    /// <returns>上限下限か</returns>
+    public bool ItemCount(ItemName item, ItemMode mode)
     {
         switch (mode)
         {
@@ -113,41 +114,67 @@ public class Machine : Control
                     if (getItemList[(int)item] < limitStatus)
                     {
                         getItemList[(int)item]++; //アイテムの取得数を増やす
-                        return;
+                        return false;
                     }
                 }
-                return;
+                return true;
             //デバフアイテム
             case ItemMode.Debuff:
                 //下限チェック
                 if (getItemList[(int)item] > -limitStatus)
                 {
                     getItemList[(int)item]--; //アイテム取得数を減らす
-                    return;
+                    return false;
                 }
-                return;
+                return true;
             default:
-                return;
+                return false;
         }
     }
 
     /// <summary>
     /// ステータスの変動
     /// </summary>
-    /// <param name="name">変更するステータスタイプ</param>
-    /// <param name="mag">変化倍率</param>
-    public void ChangeStatus(StatusType name, float mag = 1)
+    /// <param name="name">変動させるステータス</param>
+    /// <param name="up">上昇か下降か</param>
+    public void ChangeStatus(StatusType name, ItemMode mode)
     {
-        //Defaultより数値が高い場合
-        if(statusList[(int)name] >= status.GetStatus(name, MachineStatus.Type.Default))
+        bool plus;
+
+        //Statusが基準ステータスより高かったら
+        if(statusList[(int)name] > status.GetStatus(name, MachineStatus.Type.Default))
         {
-            //ステータスの上昇
-            statusList[(int)name] += status.GetStatus(name, MachineStatus.Type.Max) / limitStatus * mag;
+            //計算基準をPlus値で行う
+            plus = true;
         }
         else
         {
-            //ステータスの減少
-            statusList[(int)name] += status.GetStatus(name, MachineStatus.Type.Min) / -limitStatus * mag;
+            plus = false;
+        }
+
+        if (plus)
+        {
+            //ステータスを上昇
+            if (mode == ItemMode.Buff)
+            {
+                statusList[(int)name] += status.PlusStatus(name);
+            }
+            //ステータスを下降
+            else
+            {
+                statusList[(int)name] -= status.PlusStatus(name);
+            }
+        }
+        else
+        {
+            if (mode == ItemMode.Buff)
+            {
+                statusList[(int)name] += status.MinusStatus(name);
+            }
+            else
+            {
+                statusList[(int)name] -= status.MinusStatus(name);
+            }
         }
     }
 
@@ -251,6 +278,9 @@ public class Machine : Control
         transform.Rotate(0, horizontal * Status(StatusType.Turning) * Time.deltaTime, 0);
     }
 
+    /// <summary>
+    /// Aボタンを押した時の処理
+    /// </summary>
     protected virtual void BrakeAndCharge()
     {
         if (!nowCharge)
@@ -345,14 +375,14 @@ public class Machine : Control
         Array statusType = Enum.GetValues(typeof(StatusType));
         for(int i = 0; i < statusType.Length; i++)
         {
-            statusList.Add(status.GetStatus((StatusType)i, MachineStatus.Type.Default)); //初期値
+            statusList.Add(status.StartStatus((StatusType)i)); //初期値
         }
 
         //アイテム取得リストの初期化
         var itemType = Enum.GetValues(typeof(ItemName));
         foreach(var item in itemType)
         {
-            getItemList.Add(-2); //初期値は0個
+            getItemList.Add(-2); //初期値は-2
         }
     }
 
@@ -380,7 +410,7 @@ public class Machine : Control
             + "\nFly : " + getItemList[5]
             + "\nAll : " + getItemList[6];
 
-        debugTextStatus.text = "STATUS\n"
+        debugTextStatus.text = "STATUS"
             + "\nMaxSpeed : " + statusList[0]
             + "\nAcceleration : " + statusList[1]
             + "\nTurning : " + statusList[2]

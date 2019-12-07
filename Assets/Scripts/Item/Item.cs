@@ -4,6 +4,7 @@ public abstract class Item : MonoBehaviour
 {
     [SerializeField] protected ItemMode mode = ItemMode.Buff;
     protected ItemName itemName;
+    protected bool limit = false; //下限上限に達しているか
 
     private void Update()
     {
@@ -22,23 +23,6 @@ public abstract class Item : MonoBehaviour
     public virtual void CatchItem(Machine machine)
     {
         Destroy(gameObject);
-    }
-
-    protected void ChangeStatus(Machine machine, float upNum = 0)
-    {
-        switch (mode)
-        {
-            case ItemMode.Buff:
-
-                break;
-            case ItemMode.Debuff:
-
-                break;
-            case ItemMode.None:
-
-                break;
-            default:
-                break;
-        }
+        limit = machine.ItemCount(itemName, mode);
     }
 }

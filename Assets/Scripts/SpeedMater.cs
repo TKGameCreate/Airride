@@ -87,7 +87,6 @@ public class SpeedMater : MonoBehaviour
                 //}
 
                 color = new Color(r, g, b);
-                Debug.Log(color.ToString());
 
                 //chargeGageの表示
                 foreach (var chargeGage in chargeGages)
