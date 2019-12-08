@@ -4318,14 +4318,7 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events:
-      - time: 0
-        functionName: OnCallChangeFace
-        data: smile2@sd_hmd
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
+      events: []
       transformMask:
       - path: 
         weight: 1
@@ -4607,7 +4600,7 @@ ModelImporter:
       takeName: Take 001
       internalID: 0
       firstFrame: 193
-      lastFrame: 238
+      lastFrame: 217
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -4626,21 +4619,7 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events:
-      - time: 0.23575942
-        functionName: OnCallChangeFace
-        data: eye_close@sd_hmd
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.43987337
-        functionName: OnCallChangeFace
-        data: default@sd_hmd
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
+      events: []
       transformMask:
       - path: 
         weight: 1

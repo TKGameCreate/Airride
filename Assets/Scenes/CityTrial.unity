@@ -704,6 +704,12 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 562556171}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &611482141 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 339221160505459487, guid: aaa0df1af4593fa48bbfa4d38b85e0b7,
+    type: 3}
+  m_PrefabInstance: {fileID: 393630305233500925}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &886603606 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7306165725614159186, guid: c7b7b854cd381fa47a6a857170b32362,
@@ -1666,6 +1672,14 @@ PrefabInstance:
       propertyPath: m_Size.x
       value: 1.5
       objectReference: {fileID: 0}
+    - target: {fileID: 178377764, guid: c0e7864ad310ef14ba3547871b85c907, type: 3}
+      propertyPath: m_Constraints
+      value: 112
+      objectReference: {fileID: 0}
+    - target: {fileID: 178377764, guid: c0e7864ad310ef14ba3547871b85c907, type: 3}
+      propertyPath: m_Mass
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c0e7864ad310ef14ba3547871b85c907, type: 3}
 --- !u!224 &1770398198 stripped
@@ -2218,6 +2232,41 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 640715993958220738, guid: aaa0df1af4593fa48bbfa4d38b85e0b7,
+        type: 3}
+      propertyPath: onGroundColliderObject
+      value: 
+      objectReference: {fileID: 611482141}
+    - target: {fileID: 640715993958220738, guid: aaa0df1af4593fa48bbfa4d38b85e0b7,
+        type: 3}
+      propertyPath: getOffPw
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 640715993958220738, guid: aaa0df1af4593fa48bbfa4d38b85e0b7,
+        type: 3}
+      propertyPath: rideCoolDownTime
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 640715993958220738, guid: aaa0df1af4593fa48bbfa4d38b85e0b7,
+        type: 3}
+      propertyPath: rideMachineHeight
+      value: 0.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 640715993958220738, guid: aaa0df1af4593fa48bbfa4d38b85e0b7,
+        type: 3}
+      propertyPath: rideMachineRotateZ
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8064337631824350695, guid: aaa0df1af4593fa48bbfa4d38b85e0b7,
+        type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 339221160505459487, guid: aaa0df1af4593fa48bbfa4d38b85e0b7,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aaa0df1af4593fa48bbfa4d38b85e0b7, type: 3}
 --- !u!1001 &2112673250027297576
@@ -2485,22 +2534,6 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1166668354}
-    - target: {fileID: 3139446485798718250, guid: aa4eb9653293cca4dad0ccb4185c998b,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 0b776b0d07e22ab4c9758fd41b872cf5,
-        type: 3}
-    - target: {fileID: 3139446485798718250, guid: aa4eb9653293cca4dad0ccb4185c998b,
-        type: 3}
-      propertyPath: m_FillAmount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3139446485798718250, guid: aa4eb9653293cca4dad0ccb4185c998b,
-        type: 3}
-      propertyPath: m_Type
-      value: 3
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aa4eb9653293cca4dad0ccb4185c998b, type: 3}
 --- !u!1001 &6788867879764836255

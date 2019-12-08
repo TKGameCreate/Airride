@@ -256,8 +256,7 @@ public class Machine : Control
             //マシンの割り当てを削除
             player.Machine = null;
             Player = null;
-            //Rigidbodyをフリーズ
-            rbody.constraints = RigidbodyConstraints.FreezeAll;
+            return;
         }
 
         //Aボタンを押している
