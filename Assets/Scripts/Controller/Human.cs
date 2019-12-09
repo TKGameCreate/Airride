@@ -16,7 +16,6 @@ public class Human : Control
     [SerializeField] private float speed = 5.0f; //速度
     [SerializeField] private float rotSpeed = 10.0f; //回転速度
     [SerializeField] private float jumpPower = 1.5f;
-    [SerializeField] private float rideMachineHeight;
     [SerializeField] private float downPw;
     [SerializeField] private float rideCoolDownTime;
 
@@ -181,7 +180,7 @@ public class Human : Control
             //MachineをPlayerの子オブジェクトに
             machineObject.transform.parent = player.transform;
             //位置をマシンの中心に
-            transform.localPosition = new Vector3(0, rideMachineHeight, 0);
+            transform.localPosition = new Vector3(0, 0, 0);
             transform.localRotation = new Quaternion(0, 0, 0, 0);
             //PlayerのConditionをHumanからMachineに
             player.PlayerCondition = Player.Condition.Machine;

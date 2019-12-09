@@ -2177,6 +2177,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player(CameraIN)
       objectReference: {fileID: 0}
+    - target: {fileID: 339221160505459487, guid: aaa0df1af4593fa48bbfa4d38b85e0b7,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 393630304092634763, guid: aaa0df1af4593fa48bbfa4d38b85e0b7,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2250,7 +2255,7 @@ PrefabInstance:
     - target: {fileID: 640715993958220738, guid: aaa0df1af4593fa48bbfa4d38b85e0b7,
         type: 3}
       propertyPath: rideMachineHeight
-      value: 0.65
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 640715993958220738, guid: aaa0df1af4593fa48bbfa4d38b85e0b7,
         type: 3}
@@ -2260,11 +2265,6 @@ PrefabInstance:
     - target: {fileID: 8064337631824350695, guid: aaa0df1af4593fa48bbfa4d38b85e0b7,
         type: 3}
       propertyPath: m_ApplyRootMotion
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 339221160505459487, guid: aaa0df1af4593fa48bbfa4d38b85e0b7,
-        type: 3}
-      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
