@@ -12,7 +12,7 @@ public class Machine : Control
     const float flyWeightMag = 100f; //滑空時の落下倍率
     const float flyChargeSpeed = 1500f; //滑空中の自動チャージ速度分率
     const float dashBoardMag = 2.5f; //ダッシュボード倍率
-    const float boundPower = 20f; //跳ね返る力
+    const float boundPower = 300f; //跳ね返る力
     public const float limitStatus = 16; //ステータス下限上限
     #endregion
 
