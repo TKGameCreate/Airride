@@ -6,6 +6,7 @@ public class MaxSpeedItem : Item
 {
     public override void CatchItem(Machine machine)
     {
+        itemName = ItemName.MaxSpeed;
         base.CatchItem(machine);
         if (!limit)
         {

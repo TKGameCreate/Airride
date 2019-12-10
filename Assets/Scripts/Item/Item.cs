@@ -25,4 +25,20 @@ public abstract class Item : MonoBehaviour
         Destroy(gameObject);
         limit = machine.ItemCount(itemName, mode);
     }
+
+    protected ItemMode ReverseBuff()
+    {
+        if (mode == ItemMode.Buff)
+        {
+            return ItemMode.Debuff;
+        }
+        else if(mode == ItemMode.Debuff)
+        {
+            return ItemMode.Buff;
+        }
+        else
+        {
+            return ItemMode.None;
+        }
+    }
 }

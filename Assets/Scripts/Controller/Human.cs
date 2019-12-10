@@ -64,8 +64,8 @@ public class Human : Control
 
         if(ridePossible && anim.GetBool("getOff"))
         {
-            //rbody.AddForce(Vector3.up);
-            //rbody.AddForce(Vector3.back);
+            rbody.AddForce(Vector3.up);
+            rbody.AddForce(Vector3.back);
         }
 
         rbody.AddForce(Vector3.down * downPw);
@@ -87,9 +87,12 @@ public class Human : Control
                 ridePossible = false;
                 return;
             case AnimationType.OnGround:
-                ridePossible = true;
                 anim.SetBool("getOff", false);
                 onGroundColliderObject.SetActive(false);
+                if(capsuleCollider.isTrigger == true)
+                {
+                    capsuleCollider.isTrigger = false;
+                }
                 return;
             default:
                 return;
@@ -158,6 +161,7 @@ public class Human : Control
         AnimationControl(AnimationType.GetOff);
         //当たり判定の復活
         capsuleCollider.enabled = true;
+        capsuleCollider.isTrigger = true;
         rbody.constraints = RigidbodyConstraints.FreezeRotation;
         //親子関係をPlayerの子供に
         transform.parent = player.transform;
@@ -196,6 +200,21 @@ public class Human : Control
             //降車後の処理フラグをFalseに
             exitMachineProcess = false;
         }
+
+        //クールダウンが終わってから、何か物に接触した場合、TriggerがTrueのままだったら
+        if (rideCoolDownTimeCount > rideCoolDownTime && capsuleCollider.isTrigger == true)
+        {
+            //衝突判定を復活
+            capsuleCollider.isTrigger = false;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.transform.tag == "Machine")
+        {
+            capsuleCollider.isTrigger = false;
+        }
     }
     #endregion
 
@@ -204,6 +223,11 @@ public class Human : Control
     {
         ridePossible = true;
         jump = false;
+    }
+
+    public void EndGetOffOnGround()
+    {
+        ridePossible = true;
     }
     #endregion
 }

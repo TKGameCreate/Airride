@@ -8,7 +8,7 @@ public class Machine : Control
     #region const
     const float chargeDashPossible = 0.75f; //チャージダッシュ可能量
     const float exitMachineVertical = -0.8f; //降車時スティック最低入力量
-    const float chargeUnderPower = 25000.0f; //charge中に下に加える力
+    const float chargeUnderPower = 35000.0f; //charge中に下に加える力
     const float flyWeightMag = 100f; //滑空時の落下倍率
     const float flyChargeSpeed = 1500f; //滑空中の自動チャージ速度分率
     const float dashBoardMag = 2.5f; //ダッシュボード倍率
@@ -137,7 +137,7 @@ public class Machine : Control
     /// </summary>
     /// <param name="name">変動させるステータス</param>
     /// <param name="up">上昇か下降か</param>
-    public void ChangeStatus(StatusType name, ItemMode mode)
+    public void ChangeStatus(StatusType name, ItemMode mode, float mag = 0)
     {
         bool plus;
 
@@ -157,23 +157,23 @@ public class Machine : Control
             //ステータスを上昇
             if (mode == ItemMode.Buff)
             {
-                statusList[(int)name] += status.PlusStatus(name);
+                statusList[(int)name] += status.PlusStatus(name, mag);
             }
             //ステータスを下降
             else
             {
-                statusList[(int)name] -= status.PlusStatus(name);
+                statusList[(int)name] -= status.PlusStatus(name, mag);
             }
         }
         else
         {
             if (mode == ItemMode.Buff)
             {
-                statusList[(int)name] += status.MinusStatus(name);
+                statusList[(int)name] += status.MinusStatus(name, mag);
             }
             else
             {
-                statusList[(int)name] -= status.MinusStatus(name);
+                statusList[(int)name] -= status.MinusStatus(name, mag);
             }
         }
     }
