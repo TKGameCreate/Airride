@@ -1,4 +1,6 @@
-﻿public class WeightItem : Item
+﻿using UnityEngine;
+
+public class WeightItem : Item
 {
     private ItemMode reverceMode = ItemMode.None;
 

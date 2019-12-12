@@ -9,11 +9,11 @@ public class ItemBox : MonoBehaviour
     [SerializeField] private List<Material> materialList = new List<Material>(); //セットするマテリアルのリスト
     [Range(1.1f, 5.0f)][SerializeField] private float firstMaterialDiv; //2段階目マテリアルを判定する際に割る数
     [Range(1.1f, 5.0f)][SerializeField] private float secondMaterialDiv; //３段階目マテリアルを判定する際に割る数
-    [SerializeField] private float defHP = 100; //初期HP
-    [SerializeField] private float rotSpeed = 1;
-    [SerializeField] private float boundUpPower = 500;
+    [SerializeField] private float defHP; //初期HP
+    [SerializeField] private float rotSpeed;
+    [SerializeField] private float boundUpPower;
     [SerializeField] private List<GameObject> itemList = new List<GameObject>();
-    private float hitPoint = 30; //現在のHP
+    private float hitPoint; //現在のHP
 
     private void Start()
     {

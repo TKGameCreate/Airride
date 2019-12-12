@@ -91,13 +91,14 @@ public class MachineStatus : ScriptableObject
         float max = GetStatus(statusType, Type.Max);
         float dNum = GetStatus(statusType, Type.Default);
         float limit = Machine.limitStatus;
-        if(spMag <= 0)
+        if (spMag <= 0)
         {
             return (max - dNum) / (limit * changeNumMag[(int)statusType]);
         }
         else
         {
-            return (max - dNum) / (limit * spMag);
+            Debug.Log((max - dNum) / (limit * spMag));
+            return (max - dNum) / (limit / spMag);
         }
     }
 

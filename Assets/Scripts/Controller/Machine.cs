@@ -140,9 +140,8 @@ public class Machine : Control
     public void ChangeStatus(StatusType name, ItemMode mode, float mag = 0)
     {
         bool plus;
-
         //Statusが基準ステータスより高かったら
-        if(statusList[(int)name] > status.GetStatus(name, MachineStatus.Type.Default))
+        if(statusList[(int)name] <= status.GetStatus(name, MachineStatus.Type.Default))
         {
             //計算基準をPlus値で行う
             plus = true;
@@ -151,6 +150,8 @@ public class Machine : Control
         {
             plus = false;
         }
+
+        //Debug.Log(plus);
 
         if (plus)
         {
@@ -232,16 +233,6 @@ public class Machine : Control
     protected override void Move()
     {
         base.Move();
-
-        //プレイヤー操作中か否かでRigidBodyの状態を切り替える
-        if(player != null)
-        {
-            rbody.constraints = RigidbodyConstraints.FreezeRotation;
-        }
-        else
-        {
-            rbody.constraints = RigidbodyConstraints.FreezeAll;
-        }
 
         //Machineから降りる
         //スティック下+Aボタンかつ接地しているとき
