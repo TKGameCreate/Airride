@@ -1543,6 +1543,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 7409617777494860561, guid: d008d8a521538b0439627613ad279454,
         type: 3}
+    - target: {fileID: 153928271494070481, guid: a1c982910eefbeb45a71683de9c8f192,
+        type: 3}
+      propertyPath: maxGenerate
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 153928271494070481, guid: a1c982910eefbeb45a71683de9c8f192,
+        type: 3}
+      propertyPath: itemBoundPW
+      value: 12.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1c982910eefbeb45a71683de9c8f192, type: 3}
 --- !u!1001 &393630305233500925

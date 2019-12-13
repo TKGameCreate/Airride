@@ -12,8 +12,11 @@ public class ItemBox : MonoBehaviour
     [SerializeField] private float defHP; //初期HP
     [SerializeField] private float rotSpeed;
     [SerializeField] private float boundUpPower;
+    [SerializeField] private float itemBoundPW;
+    [SerializeField] private int maxGenerate;
     [SerializeField] private List<GameObject> itemList = new List<GameObject>();
     private float hitPoint; //現在のHP
+    private bool generate;
 
     private void Start()
     {
@@ -23,6 +26,22 @@ public class ItemBox : MonoBehaviour
     private void Update()
     {
         transform.Rotate(0, rotSpeed, 0);
+    }
+
+    private void FixedUpdate()
+    {
+        if (generate)
+        {
+            int GenerateNum = Random.Range(1, maxGenerate); //生成する数をランダムに決める
+            for (int i = 0; i < GenerateNum; i++)
+            {
+                int index = Random.Range(0, itemList.Count); //生成するアイテムを決める
+                var obj = Instantiate(itemList[index], transform.position, Quaternion.identity); //アイテムの生成
+                Rigidbody instanceRigid = obj.GetComponent<Rigidbody>();
+                float forceAngle = Random.Range(0, 359);
+                instanceRigid.AddForce(new Vector3(forceAngle, itemBoundPW, 0));
+            }
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -43,6 +62,7 @@ public class ItemBox : MonoBehaviour
     {
         if (hitPoint < 1)
         {
+            generate = true;
             Destroy(gameObject);
         }
         else if (hitPoint < defHP / firstMaterialDiv && hitPoint > defHP / secondMaterialDiv)

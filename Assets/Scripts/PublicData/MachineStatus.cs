@@ -97,7 +97,6 @@ public class MachineStatus : ScriptableObject
         }
         else
         {
-            Debug.Log((max - dNum) / (limit * spMag));
             return (max - dNum) / (limit / spMag);
         }
     }
