@@ -41,8 +41,6 @@ public class ItemBox : MonoBehaviour
                 Rigidbody instanceRigid = obj.GetComponent<Rigidbody>();
                 float forceX = Random.Range(-1.0f, 1.0f);
                 float forceZ = Random.Range(-1.0f, 1.0f);
-                Debug.Log("x" + forceX);
-                Debug.Log("z" + forceZ);
                 instanceRigid.AddForce(new Vector3(forceX * xzItemUpPower,
                     yItemUpPower,
                     forceZ * xzItemUpPower));
