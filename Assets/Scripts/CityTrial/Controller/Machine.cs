@@ -6,12 +6,13 @@ public class Machine : Control
 {
     #region const
     const float chargeDashPossible = 0.75f; //チャージダッシュ可能量
-    const float exitMachineVertical = -0.8f; //降車時スティック最低入力量
+    const float exitMachineVertical = -0.9f; //降車時スティック最低入力量
     const float chargeUnderPower = 50000.0f; //charge中に下に加える力
     const float flyWeightMag = 100f; //滑空時の落下倍率
     const float flyChargeSpeed = 1500f; //滑空中の自動チャージ速度分率
     const float dashBoardMag = 2.5f; //ダッシュボード倍率
     const float boundPower = 200f; //跳ね返る力
+    const float GetOffPossibleTime = 2.0f; //乗車してから降車可能までの時間
     public const float limitStatus = 16; //ステータス下限上限
     #endregion
 
@@ -28,9 +29,11 @@ public class Machine : Control
     private List<float> statusList = new List<float>();    //ステータスのバフ状態
     private float speed = 0; //現在の速度
     private float chargeAmount = 1; //チャージ量
+    private float rideTime = 0; //乗車開始してからの時間
     private bool nowCharge = false; //charge中かどうか
     private bool onGround = true; //接地フラグ
     private bool bound = false; //跳ね返り処理を行うフラグ
+    private bool getOffPossible = false;
     private Vector3 chargePos;
     #endregion
 
@@ -58,7 +61,11 @@ public class Machine : Control
     {
         if (state.State == GameState.Game)
         {
-            GetOff();
+            RideTimeCount();
+            if (getOffPossible)
+            {
+                GetOff();
+            }
             rbody.constraints = RigidbodyConstraints.FreezeRotation;
         }
         else
@@ -346,6 +353,34 @@ public class Machine : Control
             speed -= Status(StatusType.Brake) * Time.deltaTime;
         }
     }
+
+    /// <summary>
+    /// 降車処理
+    /// </summary>
+    protected override void GetOff()
+    {
+        //スティック下+Aボタンかつ接地しているとき
+        if (InputManager.Instance.InputA(InputType.Down) 
+            && vertical < exitMachineVertical 
+            && onGround)
+        {
+            //入力値のリセット
+            vertical = 0;
+            horizontal = 0;
+            //乗車時間のリセット
+            rideTime = 0;
+            //speedを初期化
+            speed = 0;
+            //親子関係の解除
+            transform.parent = null;
+            //PlayerのConditionをMachineからHumanに
+            player.PlayerCondition = Player.Condition.Human;
+            //マシンの割り当てを削除
+            player.Machine = null;
+            player = null;
+            return;
+        }
+    }
     #endregion
 
     #region private
@@ -366,24 +401,16 @@ public class Machine : Control
         }
     }
 
-    /// <summary>
-    /// 降車処理
-    /// </summary>
-    private void GetOff()
+    private void RideTimeCount()
     {
-        //スティック下+Aボタンかつ接地しているとき
-        if (InputManager.Instance.InputA(InputType.Down) && vertical < exitMachineVertical && onGround)
+        if(rideTime < GetOffPossibleTime)
         {
-            //speedを初期化
-            speed = 0;
-            //親子関係の解除
-            transform.parent = null;
-            //PlayerのConditionをMachineからHumanに
-            player.PlayerCondition = Player.Condition.Human;
-            //マシンの割り当てを削除
-            player.Machine = null;
-            player = null;
-            return;
+            rideTime += Time.deltaTime;
+            getOffPossible = false;
+        }
+        else
+        {
+            getOffPossible = true;
         }
     }
 

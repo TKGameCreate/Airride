@@ -1305,6 +1305,10 @@ PrefabInstance:
       propertyPath: dText
       value: 
       objectReference: {fileID: 1867606808}
+    - target: {fileID: 178377763, guid: c0e7864ad310ef14ba3547871b85c907, type: 3}
+      propertyPath: state
+      value: 
+      objectReference: {fileID: 1328166210}
     - target: {fileID: 1476667768, guid: c0e7864ad310ef14ba3547871b85c907, type: 3}
       propertyPath: m_TagString
       value: Front
