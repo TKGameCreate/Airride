@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Player : MonoBehaviour
 {
@@ -11,56 +9,34 @@ public class Player : MonoBehaviour
     }
 
     [SerializeField] private Human human;
+    [SerializeField] private Machine DefaultMachine;
 
     //conditionが切り替わった時に処理させる条件式に使う比較変数
-    private Condition changeCondition = Condition.Human;
-
-    private Machine machine;
-    private Condition condition = Condition.Human;
+    private Condition changeCondition = Condition.Machine;
 
     #region プロパティ
-    public Machine Machine
-    {
-        set
-        {
-            machine = value;
-        }
-        get
-        {
-            return machine;
-        }
-    }
-
-    public Condition PlayerCondition
-    {
-        set
-        {
-            condition = value;
-        }
-        get
-        {
-            return condition;
-        }
-    }
+    public Machine Machine { set; get; }
+    public Condition PlayerCondition { set; get; } = Condition.Machine;
     #endregion
 
     private void Start()
     {
-        changeCondition = condition;
+        Machine = DefaultMachine;
+        changeCondition = PlayerCondition;
     }
 
     // Update is called once per frame
     private void Update()
     {
-        switch (condition)
+        switch (PlayerCondition)
         {
             case Condition.Human:
                 human.Controller();
                 break;
             case Condition.Machine:
-                if (machine != null)
+                if (Machine != null)
                 {
-                    machine.Controller();
+                    Machine.Controller();
                 }
                 break;
             default:
@@ -71,13 +47,13 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
         Control control;
-        switch (condition)
+        switch (PlayerCondition)
         {
             case Condition.Human:
                 control = human;
                 break;
             case Condition.Machine:
-                control = machine;
+                control = Machine;
                 break;
             default:
                 control = null;

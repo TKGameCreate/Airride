@@ -1,40 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 
 public class Machine : Control
 {
     #region const
     const float chargeDashPossible = 0.75f; //チャージダッシュ可能量
     const float exitMachineVertical = -0.8f; //降車時スティック最低入力量
-    const float chargeUnderPower = 35000.0f; //charge中に下に加える力
+    const float chargeUnderPower = 50000.0f; //charge中に下に加える力
     const float flyWeightMag = 100f; //滑空時の落下倍率
     const float flyChargeSpeed = 1500f; //滑空中の自動チャージ速度分率
     const float dashBoardMag = 2.5f; //ダッシュボード倍率
-    const float boundPower = 500f; //跳ね返る力
+    const float boundPower = 200f; //跳ね返る力
     public const float limitStatus = 16; //ステータス下限上限
     #endregion
 
     #region Serialize
     [SerializeField] private bool debug = false;
     [SerializeField] private MachineStatus status;
-    [SerializeField] private GameObject debugTextObject; //Machineに関するテキストを表示するテキスト群
-    [SerializeField] private TextMeshProUGUI debugTextGetItem; //(デバッグ用)UpStatus表示Text
-    [SerializeField] private TextMeshProUGUI debugTextStatus; //(デバッグ用)ステータス倍率表示Text
+    [SerializeField] private DebugText dText;
+    [SerializeField] private StateManager state;
     #endregion
 
     #region 変数
+    protected Player player;
     private List<float> getItemList = new List<float>();    //アイテムの取得状態
     private List<float> statusList = new List<float>();    //ステータスのバフ状態
-    private Player player;
     private float speed = 0; //現在の速度
     private float chargeAmount = 1; //チャージ量
     private bool nowCharge = false; //charge中かどうか
     private bool onGround = true; //接地フラグ
     private bool bound = false; //跳ね返り処理を行うフラグ
     private Vector3 chargePos;
-    private float saveSpeed = 0; //衝突時のスピードを保存する
     #endregion
 
     #region プロパティ
@@ -52,23 +49,27 @@ public class Machine : Control
             return status;
         }
     }
-    public float SaveSpeed
-    {
-        get
-        {
-            return saveSpeed;
-        }
-    }
+    public float SaveSpeed { get; private set; } = 0;
     #endregion
 
     #region public
+    #region Control
     public override void Controller()
     {
+        if (state.State == GameState.Game)
+        {
+            GetOff();
+            rbody.constraints = RigidbodyConstraints.FreezeRotation;
+        }
+        else
+        {
+            speed = 0;
+            rbody.constraints = RigidbodyConstraints.FreezeAll;
+        }
         Move();
-
         if (debug)
         {
-            DebugTextDisplay();
+            DebugText();
         }
     }
 
@@ -95,7 +96,9 @@ public class Machine : Control
             }
         }
     }
+    #endregion
 
+    #region アイテム処理
     /// <summary>
     /// 取得したアイテムのカウント
     /// </summary>
@@ -176,7 +179,9 @@ public class Machine : Control
             }
         }
     }
+    #endregion
 
+    #region SpeedMater
     /// <summary>
     /// SpeedMaterに表示するSpeed
     /// </summary>
@@ -204,16 +209,18 @@ public class Machine : Control
         float charge = (chargeAmount - 1) / (Status(StatusType.Charge) - 1);
         return charge;
     }
+    #endregion
 
+    #region other
     /// <summary>
     /// 壁や、アイテムボックスにぶつかった時に跳ね返る処理
     /// </summary>
     public void Bound()
     {
-        saveSpeed = speed;
+        SaveSpeed = speed;
         speed /= 2;
         rbody.AddRelativeForce(
-            (-Vector3.forward * saveSpeed * boundPower) 
+            (-Vector3.forward * SaveSpeed * boundPower) 
             / Status(StatusType.Weight),
             ForceMode.Impulse);
     }
@@ -223,6 +230,7 @@ public class Machine : Control
         return statusList[(int)name];
     }
     #endregion
+    #endregion
 
     #region protected
     /// <summary>
@@ -231,22 +239,6 @@ public class Machine : Control
     protected override void Move()
     {
         base.Move();
-
-        //Machineから降りる
-        //スティック下+Aボタンかつ接地しているとき
-        if (InputManager.Instance.InputA(InputType.Down) && vertical < exitMachineVertical && onGround)
-        {
-            //speedを初期化
-            speed = 0;
-            //親子関係の解除
-            transform.parent = null;
-            //PlayerのConditionをMachineからHumanに
-            player.PlayerCondition = Player.Condition.Human;
-            //マシンの割り当てを削除
-            player.Machine = null;
-            Player = null;
-            return;
-        }
 
         //Aボタンを押している
         if (InputManager.Instance.InputA(InputType.Hold))
@@ -357,7 +349,7 @@ public class Machine : Control
     #endregion
 
     #region private
-    private void Start()
+    protected virtual void Start()
     {
         //ステータス倍率リストの初期化
         Array statusType = Enum.GetValues(typeof(StatusType));
@@ -375,30 +367,44 @@ public class Machine : Control
     }
 
     /// <summary>
-    /// デバッグテキスト処理
+    /// 降車処理
     /// </summary>
-    private void DebugTextDisplay()
+    private void GetOff()
     {
-        if(player == null)
+        //スティック下+Aボタンかつ接地しているとき
+        if (InputManager.Instance.InputA(InputType.Down) && vertical < exitMachineVertical && onGround)
         {
-            debugTextObject.SetActive(false);
+            //speedを初期化
+            speed = 0;
+            //親子関係の解除
+            transform.parent = null;
+            //PlayerのConditionをMachineからHumanに
+            player.PlayerCondition = Player.Condition.Human;
+            //マシンの割り当てを削除
+            player.Machine = null;
+            player = null;
             return;
         }
-        else
-        {
-            debugTextObject.SetActive(true);
-        }
+    }
 
-        debugTextGetItem.text = "GET ITEM"
+    /// <summary>
+    /// デバッグテキスト処理
+    /// </summary>
+    private void DebugText()
+    {
+        dText.Debug(global::DebugText.Position.Right,
+            "GET ITEM"
             + "\nMaxSpeed : " + getItemList[0]
             + "\nAcceleration : " + getItemList[1]
             + "\nTurning : " + getItemList[2]
             + "\nCharge : " + getItemList[3]
             + "\nWeight : " + getItemList[4]
             + "\nFly : " + getItemList[5]
-            + "\nAll : " + getItemList[6];
+            + "\nAll : " + getItemList[6],
+            player);
 
-        debugTextStatus.text = "STATUS"
+        dText.Debug(global::DebugText.Position.Left,
+            "STATUS"
             + "\nMaxSpeed : " + statusList[0]
             + "\nAcceleration : " + statusList[1]
             + "\nTurning : " + statusList[2]
@@ -406,7 +412,8 @@ public class Machine : Control
             + "\nCharge : " + statusList[4]
             + "\nChargeSpeed : " + statusList[5]
             + "\nWeight : " + statusList[6]
-            + "\nFlySpeed : " + statusList[7];
+            + "\nFlySpeed : " + statusList[7],
+            player);
     }
 
     /// <summary>

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1572593030}
   m_Layer: 0
   m_Name: FrontTrigger
-  m_TagString: Untagged
+  m_TagString: Front
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -164,7 +164,7 @@ GameObject:
   - component: {fileID: 5856045197326043546}
   - component: {fileID: 178377764}
   - component: {fileID: 178377763}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: machine
   m_TagString: Machine
   m_Icon: {fileID: 0}
@@ -278,9 +278,8 @@ MonoBehaviour:
   rbody: {fileID: 178377764}
   debug: 1
   status: {fileID: 11400000, guid: 9fa21f887e59e594682328d834cdb990, type: 2}
-  boundPower: 1500
-  debugTextObject: {fileID: 0}
-  debugText: {fileID: 0}
+  dText: {fileID: 0}
+  state: {fileID: 0}
 --- !u!1 &6288027891468284197
 GameObject:
   m_ObjectHideFlags: 0

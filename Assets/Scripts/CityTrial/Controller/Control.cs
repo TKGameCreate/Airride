@@ -26,4 +26,9 @@ public abstract class Control : MonoBehaviour
         horizontal = InputManager.Instance.Horizontal;
         vertical = InputManager.Instance.Vertical;
     }
+
+    protected virtual void GetOff()
+    {
+        Debug.Log("【GetOff】overrideしてください。");
+    }
 }

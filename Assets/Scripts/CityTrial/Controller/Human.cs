@@ -13,6 +13,7 @@ public class Human : Control
     [SerializeField] private CapsuleCollider capsuleCollider;
     [SerializeField] private Player player;
     [SerializeField] private GameObject onGroundColliderObject;
+    [SerializeField] private Machine DefaultMachine;
     [SerializeField] private float speed = 5.0f; //速度
     [SerializeField] private float rotSpeed = 10.0f; //回転速度
     [SerializeField] private float jumpPower = 1.5f;
@@ -23,7 +24,7 @@ public class Human : Control
     private bool ridePossible = true;
     private bool jumpPushButton = false;
     private bool jump = false;
-    private bool exitMachineProcess = true; //降車後処理をしたか
+    private bool exitMachineProcess = false; //降車後処理をしたか
 
     #region public
     public override void Controller()
@@ -134,6 +135,14 @@ public class Human : Control
     #endregion
 
     #region private
+    private void Start()
+    {
+        capsuleCollider.enabled = false;
+        rbody.constraints = RigidbodyConstraints.FreezeAll;
+        //乗車アニメーション
+        AnimationControl(AnimationType.Ride);
+    }
+
     private void MoveAnimationControl(bool ride = false)
     {
         //移動アニメーション
@@ -176,7 +185,10 @@ public class Human : Control
     private void OnTriggerStay(Collider other)
     {
         //Machineの近くでAボタンを押す
-        if (other.gameObject.tag == "RideTrigger" && InputManager.Instance.InputA(InputType.Down) && ridePossible)
+        if (other.gameObject.tag == "RideTrigger" 
+            && InputManager.Instance.InputA(InputType.Down) 
+            && ridePossible 
+            && player.PlayerCondition == Player.Condition.Human)
         {
             GameObject machineObject = other.transform.root.gameObject;
             //自身(人)をマシンの子オブジェクトにする
@@ -184,7 +196,7 @@ public class Human : Control
             //MachineをPlayerの子オブジェクトに
             machineObject.transform.parent = player.transform;
             //位置をマシンの中心に
-            transform.localPosition = new Vector3(0, 0, 0);
+            transform.localPosition = Vector3.zero;
             transform.localRotation = new Quaternion(0, 0, 0, 0);
             //PlayerのConditionをHumanからMachineに
             player.PlayerCondition = Player.Condition.Machine;

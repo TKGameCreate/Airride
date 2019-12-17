@@ -51,7 +51,7 @@ public class ItemBox : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Machine" || other.gameObject.tag == "Front")
+        if (other.gameObject.tag == "Front")
         {
             Machine machine = other.transform.parent.gameObject.GetComponent<Machine>();
             hitPoint -= machine.Status(StatusType.MaxSpeed) / 2;

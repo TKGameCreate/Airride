@@ -4,9 +4,8 @@ using TMPro;
 /// <summary>
 /// 時間の制御
 /// </summary>
-public class MainTime : MonoBehaviour
+public class StateManager : MonoBehaviour
 {
-    [SerializeField] private Player player;
     [SerializeField] private TextMeshProUGUI countDownText;
     [SerializeField] private TextMeshProUGUI timeText;
     [SerializeField] private GameObject countDownTextObject;
@@ -17,35 +16,24 @@ public class MainTime : MonoBehaviour
     private int minute;
     private int second;
     private float milliSecond;
-
-    private GameState state = GameState.Ready;
-    public GameState State
-    {
-        get
-        {
-            return state;
-        }
-    }
+    public GameState State { get; private set; } = GameState.Ready;
 
     // Update is called once per frame
     void Update()
     {
-        switch (state)
+        switch (State)
         {
             case GameState.Ready:
-                //操作を無効
                 //カウントダウンを開始
-                player.enabled = false;
                 countDown -= Time.deltaTime;
                 countDownText.text = countDown.ToString("0");
 
                 //カウントが0になった場合
                 if (countDown <= 0)
                 {
-                    player.enabled = true;
                     countDownTextObject.SetActive(false);
                     timeTextObject.SetActive(true);
-                    state = GameState.Game;
+                    State = GameState.Game;
                 }
                 break;
             case GameState.Game:
@@ -64,7 +52,7 @@ public class MainTime : MonoBehaviour
                 if (time <= 0)
                 {
                     timeTextObject.SetActive(false);
-                    state = GameState.End;
+                    State = GameState.End;
                 }
                 break;
             case GameState.End:
