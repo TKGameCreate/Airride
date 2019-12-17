@@ -32,7 +32,7 @@ public class Human : Control
         //降車時処理
         if (!exitMachineProcess)
         {
-            UndoHuman();
+            GetOff();
         }
 
         //降車モーション状態の場合
@@ -132,6 +132,23 @@ public class Human : Control
             jumpPushButton = true;
         }
     }
+
+    protected override void GetOff()
+    {
+        AnimationControl(AnimationType.GetOff);
+        //当たり判定の復活
+        capsuleCollider.enabled = true;
+        capsuleCollider.isTrigger = true;
+        rbody.constraints = RigidbodyConstraints.FreezeRotation;
+        //親子関係をPlayerの子供に
+        transform.parent = player.transform;
+        //高さの調整
+        Vector3 pos = transform.position;
+        Vector3 newPos = new Vector3(pos.x, 0.7f, pos.z);
+        transform.position = newPos;
+        //降車後処理の完了
+        exitMachineProcess = true;
+    }
     #endregion
 
     #region private
@@ -163,23 +180,6 @@ public class Human : Control
         {
             anim.SetBool("jump", false);
         }
-    }
-
-    private void UndoHuman()
-    {
-        AnimationControl(AnimationType.GetOff);
-        //当たり判定の復活
-        capsuleCollider.enabled = true;
-        capsuleCollider.isTrigger = true;
-        rbody.constraints = RigidbodyConstraints.FreezeRotation;
-        //親子関係をPlayerの子供に
-        transform.parent = player.transform;
-        //高さの調整
-        Vector3 pos = transform.position;
-        Vector3 newPos = new Vector3(pos.x, 0.7f, pos.z);
-        transform.position = newPos;
-        //降車後処理の完了
-        exitMachineProcess = true;
     }
 
     private void OnTriggerStay(Collider other)
