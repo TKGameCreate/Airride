@@ -61,6 +61,7 @@ public class Machine : Control
     {
         if (state.State == GameState.Game)
         {
+            Move();
             RideTimeCount();
             if (getOffPossible)
             {
@@ -70,13 +71,17 @@ public class Machine : Control
         }
         else
         {
-            speed = 0;
+            //チャージのみ可能
+            if (InputManager.Instance.InputA(InputType.Hold))
+            {
+                BrakeAndCharge();
+            }
             rbody.constraints = RigidbodyConstraints.FreezeAll;
         }
-        Move();
+
         if (debug)
         {
-            DebugText();
+            DebugDisplay();
         }
     }
 
@@ -401,6 +406,9 @@ public class Machine : Control
         }
     }
 
+    /// <summary>
+    /// 降車可能時間のカウントとフラグ管理
+    /// </summary>
     private void RideTimeCount()
     {
         if(rideTime < GetOffPossibleTime)
@@ -417,9 +425,9 @@ public class Machine : Control
     /// <summary>
     /// デバッグテキスト処理
     /// </summary>
-    private void DebugText()
+    private void DebugDisplay()
     {
-        dText.Debug(global::DebugText.Position.Right,
+        dText.Debug(DebugText.Position.Right,
             "GET ITEM"
             + "\nMaxSpeed : " + getItemList[0]
             + "\nAcceleration : " + getItemList[1]
@@ -430,7 +438,7 @@ public class Machine : Control
             + "\nAll : " + getItemList[6],
             player);
 
-        dText.Debug(global::DebugText.Position.Left,
+        dText.Debug(DebugText.Position.Left,
             "STATUS"
             + "\nMaxSpeed : " + statusList[0]
             + "\nAcceleration : " + statusList[1]
