@@ -6,6 +6,14 @@ using TMPro;
 /// </summary>
 public class StateManager : MonoBehaviour
 {
+    public enum GameState
+    {
+        Start,
+        Ready,
+        Game,
+        End
+    }
+
     [SerializeField] private TextMeshProUGUI countDownText;
     [SerializeField] private TextMeshProUGUI timeText;
     [SerializeField] private GameObject countDownTextObject;

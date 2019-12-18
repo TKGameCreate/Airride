@@ -30,7 +30,7 @@ public class Machine : Control
     private float speed = 0; //現在の速度
     private float chargeAmount = 1; //チャージ量
     private float rideTime = 0; //乗車開始してからの時間
-    private bool nowCharge = false; //charge中かどうか
+    private bool nowBrake = false; //charge中かどうか
     private bool onGround = true; //接地フラグ
     private bool bound = false; //跳ね返り処理を行うフラグ
     private bool getOffPossible = false;
@@ -59,7 +59,7 @@ public class Machine : Control
     #region Control
     public override void Controller()
     {
-        if (state.State == GameState.Game)
+        if (state.State == StateManager.GameState.Game)
         {
             Move();
             RideTimeCount();
@@ -74,7 +74,11 @@ public class Machine : Control
             //チャージのみ可能
             if (InputManager.Instance.InputA(InputType.Hold))
             {
-                BrakeAndCharge();
+                Charge();
+            }
+            else if (InputManager.Instance.InputA(InputType.Up))
+            {
+                chargeAmount = 1;
             }
             rbody.constraints = RigidbodyConstraints.FreezeAll;
         }
@@ -88,7 +92,7 @@ public class Machine : Control
     public override void FixedController()
     {
         //移動量
-        if (nowCharge)
+        if (nowBrake)
         {
             rbody.velocity = chargePos * speed;
         }
@@ -102,7 +106,7 @@ public class Machine : Control
         {
             rbody.AddForce(Vector3.down * Status(StatusType.Weight) * flyWeightMag);
             //チャージ中の下に力を入れる処理
-            if (nowCharge)
+            if (nowBrake)
             {
                 rbody.AddForce(Vector3.down * chargeUnderPower);
             }
@@ -245,9 +249,6 @@ public class Machine : Control
     #endregion
 
     #region protected
-    /// <summary>
-    /// ブレーキとチャージ
-    /// </summary>
     protected override void Move()
     {
         base.Move();
@@ -255,8 +256,10 @@ public class Machine : Control
         //Aボタンを押している
         if (InputManager.Instance.InputA(InputType.Hold))
         {
-            BrakeAndCharge();
+            Charge();
+            Brake();
         }
+        //Aボタンを離した
         else if (InputManager.Instance.InputA(InputType.Up))
         {
             ChargeDash();
@@ -271,14 +274,26 @@ public class Machine : Control
     }
 
     /// <summary>
-    /// Aボタンを押した時の処理
+    /// チャージ処理
     /// </summary>
-    protected virtual void BrakeAndCharge()
+    protected virtual void Charge()
     {
-        if (!nowCharge)
+        //チャージ
+        if (Status(StatusType.Charge) > chargeAmount)
+        {
+            chargeAmount += Status(StatusType.ChargeSpeed) * Time.deltaTime;
+        }
+    }
+
+    /// <summary>
+    /// ブレーキ処理
+    /// </summary>
+    protected virtual void Brake()
+    {
+        if (!nowBrake)
         {
             chargePos = transform.forward;
-            nowCharge = true;
+            nowBrake = true;
         }
 
         //ブレーキ
@@ -289,12 +304,6 @@ public class Machine : Control
         else
         {
             speed = 0;
-        }
-
-        //チャージ
-        if (Status(StatusType.MaxSpeed) > chargeAmount)
-        {
-            chargeAmount += Status(StatusType.ChargeSpeed) * Time.deltaTime;
         }
     }
 
@@ -310,7 +319,7 @@ public class Machine : Control
         }
         //チャージ量をリセット
         chargeAmount = 1;
-        nowCharge = false;
+        nowBrake = false;
     }
 
     /// <summary>
@@ -333,9 +342,9 @@ public class Machine : Control
         //Maxスピードオーバーの許容範囲
         float tolerance = 1.0f;
 
-        if (nowCharge)
+        if (nowBrake)
         {
-            nowCharge = false;
+            nowBrake = false;
         }
 
         if (maxSpeed  > speed)
