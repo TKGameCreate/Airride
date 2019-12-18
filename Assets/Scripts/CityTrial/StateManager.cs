@@ -20,21 +20,38 @@ public class StateManager : MonoBehaviour
     [SerializeField] private GameObject timeTextObject;
     [SerializeField] private float time = 180;
     private float countDown = 3;
+    private float startDelay = 1;
 
     private int minute;
     private int second;
     private float milliSecond;
-    public GameState State { get; private set; } = GameState.Ready;
+    public GameState State { get; private set; } = GameState.Start;
 
     // Update is called once per frame
     void Update()
     {
         switch (State)
         {
+            case GameState.Start:
+                startDelay -= Time.deltaTime;
+                if(startDelay <= 0)
+                {
+                    countDownTextObject.SetActive(true);
+                    State = GameState.Ready;
+                }
+                break;
             case GameState.Ready:
                 //カウントダウンを開始
                 countDown -= Time.deltaTime;
-                countDownText.text = countDown.ToString("0");
+
+                if((int)countDown < 1)
+                {
+                    countDownText.text = "Start";
+                }
+                else
+                {
+                    countDownText.text = countDown.ToString("0");
+                }
 
                 //カウントが0になった場合
                 if (countDown <= 0)
@@ -51,9 +68,9 @@ public class StateManager : MonoBehaviour
 
                 //制限時間の画面表示
                 timeText.text = minute.ToString("00") 
-                    + ":"
+                    + "'"
                     + second.ToString("00")
-                    + ":"
+                    + "\""
                     + milliSecond.ToString("00");
 
                 //制限時間が0になった場合
