@@ -20,20 +20,20 @@ public class Machine : Control
     [SerializeField] private bool debug = false;
     [SerializeField] private MachineStatus status;
     [SerializeField] private DebugText dText;
-    [SerializeField] private StateManager state;
+    [SerializeField] protected StateManager state;
     #endregion
 
     #region 変数
     protected Player player;
+    protected float speed = 0; //現在の速度
+    protected float chargeAmount = 1; //チャージ量
+    protected bool getOffPossible = false;
     private List<float> getItemList = new List<float>();    //アイテムの取得状態
     private List<float> statusList = new List<float>();    //ステータスのバフ状態
-    private float speed = 0; //現在の速度
-    private float chargeAmount = 1; //チャージ量
     private float rideTime = 0; //乗車開始してからの時間
     private bool nowBrake = false; //charge中かどうか
     private bool onGround = true; //接地フラグ
     private bool bound = false; //跳ね返り処理を行うフラグ
-    private bool getOffPossible = false;
     private Vector3 chargePos;
     #endregion
 
@@ -59,28 +59,11 @@ public class Machine : Control
     #region Control
     public override void Controller()
     {
-        if (state.State == StateManager.GameState.Game)
+        Move();
+        RideTimeCount();
+        if (getOffPossible)
         {
-            Move();
-            RideTimeCount();
-            if (getOffPossible)
-            {
-                GetOff();
-            }
-            rbody.constraints = RigidbodyConstraints.FreezeRotation;
-        }
-        else
-        {
-            //チャージのみ可能
-            if (InputManager.Instance.InputA(InputType.Hold))
-            {
-                Charge();
-            }
-            else if (InputManager.Instance.InputA(InputType.Up))
-            {
-                chargeAmount = 1;
-            }
-            rbody.constraints = RigidbodyConstraints.FreezeAll;
+            GetOff();
         }
 
         if (debug)
@@ -395,6 +378,22 @@ public class Machine : Control
             return;
         }
     }
+
+    /// <summary>
+    /// 降車可能時間のカウントとフラグ管理
+    /// </summary>
+    protected void RideTimeCount()
+    {
+        if (rideTime < GetOffPossibleTime)
+        {
+            rideTime += Time.deltaTime;
+            getOffPossible = false;
+        }
+        else
+        {
+            getOffPossible = true;
+        }
+    }
     #endregion
 
     #region private
@@ -412,22 +411,6 @@ public class Machine : Control
         foreach(var item in itemType)
         {
             getItemList.Add(-2); //初期値は-2
-        }
-    }
-
-    /// <summary>
-    /// 降車可能時間のカウントとフラグ管理
-    /// </summary>
-    private void RideTimeCount()
-    {
-        if(rideTime < GetOffPossibleTime)
-        {
-            rideTime += Time.deltaTime;
-            getOffPossible = false;
-        }
-        else
-        {
-            getOffPossible = true;
         }
     }
 
