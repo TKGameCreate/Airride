@@ -535,6 +535,15 @@ MonoBehaviour:
   chargeGages:
   - {fileID: 3139446485798718250}
   - {fileID: 3139446486026743403}
+  blue: {r: 0.4764151, g: 0.4764151, b: 1, a: 1}
+  green: {r: 0.3537736, g: 1, b: 0.3537736, a: 1}
+  orenge: {r: 1, g: 0.665304, b: 0.2688679, a: 1}
+  red: {r: 1, g: 0.43867922, b: 0.43867922, a: 1}
+  whiteBlue: {r: 0.6462264, g: 0.6462264, b: 1, a: 1}
+  whiteGreen: {r: 0.58109796, g: 1, b: 0.5707547, a: 1}
+  whiteOrenge: {r: 1, g: 0.78032905, b: 0.4575472, a: 1}
+  whiteRed: {r: 1, g: 0.5990566, b: 0.5990566, a: 1}
+  flashingTime: 0.06
 --- !u!1 &3139446487208411527
 GameObject:
   m_ObjectHideFlags: 0

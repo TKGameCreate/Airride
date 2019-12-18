@@ -17,14 +17,13 @@ public class Machine : Control
     #endregion
 
     #region Serialize
-    [SerializeField] private bool debug = false;
+    [SerializeField] protected bool debug = false;
     [SerializeField] private MachineStatus status;
     [SerializeField] private DebugText dText;
     [SerializeField] protected StateManager state;
     #endregion
 
     #region 変数
-    protected Player player;
     protected float speed = 0; //現在の速度
     protected float chargeAmount = 1; //チャージ量
     protected bool getOffPossible = false;
@@ -33,18 +32,11 @@ public class Machine : Control
     private float rideTime = 0; //乗車開始してからの時間
     private bool nowBrake = false; //charge中かどうか
     private bool onGround = true; //接地フラグ
-    private bool bound = false; //跳ね返り処理を行うフラグ
     private Vector3 chargePos;
     #endregion
 
     #region プロパティ
-    public Player Player
-    {
-        set
-        {
-            player = value;
-        }
-    }
+    public Player Player { set; get; }
     public MachineStatus MachineStatus
     {
         get
@@ -371,10 +363,10 @@ public class Machine : Control
             //親子関係の解除
             transform.parent = null;
             //PlayerのConditionをMachineからHumanに
-            player.PlayerCondition = Player.Condition.Human;
+            Player.PlayerCondition = Player.Condition.Human;
             //マシンの割り当てを削除
-            player.Machine = null;
-            player = null;
+            Player.Machine = null;
+            Player = null;
             return;
         }
     }
@@ -394,6 +386,35 @@ public class Machine : Control
             getOffPossible = true;
         }
     }
+
+    /// <summary>
+    /// デバッグテキスト処理
+    /// </summary>
+    protected void DebugDisplay()
+    {
+        dText.Debug(DebugText.Position.Right,
+            "GET ITEM"
+            + "\nMaxSpeed : " + getItemList[0]
+            + "\nAcceleration : " + getItemList[1]
+            + "\nTurning : " + getItemList[2]
+            + "\nCharge : " + getItemList[3]
+            + "\nWeight : " + getItemList[4]
+            + "\nFly : " + getItemList[5]
+            + "\nAll : " + getItemList[6],
+            Player);
+
+        dText.Debug(DebugText.Position.Left,
+            "STATUS"
+            + "\nMaxSpeed : " + statusList[0]
+            + "\nAcceleration : " + statusList[1]
+            + "\nTurning : " + statusList[2]
+            + "\nBrake : " + statusList[3]
+            + "\nCharge : " + statusList[4]
+            + "\nChargeSpeed : " + statusList[5]
+            + "\nWeight : " + statusList[6]
+            + "\nFlySpeed : " + statusList[7],
+            Player);
+    }
     #endregion
 
     #region private
@@ -412,35 +433,6 @@ public class Machine : Control
         {
             getItemList.Add(-2); //初期値は-2
         }
-    }
-
-    /// <summary>
-    /// デバッグテキスト処理
-    /// </summary>
-    private void DebugDisplay()
-    {
-        dText.Debug(DebugText.Position.Right,
-            "GET ITEM"
-            + "\nMaxSpeed : " + getItemList[0]
-            + "\nAcceleration : " + getItemList[1]
-            + "\nTurning : " + getItemList[2]
-            + "\nCharge : " + getItemList[3]
-            + "\nWeight : " + getItemList[4]
-            + "\nFly : " + getItemList[5]
-            + "\nAll : " + getItemList[6],
-            player);
-
-        dText.Debug(DebugText.Position.Left,
-            "STATUS"
-            + "\nMaxSpeed : " + statusList[0]
-            + "\nAcceleration : " + statusList[1]
-            + "\nTurning : " + statusList[2]
-            + "\nBrake : " + statusList[3]
-            + "\nCharge : " + statusList[4]
-            + "\nChargeSpeed : " + statusList[5]
-            + "\nWeight : " + statusList[6]
-            + "\nFlySpeed : " + statusList[7],
-            player);
     }
 
     /// <summary>

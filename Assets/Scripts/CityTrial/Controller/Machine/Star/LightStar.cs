@@ -31,11 +31,16 @@ public class LightStar : Machine
             }
             rbody.constraints = RigidbodyConstraints.FreezeAll;
         }
+
+        if (debug)
+        {
+            DebugDisplay();
+        }
     }
 
     protected override void Start()
     {
-        player = defaultPlayer;
+        Player = defaultPlayer;
         base.Start();
     }
 }
