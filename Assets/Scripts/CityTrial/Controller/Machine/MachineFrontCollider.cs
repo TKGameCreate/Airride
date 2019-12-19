@@ -6,7 +6,7 @@ public class MachineFrontCollider : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Item")
+        if (other.gameObject.tag == "Item" && machine.Player != null)
         {
             Item item = other.gameObject.GetComponent<Item>();
             item.CatchItem(machine); //入手したときの処理

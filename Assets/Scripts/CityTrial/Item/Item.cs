@@ -19,7 +19,6 @@ public abstract class Item : MonoBehaviour
 
     #region Property
     public InstanceGetItemUI InstanceOverHeadUI { set; private get; }
-    public Machine Machine { set; private get; }
     #endregion
 
     private void Update()
@@ -39,7 +38,7 @@ public abstract class Item : MonoBehaviour
     public virtual void CatchItem(Machine machine)
     {
         Destroy(gameObject);
-        InstanceOverHeadUI.UpItemImageDisplay(itemName, Machine);
+        InstanceOverHeadUI.UpItemImageDisplay(itemName, machine);
         limit = machine.ItemCount(itemName, mode);
     }
 
