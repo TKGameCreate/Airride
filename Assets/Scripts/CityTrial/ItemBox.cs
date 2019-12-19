@@ -16,7 +16,6 @@ public class ItemBox : MonoBehaviour
     [SerializeField] private List<Item> itemList = new List<Item>();
     private float hitPoint; //現在のHP
     private bool generate = false; //アイテム生成フラグ
-    private Machine hitMachine;
 
     private void Start()
     {
@@ -27,12 +26,12 @@ public class ItemBox : MonoBehaviour
     {
         if (generate)
         {
-            int GenerateNum = Random.Range(1, maxGenerate); //生成する数をランダムに決める
-            for (int i = 0; i < GenerateNum; i++)
+            int generateNum = Random.Range(1, maxGenerate); //生成する数をランダムに決める
+            for (int i = 0; i < generateNum; i++)
             {
                 int index = Random.Range(0, itemList.Count); //生成するアイテムを決める
                 var obj = Instantiate(itemList[index], transform.position, Quaternion.identity) as Item; //アイテムの生成
-                obj.UpAddForce();
+                obj.UpAddForce(generateNum, i);
                 Destroy(gameObject);
             }
         }
@@ -59,7 +58,6 @@ public class ItemBox : MonoBehaviour
         if (hitPoint < 1)
         {
             generate = true;
-            hitMachine = machine;
         }
         else if (hitPoint < defHP / firstMaterialDiv && hitPoint > defHP / secondMaterialDiv)
         {

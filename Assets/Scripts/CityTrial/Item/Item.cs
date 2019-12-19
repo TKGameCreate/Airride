@@ -3,8 +3,8 @@
 public abstract class Item : MonoBehaviour
 {
     #region const
-    private const float yItemUpPower = 1000.0f;
-    private const float xzItemUpPower = 1000.0f;
+    private const float yItemUpPower = 250.0f;
+    private const float xzItemUpPower = 250.0f;
     #endregion
 
     #region SerializeField
@@ -40,13 +40,15 @@ public abstract class Item : MonoBehaviour
         limit = machine.ItemCount(itemName, mode);
     }
 
-    public void UpAddForce()
+    public void UpAddForce(int num, int no)
     {
-        float forceX = Random.Range(-1.0f, 1.0f);
-        float forceZ = Random.Range(-1.0f, 1.0f);
-        rbody.AddForce(new Vector3(forceX * xzItemUpPower,
+        //1→上
+        //2→前後
+        //3→三角
+        //4→四角
+        rbody.AddForce(new Vector3(xzItemUpPower,
             yItemUpPower,
-            forceZ * xzItemUpPower));
+            xzItemUpPower));
     }
 
     public void UpItemImageDisplay(Machine machine)
