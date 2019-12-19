@@ -8,7 +8,11 @@ public class OverHeadGetItemUI : MonoBehaviour
     [SerializeField] private Image image;
     [SerializeField] private Sprite[] itemImages; //自機の上に表示するアイテムの画像
     [SerializeField] private float displayTime;
-    public Player Player { set; private get; } //アイテムを取得したプレイヤーの座標
+    [SerializeField] private float yPos;
+    [Range(0.1f, 5.0f)] [SerializeField] private float randomPos;
+    public Machine Machine { set; private get; } //アイテムを取得したプレイヤーの座標
+
+    private bool firstPosSet = false;
 
     // Start is called before the first frame update
     void Start()
@@ -19,7 +23,25 @@ public class OverHeadGetItemUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        rectTransform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, Player.transform.position);
+        if(Machine.Player != null)
+        {
+            Vector3 pos = Machine.transform.position;
+            pos.y += yPos;
+            if (!firstPosSet)
+            {
+                pos.x += Random.Range(-randomPos, randomPos);
+                pos.z += Random.Range(-randomPos, randomPos);
+                firstPosSet = true;
+            }
+
+            rectTransform.position = RectTransformUtility.WorldToScreenPoint
+                (Camera.main,
+                pos);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     /// <summary>

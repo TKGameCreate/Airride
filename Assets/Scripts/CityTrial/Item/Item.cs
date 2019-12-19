@@ -4,7 +4,7 @@ public abstract class Item : MonoBehaviour
 {
     #region const
     private const float yItemUpPower = 1000.0f;
-    private const float xzItemUpPower = 100.0f;
+    private const float xzItemUpPower = 1000.0f;
     #endregion
 
     #region SerializeField
@@ -19,7 +19,7 @@ public abstract class Item : MonoBehaviour
 
     #region Property
     public InstanceGetItemUI InstanceOverHeadUI { set; private get; }
-    public Player Player { set; private get; }
+    public Machine Machine { set; private get; }
     #endregion
 
     private void Update()
@@ -39,7 +39,7 @@ public abstract class Item : MonoBehaviour
     public virtual void CatchItem(Machine machine)
     {
         Destroy(gameObject);
-        InstanceOverHeadUI.UpItemImageDisplay(itemName, Player);
+        InstanceOverHeadUI.UpItemImageDisplay(itemName, Machine);
         limit = machine.ItemCount(itemName, mode);
     }
 

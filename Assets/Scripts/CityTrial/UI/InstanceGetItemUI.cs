@@ -3,11 +3,13 @@
 public class InstanceGetItemUI : MonoBehaviour
 {
     [SerializeField] private OverHeadGetItemUI overHeadPrefab;
+    [SerializeField] private Canvas canvas;
 
-    public void UpItemImageDisplay(ItemName itemName, Player player)
+    public void UpItemImageDisplay(ItemName itemName, Machine machine)
     {
         var pref = Instantiate(overHeadPrefab) as OverHeadGetItemUI;
+        pref.transform.SetParent(canvas.transform, false);
         pref.SetSprite(itemName);
-        pref.Player = player;
+        pref.Machine = machine;
     }
 }

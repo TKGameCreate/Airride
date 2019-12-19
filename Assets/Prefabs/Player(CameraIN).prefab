@@ -217,6 +217,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4033435953833582425}
     m_Modifications:
+    - target: {fileID: 127036972866569881, guid: 0e72edcf6bfdedc4daeb4432e57c3ad0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7682082085071305385, guid: 0e72edcf6bfdedc4daeb4432e57c3ad0,
         type: 3}
       propertyPath: m_Name
@@ -321,11 +326,6 @@ PrefabInstance:
         type: 3}
       propertyPath: rideCoolDownTime
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 127036972866569881, guid: 0e72edcf6bfdedc4daeb4432e57c3ad0,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7682082085071305703, guid: 0e72edcf6bfdedc4daeb4432e57c3ad0,
         type: 3}
@@ -1045,11 +1045,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 393630304065301481}
     m_Modifications:
-    - target: {fileID: 4462805625543502119, guid: c0e7864ad310ef14ba3547871b85c907,
-        type: 3}
-      propertyPath: m_Name
-      value: machine
-      objectReference: {fileID: 0}
     - target: {fileID: 8649667210069763172, guid: c0e7864ad310ef14ba3547871b85c907,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1105,11 +1100,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4462805625543502119, guid: c0e7864ad310ef14ba3547871b85c907,
+        type: 3}
+      propertyPath: m_Name
+      value: LightStar
+      objectReference: {fileID: 0}
     - target: {fileID: 1572593030, guid: c0e7864ad310ef14ba3547871b85c907, type: 3}
       propertyPath: machine
       value: 
       objectReference: {fileID: 994506173}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 178377763, guid: c0e7864ad310ef14ba3547871b85c907, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: c0e7864ad310ef14ba3547871b85c907, type: 3}
 --- !u!1 &8223428663994339866 stripped
 GameObject:

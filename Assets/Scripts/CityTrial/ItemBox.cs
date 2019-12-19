@@ -33,7 +33,7 @@ public class ItemBox : MonoBehaviour
             {
                 int index = Random.Range(0, itemList.Count); //生成するアイテムを決める
                 var obj = Instantiate(itemList[index], transform.position, Quaternion.identity) as Item; //アイテムの生成
-                obj.Player = hitMachine.Player;
+                obj.Machine = hitMachine;
                 obj.InstanceOverHeadUI = instanceOverHeadUI;
                 obj.UpAddForce();
                 Destroy(gameObject);
@@ -48,12 +48,13 @@ public class ItemBox : MonoBehaviour
         if (other.gameObject.tag == "Front")
         {
             Machine machine = other.transform.parent.gameObject.GetComponent<Machine>();
-            //if(machine.Player != null)
-            //{
+            if (machine.Player != null)
+            {
+                machine.Bound();
                 hitPoint -= machine.Status(StatusType.MaxSpeed) / 2;
                 SetTexture(machine);
                 rbody.AddForce(Vector3.up * machine.SaveSpeed * boundUpPower);
-            //}
+            }
         }
     }
 
