@@ -9,10 +9,7 @@ public class OverHeadGetItemUI : MonoBehaviour
     [SerializeField] private Sprite[] itemImages; //自機の上に表示するアイテムの画像
     [SerializeField] private float displayTime;
     [SerializeField] private float yPos;
-    [Range(0.1f, 5.0f)] [SerializeField] private float randomPos;
     public Machine Machine { set; private get; } //アイテムを取得したプレイヤーの座標
-
-    private bool firstPosSet = false;
 
     // Start is called before the first frame update
     void Start()
@@ -27,12 +24,6 @@ public class OverHeadGetItemUI : MonoBehaviour
         {
             Vector3 pos = Machine.transform.position;
             pos.y += yPos;
-            if (!firstPosSet)
-            {
-                pos.x += Random.Range(-randomPos, randomPos);
-                pos.z += Random.Range(-randomPos, randomPos);
-                firstPosSet = true;
-            }
 
             rectTransform.position = RectTransformUtility.WorldToScreenPoint
                 (Camera.main,
@@ -66,6 +57,7 @@ public class OverHeadGetItemUI : MonoBehaviour
             yield return null;
         }
 
-        Destroy(gameObject);
+        Destroy(transform.root.gameObject); //Canvasを削除
+        Destroy(gameObject); //自分自身を削除
     }
 }

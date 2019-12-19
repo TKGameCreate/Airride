@@ -14,7 +14,6 @@ public class ItemBox : MonoBehaviour
     [SerializeField] private float boundUpPower;
     [SerializeField] private int maxGenerate;
     [SerializeField] private List<Item> itemList = new List<Item>();
-    [SerializeField] private InstanceGetItemUI instanceOverHeadUI;
     private float hitPoint; //現在のHP
     private bool generate = false; //アイテム生成フラグ
     private Machine hitMachine;
@@ -33,7 +32,6 @@ public class ItemBox : MonoBehaviour
             {
                 int index = Random.Range(0, itemList.Count); //生成するアイテムを決める
                 var obj = Instantiate(itemList[index], transform.position, Quaternion.identity) as Item; //アイテムの生成
-                obj.InstanceOverHeadUI = instanceOverHeadUI;
                 obj.UpAddForce();
                 Destroy(gameObject);
             }

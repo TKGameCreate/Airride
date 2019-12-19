@@ -124,5 +124,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c974c286ea7f44d48a5df72e8815166f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvas: {fileID: 6228707164483382435, guid: 2e93bf0b5cb929743b82fd3ba9eea3f5, type: 3}
+  overHeadPrefab: {fileID: 5576120153606512569, guid: 4e37362171909f24985810ba2d13da62,
+    type: 3}
   rbody: {fileID: 3153256297088488685}
   mode: 0

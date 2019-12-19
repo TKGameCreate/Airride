@@ -8,6 +8,8 @@ public abstract class Item : MonoBehaviour
     #endregion
 
     #region SerializeField
+    [SerializeField] private Canvas canvas;
+    [SerializeField] private OverHeadGetItemUI overHeadPrefab;
     [SerializeField] private Rigidbody rbody;
     [SerializeField] protected ItemMode mode = ItemMode.Buff;
     #endregion
@@ -15,10 +17,6 @@ public abstract class Item : MonoBehaviour
     #region 変数
     protected ItemName itemName;
     protected bool limit = false; //下限上限に達しているか
-    #endregion
-
-    #region Property
-    public InstanceGetItemUI InstanceOverHeadUI { set; private get; }
     #endregion
 
     private void Update()
@@ -38,7 +36,7 @@ public abstract class Item : MonoBehaviour
     public virtual void CatchItem(Machine machine)
     {
         Destroy(gameObject);
-        InstanceOverHeadUI.UpItemImageDisplay(itemName, machine);
+        UpItemImageDisplay(machine);
         limit = machine.ItemCount(itemName, mode);
     }
 
@@ -49,6 +47,15 @@ public abstract class Item : MonoBehaviour
         rbody.AddForce(new Vector3(forceX * xzItemUpPower,
             yItemUpPower,
             forceZ * xzItemUpPower));
+    }
+
+    public void UpItemImageDisplay(Machine machine)
+    {
+        var pref = Instantiate(overHeadPrefab) as OverHeadGetItemUI;
+        var canvasPref = Instantiate(canvas) as Canvas;
+        pref.transform.SetParent(canvasPref.transform, false);
+        pref.SetSprite(itemName);
+        pref.Machine = machine;
     }
 
     protected ItemMode ReverseBuff()
