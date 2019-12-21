@@ -97,7 +97,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 122
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!65 &6015660897309960924
 BoxCollider:
@@ -128,4 +128,6 @@ MonoBehaviour:
   overHeadPrefab: {fileID: 5576120153606512569, guid: 4e37362171909f24985810ba2d13da62,
     type: 3}
   rbody: {fileID: 2826973364462791174}
+  spriteRenderer: {fileID: 7554321421368416890}
+  defSprite: {fileID: 21300000, guid: 131f417d8fa4add4f98c296d93b338d3, type: 3}
   mode: 0

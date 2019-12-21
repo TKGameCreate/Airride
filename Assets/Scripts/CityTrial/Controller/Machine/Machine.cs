@@ -11,7 +11,6 @@ public class Machine : Control
     const float flyWeightMag = 100f; //滑空時の落下倍率
     const float flyChargeSpeed = 1500f; //滑空中の自動チャージ速度分率
     const float dashBoardMag = 2.5f; //ダッシュボード倍率
-    const float boundPower = 75.0f; //跳ね返る力
     const float GetOffPossibleTime = 2.0f; //乗車してから降車可能までの時間
     public const float limitStatus = 16; //ステータス下限上限
     #endregion
@@ -206,13 +205,20 @@ public class Machine : Control
     /// <summary>
     /// 壁や、アイテムボックスにぶつかった時に跳ね返る処理
     /// </summary>
-    public void Bound()
+    public void Bound(float power, bool zero)
     {
         SaveSpeed = speed;
-        speed /= 2;
+        if (zero)
+        {
+            speed = 0;
+        }
+        else
+        {
+            speed /= 2;
+        }
         rbody.AddRelativeForce(
-            (-Vector3.forward * SaveSpeed * boundPower) 
-            / Status(StatusType.Weight),
+            (Vector3.back * SaveSpeed * power) 
+            / Status(StatusType.Weight) * 0.5f,
             ForceMode.Impulse);
     }
 

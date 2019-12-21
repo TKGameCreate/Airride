@@ -2,6 +2,7 @@
 
 public class MachineFrontCollider : MonoBehaviour
 {
+    private const float bound = 500.0f;
     [SerializeField] private Machine machine;
 
     private void OnTriggerEnter(Collider other)
@@ -12,9 +13,9 @@ public class MachineFrontCollider : MonoBehaviour
             item.CatchItem(machine); //入手したときの処理
         }
 
-        if (other.gameObject.tag == "StageObject" || other.gameObject.tag == "ItemBox")
+        if (other.gameObject.tag == "StageObject")
         {
-            machine.Bound();
+            machine.Bound(bound, false);
         }
     }
 }
