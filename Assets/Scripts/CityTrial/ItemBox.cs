@@ -63,7 +63,7 @@ public class ItemBox : MonoBehaviour
             Machine machine = other.transform.parent.gameObject.GetComponent<Machine>();
             if (machine.Player != null)
             {
-                hitPoint -= machine.SaveSpeed / 2 * (machine.Status(StatusType.Weight) / 2);
+                hitPoint -= machine.SaveSpeed / 2 * machine.Status(StatusType.Weight) / 2;
                 SetTexture(machine);
                 machine.Bound(machineBound, true);
                 rbody.AddForce(Vector3.up * machine.SaveSpeed * boundUpPower, ForceMode.Impulse);
