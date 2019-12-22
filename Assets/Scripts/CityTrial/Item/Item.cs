@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public abstract class Item : MonoBehaviour
 {
@@ -16,9 +17,13 @@ public abstract class Item : MonoBehaviour
     #region const
     private const float yPower = 8.0f;
     private const float xzPower = 2.75f;
-    private const float destroyTime = 45.0f;
-    private readonly float[] intervalTime = { 1, 0.5f, 0.25f };
-    private readonly float[] flashingTime = { 30.0f, 35.0f, 40.0f };
+    private const float destroyTime = 60.0f;
+    private static readonly FlashTime[] flashTimeList = 
+    {
+        new FlashTime(40.0f, 1.0f),
+        new FlashTime(47.5f, 0.5f),
+        new FlashTime(53.0f, 0.25f)
+    };
     #endregion
 
     #region SerializeField
@@ -31,15 +36,20 @@ public abstract class Item : MonoBehaviour
     #endregion
 
     #region 変数
-    private float time;
-    private Flash flash = new Flash();
+    private Flash flash = new Flash(flashTimeList);
+    private bool destroySet = false;
     protected ItemName itemName;
     protected bool limit = false; //下限上限に達しているか
     #endregion
 
     private void Update()
     {
-
+        if (StateManager.State == StateManager.GameState.Game && !destroySet)
+        {
+            Destroy(gameObject, destroyTime);
+            destroySet = true;
+        }
+        flash.FlashTime(spriteRenderer);
         PlayerFrontRotation();
     }
 
@@ -171,27 +181,6 @@ z 1→右　-1→左
                 return new Vector3(-xzPower, yPower, -xzPower);
             default:
                 return Vector3.zero;
-        }
-    }
-
-    private void FlashAndDestroy()
-    {
-        time += Time.deltaTime;
-        if (time > destroyTime)
-        {
-            Destroy(gameObject);
-        }
-        else if (time > flashingTime[2])
-        {
-            flash.Flashing(spriteRenderer, defSprite, intervalTime[2]);
-        }
-        else if (time > flashingTime[1])
-        {
-            flash.Flashing(spriteRenderer, defSprite, intervalTime[1]);
-        }
-        else if (time > flashingTime[0])
-        {
-            flash.Flashing(spriteRenderer, defSprite, intervalTime[0]);
         }
     }
 }

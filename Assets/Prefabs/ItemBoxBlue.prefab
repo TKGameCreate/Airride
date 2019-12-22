@@ -131,10 +131,9 @@ MonoBehaviour:
   firstMaterialDiv: 2
   secondMaterialDiv: 3
   defHP: 75
-  rotSpeed: 0.4
-  boundUpPower: 0.05
-  machineBound: 1000
   maxGenerate: 4
+  destroyTime: 45
+  flashStage: 3
   itemList:
   - {fileID: 2309727875407691122, guid: acd4ec537a1d2fe4484d8096e78dfcab, type: 3}
   - {fileID: 7637456262004231422, guid: 5531caaa8bf071744acb01c58953fb5e, type: 3}

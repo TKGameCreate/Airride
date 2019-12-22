@@ -25,7 +25,7 @@ public class StateManager : MonoBehaviour
     private int minute;
     private int second;
     private float milliSecond;
-    public GameState State { get; private set; } = GameState.Start;
+    public static GameState State { get; private set; } = GameState.Start;
 
     // Update is called once per frame
     void Update()
@@ -82,6 +82,7 @@ public class StateManager : MonoBehaviour
                 break;
             case GameState.End:
                 Time.timeScale = 0;
+                //State = GameState.Start;
                 break;
             default:
                 break;

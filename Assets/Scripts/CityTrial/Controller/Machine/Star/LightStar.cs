@@ -8,7 +8,7 @@ public class LightStar : Machine
 
     public override void Controller()
     {
-        if (state.State == StateManager.GameState.Game)
+        if (StateManager.State == StateManager.GameState.Game)
         {
             Move();
             RideTimeCount();
