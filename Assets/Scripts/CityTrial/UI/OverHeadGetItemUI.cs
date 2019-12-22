@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class OverHeadGetItemUI : MonoBehaviour
 {
+    [SerializeField] private Animator anim;
     [SerializeField] private RectTransform rectTransform;
     [SerializeField] private Image image;
     [SerializeField] private Sprite[] itemImages; //自機の上に表示するアイテムの画像
@@ -57,6 +58,11 @@ public class OverHeadGetItemUI : MonoBehaviour
             yield return null;
         }
 
+        anim.SetTrigger("Finish");
+    }
+
+    public void FinishDestroy()
+    {
         Destroy(transform.root.gameObject); //Canvasを削除
         Destroy(gameObject); //自分自身を削除
     }
