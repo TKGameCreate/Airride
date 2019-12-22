@@ -29,6 +29,7 @@ public abstract class Item : MonoBehaviour
     #region SerializeField
     [SerializeField] private Canvas canvas;
     [SerializeField] private OverHeadGetItemUI overHeadPrefab;
+    [SerializeField] private RightGetItemUI rightGetItemUIPrefab;
     [SerializeField] private Rigidbody rbody;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Sprite defSprite;
@@ -71,6 +72,7 @@ public abstract class Item : MonoBehaviour
     {
         Destroy(gameObject);
         UpItemImageDisplay(machine);
+        UpItemNameDisplay();
         limit = machine.ItemCount(itemName, mode);
     }
 
@@ -139,6 +141,13 @@ public abstract class Item : MonoBehaviour
         pref.transform.SetParent(canvasPref.transform, false);
         pref.SetSprite(itemName);
         pref.Machine = machine;
+    }
+
+    public void UpItemNameDisplay()
+    {
+        var pref = Instantiate(rightGetItemUIPrefab) as RightGetItemUI;
+        var canvasPref = Instantiate(canvas) as Canvas;
+        pref.transform.SetParent(canvasPref.transform, false);
     }
 
     protected ItemMode ReverseBuff()

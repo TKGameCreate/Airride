@@ -127,6 +127,8 @@ MonoBehaviour:
   canvas: {fileID: 6228707164483382435, guid: 2e93bf0b5cb929743b82fd3ba9eea3f5, type: 3}
   overHeadPrefab: {fileID: 5576120153606512569, guid: 4e37362171909f24985810ba2d13da62,
     type: 3}
+  rightGetItemUIPrefab: {fileID: 4086321404991824539, guid: 9a70fe19f5efe7648b76053ceb3445bc,
+    type: 3}
   rbody: {fileID: 2463118572028380891}
   spriteRenderer: {fileID: 2722718252313540514}
   defSprite: {fileID: 21300000, guid: b6a5830051a6fd947ac663a789754592, type: 3}
