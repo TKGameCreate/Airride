@@ -10,9 +10,14 @@ public class MaxSpeedItem : Item
         base.CatchItem(machine);
         if (!limit)
         {
-            machine.ChangeStatus(StatusType.MaxSpeed, mode);
-            machine.ChangeStatus(StatusType.FlySpeed, mode);
-            machine.ChangeStatus(StatusType.Brake, mode);
+            ChangeStatus(machine, mode);
         }
+    }
+
+    public override void ChangeStatus(Machine machine, ItemMode itemMode)
+    {
+        machine.ChangeStatus(StatusType.MaxSpeed, mode);
+        machine.ChangeStatus(StatusType.FlySpeed, mode);
+        machine.ChangeStatus(StatusType.Brake, mode);
     }
 }

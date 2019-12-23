@@ -12,21 +12,25 @@ public class Machine : Control
     const float flyChargeSpeed = 1500f; //滑空中の自動チャージ速度分率
     const float dashBoardMag = 2.5f; //ダッシュボード倍率
     const float GetOffPossibleTime = 2.0f; //乗車してから降車可能までの時間
-    public const float limitStatus = 16; //ステータス下限上限
+    const float itemInsPlusYPos = 2.5f; //降りた時アイテムがインスタンス化されるY軸ポジションのプラス値
+    const int defaultStatus = -2; //アイテム取得数デフォルト値
+    public const int limitStatus = 16; //アイテム取得数下限上限
     #endregion
 
     #region Serialize
     [SerializeField] protected bool debug = false;
-    [SerializeField] private MachineStatus status;
-    [SerializeField] private DebugText dText;
     [SerializeField] protected StateManager state;
+    [SerializeField] protected MachineStatus status;
+    [SerializeField] private ItemList itemList;
+    [SerializeField] private DebugText dText;
+    [SerializeField] private int maxGenerate = 4; 
     #endregion
 
     #region 変数
     protected float speed = 0; //現在の速度
     protected float chargeAmount = 1; //チャージ量
     protected bool getOffPossible = false;
-    private List<float> getItemList = new List<float>();    //アイテムの取得状態
+    private List<int> getItemList = new List<int>();    //アイテムの取得状態
     private List<float> statusList = new List<float>();    //ステータスのバフ状態
     private float rideTime = 0; //乗車開始してからの時間
     private bool nowBrake = false; //charge中かどうか
@@ -359,6 +363,7 @@ public class Machine : Control
             && vertical < exitMachineVertical 
             && onGround)
         {
+            DropItem();
             //入力値のリセット
             vertical = 0;
             horizontal = 0;
@@ -421,23 +426,75 @@ public class Machine : Control
             + "\nFlySpeed : " + statusList[7],
             Player);
     }
-    #endregion
 
-    #region private
     protected virtual void Start()
     {
         //ステータス倍率リストの初期化
         Array statusType = Enum.GetValues(typeof(StatusType));
-        for(int i = 0; i < statusType.Length; i++)
+        for (int i = 0; i < statusType.Length; i++)
         {
             statusList.Add(status.StartStatus((StatusType)i)); //初期値
         }
 
         //アイテム取得リストの初期化
         var itemType = Enum.GetValues(typeof(ItemName));
-        foreach(var item in itemType)
+        foreach (var item in itemType)
         {
-            getItemList.Add(-2); //初期値は-2
+            getItemList.Add(defaultStatus);//Defalut値の設定
+        }
+    }
+    #endregion
+
+    #region private
+    private void DropItem()
+    {
+        //アイテムの生成
+        List<int> instancePossibleItems = new List<int>(); //生成可能アイテムの配列番号を格納するリスト
+        int getItemSum = 0; //生成可能数合計値
+        //アイテム獲得リストの大きさ分回す
+        for (int i = 0; i < getItemList.Count; i++)
+        {
+            //アイテム獲得数が、デフォルト値を超えていた場合
+            if (getItemList[i] > defaultStatus)
+            {
+                getItemSum += getItemList[i] + (-defaultStatus); //基準を0にして足す
+                instancePossibleItems.Add(i);//生成できるアイテムの番号
+            }
+        }
+        //アイテムの取得合計数が最大生成可能数を超えていた場合、
+        //取得合計数を最大生成可能数に合わせる
+        if (getItemSum > maxGenerate)
+        {
+            getItemSum = maxGenerate;
+        }
+        
+        //リストが空じゃない場合
+        if (instancePossibleItems?.Count > 0)
+        {
+            //生成数の決定
+            int generateNum = UnityEngine.Random.Range(0, getItemSum + 1);
+            for (int i = 0; i < generateNum; i++)
+            {
+                //どのアイテムを生成するか決定する
+                int instanceNo = UnityEngine.Random.Range(0, instancePossibleItems.Count);
+                int itemNo = instancePossibleItems[instanceNo]; //生成するアイテムの配列番号
+                //生成
+                Vector3 instancePos = new Vector3
+                    (transform.position.x,
+                    transform.position.y + itemInsPlusYPos,
+                    transform.position.z);
+                itemList.InstantiateItem(instancePos, itemNo, generateNum, i);
+                //生成したアイテムをGetItemNumから-1
+                getItemList[itemNo]--;
+                Item item = itemList.GetItem(itemNo);
+                item.ChangeStatus (this, ItemMode.Debuff);
+                //アイテム獲得数がデフォルト値を下回った
+                if (getItemList[itemNo] < defaultStatus)
+                {
+                    //アイテム生成可能リストから該当アイテムの配列番号を削除
+                    instancePossibleItems.Remove(instanceNo);
+                }
+            }
         }
     }
 
@@ -447,7 +504,7 @@ public class Machine : Control
     /// <param name="other">接触した物体</param>
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Item")
+        if (other.gameObject.tag == "Item" && Player != null)
         {
             Item item = other.gameObject.GetComponent<Item>();
             item.CatchItem(this); //入手したときの処理

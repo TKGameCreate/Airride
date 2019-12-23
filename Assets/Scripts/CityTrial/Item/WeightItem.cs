@@ -7,15 +7,20 @@ public class WeightItem : Item
     public override void CatchItem(Machine machine)
     {
         itemName = ItemName.Weight;
-        reverceMode = ReverseBuff();
         base.CatchItem(machine);
         if (!limit)
         {
-            machine.ChangeStatus(StatusType.Weight, mode);
-            machine.ChangeStatus(StatusType.Brake, mode);
-            machine.ChangeStatus(StatusType.MaxSpeed, mode, 0.1f);
-            machine.ChangeStatus(StatusType.FlySpeed, reverceMode);
-            machine.ChangeStatus(StatusType.Acceleration, reverceMode);
+            ChangeStatus(machine, mode);
         }
+    }
+
+    public override void ChangeStatus(Machine machine, ItemMode itemMode)
+    {
+        reverceMode = ReverseBuff();
+        machine.ChangeStatus(StatusType.Weight, mode);
+        machine.ChangeStatus(StatusType.Brake, mode);
+        machine.ChangeStatus(StatusType.MaxSpeed, mode, 0.1f);
+        machine.ChangeStatus(StatusType.FlySpeed, reverceMode);
+        machine.ChangeStatus(StatusType.Acceleration, reverceMode);
     }
 }

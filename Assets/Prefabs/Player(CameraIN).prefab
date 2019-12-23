@@ -206,9 +206,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rbody: {fileID: 5760225825981378329}
   debug: 1
-  status: {fileID: 11400000, guid: 9fa21f887e59e594682328d834cdb990, type: 2}
-  dText: {fileID: 0}
   state: {fileID: 0}
+  status: {fileID: 11400000, guid: 9fa21f887e59e594682328d834cdb990, type: 2}
+  itemList: {fileID: 5345072973367110292, guid: e8985f5aab01c384fb45c344a2456320,
+    type: 3}
+  dText: {fileID: 0}
+  maxGenerate: 4
   defaultPlayer: {fileID: 393630304065301486}
 --- !u!1001 &393630304041223558
 PrefabInstance:
@@ -217,11 +220,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4033435953833582425}
     m_Modifications:
-    - target: {fileID: 127036972866569881, guid: 0e72edcf6bfdedc4daeb4432e57c3ad0,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7682082085071305385, guid: 0e72edcf6bfdedc4daeb4432e57c3ad0,
         type: 3}
       propertyPath: m_Name
@@ -326,6 +324,11 @@ PrefabInstance:
         type: 3}
       propertyPath: rideCoolDownTime
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 127036972866569881, guid: 0e72edcf6bfdedc4daeb4432e57c3ad0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7682082085071305703, guid: 0e72edcf6bfdedc4daeb4432e57c3ad0,
         type: 3}
@@ -1045,6 +1048,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 393630304065301481}
     m_Modifications:
+    - target: {fileID: 4462805625543502119, guid: c0e7864ad310ef14ba3547871b85c907,
+        type: 3}
+      propertyPath: m_Name
+      value: LightStar
+      objectReference: {fileID: 0}
     - target: {fileID: 8649667210069763172, guid: c0e7864ad310ef14ba3547871b85c907,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1099,11 +1107,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4462805625543502119, guid: c0e7864ad310ef14ba3547871b85c907,
-        type: 3}
-      propertyPath: m_Name
-      value: LightStar
       objectReference: {fileID: 0}
     - target: {fileID: 1572593030, guid: c0e7864ad310ef14ba3547871b85c907, type: 3}
       propertyPath: machine

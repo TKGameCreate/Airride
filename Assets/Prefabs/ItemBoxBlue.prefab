@@ -130,14 +130,9 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 97469684426a0d344b802161d5c1ced6, type: 2}
   firstMaterialDiv: 2
   secondMaterialDiv: 3
-  defHP: 75
+  defHP: 100
   maxGenerate: 4
   destroyTime: 45
   flashStage: 3
-  itemList:
-  - {fileID: 2309727875407691122, guid: acd4ec537a1d2fe4484d8096e78dfcab, type: 3}
-  - {fileID: 7637456262004231422, guid: 5531caaa8bf071744acb01c58953fb5e, type: 3}
-  - {fileID: 563740264150445219, guid: d008d8a521538b0439627613ad279454, type: 3}
-  - {fileID: 5004451047704361092, guid: 0aec4894f6bdf154fa2ae53fbaf7caff, type: 3}
-  - {fileID: 3254003475479431924, guid: 6e1497de02613c248853b32e144a64fc, type: 3}
-  - {fileID: 7460541352972645729, guid: 943f2a3c92a73b74ca086e1284dc14af, type: 3}
+  itemList: {fileID: 5345072973367110292, guid: e8985f5aab01c384fb45c344a2456320,
+    type: 3}

@@ -10,7 +10,12 @@ public class Turningitem : Item
         base.CatchItem(machine);
         if (!limit)
         {
-            machine.ChangeStatus(StatusType.Turning, mode);
+            ChangeStatus(machine, mode);
         }
+    }
+
+    public override void ChangeStatus(Machine machine, ItemMode itemMode)
+    {
+        machine.ChangeStatus(StatusType.Turning, mode);
     }
 }

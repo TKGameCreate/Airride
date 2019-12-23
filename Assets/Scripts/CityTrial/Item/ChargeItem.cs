@@ -6,8 +6,13 @@
         base.CatchItem(machine);
         if (!limit)
         {
-            machine.ChangeStatus(StatusType.Charge, mode);
-            machine.ChangeStatus(StatusType.ChargeSpeed, mode);
+            ChangeStatus(machine, mode);
         }
+    }
+
+    public override void ChangeStatus(Machine machine, ItemMode itemMode)
+    {
+        machine.ChangeStatus(StatusType.Charge, mode);
+        machine.ChangeStatus(StatusType.ChargeSpeed, mode);
     }
 }

@@ -16,7 +16,7 @@ public class ItemBox : MonoBehaviour
     [SerializeField] private int maxGenerate;
     [SerializeField] private float destroyTime;
     [SerializeField] private int flashStage;
-    [SerializeField] private List<Item> itemList = new List<Item>();
+    [SerializeField] private ItemList itemList;
     private static FlashTime[] flashTime =
     {
         new FlashTime(30.0f, 1.0f),
@@ -45,14 +45,13 @@ public class ItemBox : MonoBehaviour
         flash.FlashTime(myRenderer);
         if (generate)
         {
-            int generateNum = Random.Range(1, maxGenerate + 1); //生成する数をランダムに決める
+            int generateNum = Random.Range(1, maxGenerate + 1); ; //生成する数をランダムに決める
             for (int i = 0; i < generateNum; i++)
             {
-                int index = Random.Range(0, itemList.Count); //生成するアイテムを決める
-                var obj = Instantiate(itemList[index], transform.position, Quaternion.identity) as Item; //アイテムの生成
-                obj.InstanceVelocity(generateNum, i);
-                Destroy(gameObject);
+                int index = Random.Range(0, itemList.ItemLength); //生成するアイテムを決める
+                itemList.InstantiateItem(transform.position, index, generateNum, i);
             }
+            Destroy(gameObject);
         }
     }
 

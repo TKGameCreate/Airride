@@ -9,7 +9,12 @@ public class AccelerationItem : Item
         base.CatchItem(machine);
         if (!limit)
         {
-            machine.ChangeStatus(StatusType.Acceleration, mode);
+            ChangeStatus(machine, mode);
         }
+    }
+
+    public override void ChangeStatus(Machine machine, ItemMode itemMode)
+    {
+        machine.ChangeStatus(StatusType.Acceleration, mode);
     }
 }

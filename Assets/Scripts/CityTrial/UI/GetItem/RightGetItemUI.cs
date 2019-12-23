@@ -1,6 +1,4 @@
-﻿using System.Collections;
-
-public class RightGetItemUI : GetItemUI
+﻿public class RightGetItemUI : GetItemUI
 {
     private bool startCol = false;
 

@@ -76,6 +76,8 @@ public abstract class Item : MonoBehaviour
         limit = machine.ItemCount(itemName, mode);
     }
 
+    public virtual void ChangeStatus(Machine machine, ItemMode itemMode){ }
+
     /// <param name="num">生成数</param>
     /// <param name="no">生成する番号</param>
     public void InstanceVelocity(int num, int no)
