@@ -29,12 +29,9 @@ public class Machine : Control
     #region 変数
     protected float speed = 0; //現在の速度
     protected float chargeAmount = 1; //チャージ量
-    protected bool getOffPossible = false;
     private List<int> getItemList = new List<int>();    //アイテムの取得状態
     private List<float> statusList = new List<float>();    //ステータスのバフ状態
-    private float rideTime = 0; //乗車開始してからの時間
     private bool nowBrake = false; //charge中かどうか
-    private bool onGround = true; //接地フラグ
     private Vector3 chargePos;
     #endregion
 
@@ -55,11 +52,7 @@ public class Machine : Control
     public override void Controller()
     {
         Move();
-        RideTimeCount();
-        if (getOffPossible)
-        {
-            GetOff();
-        }
+        GetOff();
 
         if (debug)
         {
@@ -359,7 +352,7 @@ public class Machine : Control
     protected override void GetOff()
     {
         //スティック下+Aボタンかつ接地しているとき
-        if (InputManager.Instance.InputA(InputType.Down) 
+        if (InputManager.Instance.InputA(InputType.Hold) 
             && vertical < exitMachineVertical 
             && onGround)
         {
@@ -367,8 +360,6 @@ public class Machine : Control
             //入力値のリセット
             vertical = 0;
             horizontal = 0;
-            //乗車時間のリセット
-            rideTime = 0;
             //speedを初期化
             speed = 0;
             //親子関係の解除
@@ -379,22 +370,6 @@ public class Machine : Control
             Player.Machine = null;
             Player = null;
             return;
-        }
-    }
-
-    /// <summary>
-    /// 降車可能時間のカウントとフラグ管理
-    /// </summary>
-    protected void RideTimeCount()
-    {
-        if (rideTime < GetOffPossibleTime)
-        {
-            rideTime += Time.deltaTime;
-            getOffPossible = false;
-        }
-        else
-        {
-            getOffPossible = true;
         }
     }
 
@@ -516,25 +491,25 @@ public class Machine : Control
             speed *= dashBoardMag;
         }
     }
-
     /// <summary>
     /// 接地判定
     /// </summary>
     /// <param name="collision">地面</param>
-    private void OnCollisionStay(Collision collision)
+    protected virtual void OnCollisionStay(Collision collision)
     {
-        if(collision.transform.tag == "StageObject" || collision.transform.tag == "NotBackSObject")
+        if (collision.transform.tag == "StageObject" || collision.transform.tag == "NotBackSObject")
         {
             onGround = true;
         }
     }
 
-    private void OnCollisionExit(Collision collision)
+    protected virtual void OnCollisionExit(Collision collision)
     {
         if (collision.transform.tag == "StageObject" || collision.transform.tag == "NotBackSObject")
         {
             onGround = false;
         }
     }
+
     #endregion
 }

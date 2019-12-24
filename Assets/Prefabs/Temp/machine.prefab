@@ -57,7 +57,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68e0a6d1b8b9c2d48baca56990ff38fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  machine: {fileID: 178377763}
+  machine: {fileID: 0}
 --- !u!1 &345234244741364908
 GameObject:
   m_ObjectHideFlags: 0
@@ -163,7 +163,6 @@ GameObject:
   - component: {fileID: 4893474460134666053}
   - component: {fileID: 5856045197326043546}
   - component: {fileID: 178377764}
-  - component: {fileID: 178377763}
   m_Layer: 10
   m_Name: machine
   m_TagString: Machine
@@ -263,26 +262,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 1
---- !u!114 &178377763
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4462805625543502119}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 15c20391fed24384d8619561e6575398, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rbody: {fileID: 178377764}
-  debug: 1
-  state: {fileID: 0}
-  status: {fileID: 11400000, guid: 9fa21f887e59e594682328d834cdb990, type: 2}
-  itemList: {fileID: 5345072973367110292, guid: e8985f5aab01c384fb45c344a2456320,
-    type: 3}
-  dText: {fileID: 0}
-  maxGenerate: 4
 --- !u!1 &6288027891468284197
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class Human : Control
 {
@@ -10,21 +11,30 @@ public class Human : Control
     }
 
     [SerializeField] private Animator anim;
-    [SerializeField] private CapsuleCollider capsuleCollider;
     [SerializeField] private Player player;
-    [SerializeField] private GameObject onGroundColliderObject;
     [SerializeField] private Machine DefaultMachine;
+    [SerializeField] private OnGroundHuman onGroundCollider;
     [SerializeField] private float speed = 5.0f; //速度
     [SerializeField] private float rotSpeed = 10.0f; //回転速度
+    [SerializeField] private float onGroundRTime;
     [SerializeField] private float jumpPower = 1.5f;
-    [SerializeField] private float downPw;
-    [SerializeField] private float rideCoolDownTime;
+    [SerializeField] private float downPower;
+    [SerializeField] private float getOffXPower;
+    [SerializeField] private float getOffYPower;
 
-    private float rideCoolDownTimeCount = 0;
     private bool ridePossible = true;
     private bool jumpPushButton = false;
     private bool jump = false;
     private bool exitMachineProcess = false; //降車後処理をしたか
+    private bool getOffForce = true;
+
+    public bool OnGround
+    {
+        set
+        {
+            onGround = value;
+        }
+    }
 
     #region public
     public override void Controller()
@@ -34,24 +44,8 @@ public class Human : Control
         {
             GetOff();
         }
-
-        //降車モーション状態の場合
-        if (!ridePossible && anim.GetBool("getOff"))
-        {
-            //クールダウンの時間をカウント
-            rideCoolDownTimeCount += Time.deltaTime;
-            if(rideCoolDownTimeCount > rideCoolDownTime)
-            {
-                rideCoolDownTimeCount = 0;
-                //接地判定のコライダーをTrueに
-                onGroundColliderObject.SetActive(true);
-            }
-        }
-        else
-        {
-            MoveAnimationControl();
-            Move();
-        }
+        MoveAnimationControl();
+        Move();
     }
 
     public override void FixedController()
@@ -63,13 +57,17 @@ public class Human : Control
             jumpPushButton = false;
         }
 
-        if(ridePossible && anim.GetBool("getOff"))
+        if (!getOffForce)
         {
-            rbody.AddForce(Vector3.up);
-            rbody.AddForce(Vector3.back);
+            rbody.AddRelativeForce(
+            getOffXPower,
+            getOffYPower,
+            0,
+            ForceMode.Impulse);
+            getOffForce = true;
         }
 
-        rbody.AddForce(Vector3.down * downPw);
+        rbody.AddForce(Vector3.down * downPower);
         rbody.velocity = velocity;
     }
 
@@ -86,13 +84,13 @@ public class Human : Control
             case AnimationType.GetOff:
                 anim.SetBool("getOff", true);
                 ridePossible = false;
+                getOffForce = false;
                 return;
             case AnimationType.OnGround:
-                anim.SetBool("getOff", false);
-                onGroundColliderObject.SetActive(false);
-                if(capsuleCollider.isTrigger == true)
+                if (anim.GetBool("getOff"))
                 {
-                    capsuleCollider.isTrigger = false;
+                    anim.SetBool("getOff", false);
+                    ridePossible = true;
                 }
                 return;
             default:
@@ -108,44 +106,41 @@ public class Human : Control
 
         //移動処理
         //前進
-        velocity = new Vector3(horizontal * speed, 0, vertical * speed);
-
-        //スティックの角度に回転
-        //アナログスティックのグラつきを想定して±0.01以下をはじく
-        if (Mathf.Abs(horizontal) + Mathf.Abs(vertical) > 0.1f)
+        if (!anim.GetBool("getOff"))
         {
-            //カメラからみたプレイヤーの方向ベクトル
-            Vector3 camToPlayer = transform.position - Camera.
-                main.transform.position;
-            // π/2 - atan2(x,y) == atan2(y,x)
-            float inputAngle = Mathf.Atan2(horizontal, vertical) * Mathf.Rad2Deg;
-            float cameraAngle = Mathf.Atan2(camToPlayer.x, camToPlayer.z) * Mathf.Rad2Deg;
-            Quaternion targetRotation = Quaternion.Euler(0, inputAngle + cameraAngle, 0);
-            //deltaTimeを用いることで常に一定の速度になる
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotSpeed * Time.deltaTime);
-        }
+            velocity = new Vector3(horizontal * speed, 0, vertical * speed);
 
-        //ジャンプ処理
-        if (InputManager.Instance.InputA(InputType.Down))
-        {
-            jump = true;
-            jumpPushButton = true;
+            //スティックの角度に回転
+            //アナログスティックのグラつきを想定して±0.01以下をはじく
+            if (Mathf.Abs(horizontal) + Mathf.Abs(vertical) > 0.1f && !anim.GetBool("getOff"))
+            {
+                //カメラからみたプレイヤーの方向ベクトル
+                Vector3 camToPlayer = transform.position - Camera.
+                    main.transform.position;
+                // π/2 - atan2(x,y) == atan2(y,x)
+                float inputAngle = Mathf.Atan2(horizontal, vertical) * Mathf.Rad2Deg;
+                float cameraAngle = Mathf.Atan2(camToPlayer.x, camToPlayer.z) * Mathf.Rad2Deg;
+                Quaternion targetRotation = Quaternion.Euler(0, inputAngle + cameraAngle, 0);
+                //deltaTimeを用いることで常に一定の速度になる
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotSpeed * Time.deltaTime);
+            }
+
+            //ジャンプ処理
+            if (InputManager.Instance.InputA(InputType.Down))
+            {
+                jump = true;
+                jumpPushButton = true;
+            }
         }
     }
 
     protected override void GetOff()
     {
         AnimationControl(AnimationType.GetOff);
-        //当たり判定の復活
-        capsuleCollider.enabled = true;
-        capsuleCollider.isTrigger = true;
         rbody.constraints = RigidbodyConstraints.FreezeRotation;
         //親子関係をPlayerの子供に
         transform.parent = player.transform;
-        //高さの調整
-        Vector3 pos = transform.position;
-        Vector3 newPos = new Vector3(pos.x, 0.7f, pos.z);
-        transform.position = newPos;
+        StartCoroutine(OnGroundResurrection());
         //降車後処理の完了
         exitMachineProcess = true;
     }
@@ -154,10 +149,17 @@ public class Human : Control
     #region private
     private void Start()
     {
-        capsuleCollider.enabled = false;
         rbody.constraints = RigidbodyConstraints.FreezeAll;
         //乗車アニメーション
         AnimationControl(AnimationType.Ride);
+    }
+
+    private void LayerSetting(bool col)
+    {
+        int humanLayer = LayerMask.NameToLayer("Human");
+        int machineLayer = LayerMask.NameToLayer("Machine");
+
+        Physics.IgnoreLayerCollision(humanLayer, machineLayer, !col);
     }
 
     private void MoveAnimationControl(bool ride = false)
@@ -205,28 +207,37 @@ public class Human : Control
             player.Machine = machine;
             //マシンのPlayerを割り当て
             machine.Player = player;
-            capsuleCollider.enabled = false;
+            //当たり判定をなくす
+            LayerSetting(false);
             rbody.constraints = RigidbodyConstraints.FreezeAll;
             //アニメーションリセット
             AnimationControl(AnimationType.Ride);
+            //地面の当たり判定を非表示
+            onGroundCollider.gameObject.SetActive(false);
             //降車後の処理フラグをFalseに
             exitMachineProcess = false;
-        }
-
-        //クールダウンが終わってから、何か物に接触した場合、TriggerがTrueのままだったら
-        if (rideCoolDownTimeCount > rideCoolDownTime && capsuleCollider.isTrigger == true)
-        {
-            //衝突判定を復活
-            capsuleCollider.isTrigger = false;
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.transform.tag == "Machine")
+        if (other.transform.tag == "RideTrigger")
         {
-            capsuleCollider.isTrigger = false;
+            LayerSetting(true);
         }
+    }
+
+    private IEnumerator OnGroundResurrection()
+    {
+        float measureTime = 0f;
+
+        while (measureTime < onGroundRTime)
+        {
+            measureTime += Time.deltaTime;
+            yield return null;
+        }
+
+        onGroundCollider.gameObject.SetActive(true);
     }
     #endregion
 

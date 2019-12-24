@@ -7,6 +7,7 @@ public abstract class Control : MonoBehaviour
     protected float horizontal = 0;
     protected float vertical = 0;
     protected Vector3 velocity;
+    protected bool onGround = true; //接地フラグ
 
     /// <summary>
     /// Updateで処理するメソッドを呼び出す

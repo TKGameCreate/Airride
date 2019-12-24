@@ -11,11 +11,7 @@ public class LightStar : Machine
         if (StateManager.State == StateManager.GameState.Game)
         {
             Move();
-            RideTimeCount();
-            if (getOffPossible)
-            {
-                GetOff();
-            }
+            GetOff();
             rbody.constraints = RigidbodyConstraints.FreezeRotation;
         }
         else

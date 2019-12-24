@@ -1766,6 +1766,38 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1c982910eefbeb45a71683de9c8f192, type: 3}
+--- !u!1 &1986858289 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4462805625543502119, guid: c0e7864ad310ef14ba3547871b85c907,
+    type: 3}
+  m_PrefabInstance: {fileID: 1701299826}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1986858290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1986858289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15c20391fed24384d8619561e6575398, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rbody: {fileID: 1986858291}
+  debug: 1
+  state: {fileID: 1328166210}
+  status: {fileID: 11400000, guid: 9fa21f887e59e594682328d834cdb990, type: 2}
+  itemList: {fileID: 5345072973367110292, guid: e8985f5aab01c384fb45c344a2456320,
+    type: 3}
+  dText: {fileID: 1867606808}
+  maxGenerate: 4
+--- !u!54 &1986858291 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 178377764, guid: c0e7864ad310ef14ba3547871b85c907,
+    type: 3}
+  m_PrefabInstance: {fileID: 1701299826}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2044515004 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3438233046073203632, guid: 1cfdd8e28a8094d4aaa6ed0aad586aaf,
@@ -1928,7 +1960,38 @@ PrefabInstance:
       propertyPath: dText
       value: 
       objectReference: {fileID: 1867606808}
-    m_RemovedComponents: []
+    - target: {fileID: 640715993958220738, guid: aaa0df1af4593fa48bbfa4d38b85e0b7,
+        type: 3}
+      propertyPath: onGroundRTime
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 640715993958220738, guid: aaa0df1af4593fa48bbfa4d38b85e0b7,
+        type: 3}
+      propertyPath: getOffXPower
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 640715993958220738, guid: aaa0df1af4593fa48bbfa4d38b85e0b7,
+        type: 3}
+      propertyPath: getOffYPower
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 2178227602601188495, guid: aaa0df1af4593fa48bbfa4d38b85e0b7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2178227602601188495, guid: aaa0df1af4593fa48bbfa4d38b85e0b7,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5008934260819711486, guid: aaa0df1af4593fa48bbfa4d38b85e0b7,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 5760225825981378334, guid: aaa0df1af4593fa48bbfa4d38b85e0b7, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: aaa0df1af4593fa48bbfa4d38b85e0b7, type: 3}
 --- !u!1001 &3438233047041771788
 PrefabInstance:
