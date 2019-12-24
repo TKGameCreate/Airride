@@ -16,8 +16,8 @@ public class MaxSpeedItem : Item
 
     public override void ChangeStatus(Machine machine, ItemMode itemMode)
     {
-        machine.ChangeStatus(StatusType.MaxSpeed, mode);
-        machine.ChangeStatus(StatusType.FlySpeed, mode);
-        machine.ChangeStatus(StatusType.Brake, mode);
+        machine.ChangeStatus(StatusType.MaxSpeed, itemMode);
+        machine.ChangeStatus(StatusType.FlySpeed, itemMode);
+        machine.ChangeStatus(StatusType.Brake, itemMode);
     }
 }

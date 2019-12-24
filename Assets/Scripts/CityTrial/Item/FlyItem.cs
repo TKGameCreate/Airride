@@ -1,7 +1,5 @@
 ﻿public class FlyItem : Item
 {
-    private ItemMode reverceWeight = ItemMode.None;
-
     public override void CatchItem(Machine machine)
     {
         itemName = ItemName.Fly;
@@ -14,8 +12,8 @@
 
     public override void ChangeStatus(Machine machine, ItemMode itemMode)
     {
-        reverceWeight = ReverseBuff();
-        machine.ChangeStatus(StatusType.FlySpeed, mode);
+        ItemMode reverceWeight = ReverseBuff(itemMode);
+        machine.ChangeStatus(StatusType.FlySpeed, itemMode);
         machine.ChangeStatus(StatusType.Weight, reverceWeight);
     }
 }

@@ -5,8 +5,7 @@ using UnityEngine;
 public class CameraPosition : MonoBehaviour
 {
     [SerializeField] private Transform playerRootPosition;
-    [SerializeField] private GameObject player;
-    [SerializeField] private Player playerScript;
+    [SerializeField] private Player player;
     [SerializeField] private Vector3 humanCameraPosition = new Vector3(0, 2, -3);
     [SerializeField] private Vector3 machineCameraPosition = new Vector3(0, 2, 3);
     private Player.Condition condition = Player.Condition.Human;
@@ -14,12 +13,12 @@ public class CameraPosition : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (playerScript.PlayerCondition == Player.Condition.Human)
+        if (player.PlayerCondition == Player.Condition.Human)
         {
             transform.position = player.transform.position - humanCameraPosition;
         }
 
-        if(condition != playerScript.PlayerCondition)
+        if(condition != player.PlayerCondition)
         {
             ParentSetting();
         }
@@ -27,8 +26,8 @@ public class CameraPosition : MonoBehaviour
 
     private void ParentSetting()
     {
-        condition = playerScript.PlayerCondition;
-        if (playerScript.PlayerCondition == Player.Condition.Human)
+        condition = player.PlayerCondition;
+        if (player.PlayerCondition == Player.Condition.Human)
         {
             //親をMachineではなくRootObjectに切り替え
             transform.parent = playerRootPosition;
@@ -38,7 +37,7 @@ public class CameraPosition : MonoBehaviour
         else
         {
             //親をMachineに
-            transform.parent = playerScript.Machine.transform;
+            transform.parent = player.Machine.transform;
             //座標の初期化
             transform.localPosition = machineCameraPosition;
             transform.localRotation = new Quaternion(0, 0, 0, 0);

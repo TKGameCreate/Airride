@@ -12,7 +12,7 @@
 
     public override void ChangeStatus(Machine machine, ItemMode itemMode)
     {
-        machine.ChangeStatus(StatusType.Charge, mode);
-        machine.ChangeStatus(StatusType.ChargeSpeed, mode);
+        machine.ChangeStatus(StatusType.Charge, itemMode);
+        machine.ChangeStatus(StatusType.ChargeSpeed, itemMode);
     }
 }

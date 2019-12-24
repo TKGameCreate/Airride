@@ -16,7 +16,7 @@ public class AllItem : Item
     {
         foreach (StatusType type in Enum.GetValues(typeof(StatusType)))
         {
-            machine.ChangeStatus(type, mode);
+            machine.ChangeStatus(type, itemMode);
         }
     }
 }

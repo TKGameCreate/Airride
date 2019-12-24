@@ -152,13 +152,13 @@ public abstract class Item : MonoBehaviour
         pref.transform.SetParent(canvasPref.transform, false);
     }
 
-    protected ItemMode ReverseBuff()
+    protected ItemMode ReverseBuff(ItemMode itemMode)
     {
-        if (mode == ItemMode.Buff)
+        if (itemMode == ItemMode.Buff)
         {
             return ItemMode.Debuff;
         }
-        else if(mode == ItemMode.Debuff)
+        else if(itemMode == ItemMode.Debuff)
         {
             return ItemMode.Buff;
         }
