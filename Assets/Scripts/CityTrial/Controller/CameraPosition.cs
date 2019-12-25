@@ -6,6 +6,7 @@ public class CameraPosition : MonoBehaviour
 {
     [SerializeField] private Transform playerRootPosition;
     [SerializeField] private Player player;
+    [SerializeField] private Human human;
     [SerializeField] private Vector3 humanCameraPosition = new Vector3(0, 2, -3);
     [SerializeField] private Vector3 machineCameraPosition = new Vector3(0, 2, 3);
     private Player.Condition condition = Player.Condition.Human;
@@ -15,7 +16,7 @@ public class CameraPosition : MonoBehaviour
     {
         if (player.PlayerCondition == Player.Condition.Human)
         {
-            transform.position = player.transform.position - humanCameraPosition;
+            transform.position = human.transform.position - humanCameraPosition;
         }
 
         if(condition != player.PlayerCondition)

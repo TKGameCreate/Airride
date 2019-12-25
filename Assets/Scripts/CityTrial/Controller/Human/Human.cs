@@ -252,5 +252,11 @@ public class Human : Control
     {
         ridePossible = true;
     }
+
+    public void Ride()
+    {
+        //降車可能状態に
+        player.Machine.GetOffPossible = true;
+    }
     #endregion
 }

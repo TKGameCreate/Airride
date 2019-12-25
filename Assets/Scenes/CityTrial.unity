@@ -1397,11 +1397,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4462805625543502119, guid: c0e7864ad310ef14ba3547871b85c907,
-        type: 3}
-      propertyPath: m_Name
-      value: machine
-      objectReference: {fileID: 0}
     - target: {fileID: 8649667210069763172, guid: c0e7864ad310ef14ba3547871b85c907,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1457,6 +1452,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4462805625543502119, guid: c0e7864ad310ef14ba3547871b85c907,
+        type: 3}
+      propertyPath: m_Name
+      value: machine
+      objectReference: {fileID: 0}
+    - target: {fileID: 1572593030, guid: c0e7864ad310ef14ba3547871b85c907, type: 3}
+      propertyPath: machine
+      value: 
+      objectReference: {fileID: 1986858290}
     - target: {fileID: 178377763, guid: c0e7864ad310ef14ba3547871b85c907, type: 3}
       propertyPath: state
       value: 
@@ -1909,6 +1913,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player(CameraIN)
       objectReference: {fileID: 0}
+    - target: {fileID: 640715993958220738, guid: aaa0df1af4593fa48bbfa4d38b85e0b7,
+        type: 3}
+      propertyPath: onGroundRTime
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 640715993958220738, guid: aaa0df1af4593fa48bbfa4d38b85e0b7,
+        type: 3}
+      propertyPath: getOffXPower
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 640715993958220738, guid: aaa0df1af4593fa48bbfa4d38b85e0b7,
+        type: 3}
+      propertyPath: getOffYPower
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 393630304092634763, guid: aaa0df1af4593fa48bbfa4d38b85e0b7,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1972,21 +1991,6 @@ PrefabInstance:
       propertyPath: dText
       value: 
       objectReference: {fileID: 1867606808}
-    - target: {fileID: 640715993958220738, guid: aaa0df1af4593fa48bbfa4d38b85e0b7,
-        type: 3}
-      propertyPath: onGroundRTime
-      value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 640715993958220738, guid: aaa0df1af4593fa48bbfa4d38b85e0b7,
-        type: 3}
-      propertyPath: getOffXPower
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 640715993958220738, guid: aaa0df1af4593fa48bbfa4d38b85e0b7,
-        type: 3}
-      propertyPath: getOffYPower
-      value: 50
-      objectReference: {fileID: 0}
     - target: {fileID: 2178227602601188495, guid: aaa0df1af4593fa48bbfa4d38b85e0b7,
         type: 3}
       propertyPath: m_Layer
@@ -2020,7 +2024,7 @@ PrefabInstance:
     - target: {fileID: 393630305900357605, guid: aaa0df1af4593fa48bbfa4d38b85e0b7,
         type: 3}
       propertyPath: humanCameraPosition.z
-      value: 40
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 393630305900357605, guid: aaa0df1af4593fa48bbfa4d38b85e0b7,
         type: 3}

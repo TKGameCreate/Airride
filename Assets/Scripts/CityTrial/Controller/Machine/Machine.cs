@@ -45,6 +45,7 @@ public class Machine : Control
         }
     }
     public float SaveSpeed { get; private set; } = 0;
+    public bool GetOffPossible { set; private get; } = false;
     #endregion
 
     #region public
@@ -354,7 +355,8 @@ public class Machine : Control
         //スティック下+Aボタンかつ接地しているとき
         if (InputManager.Instance.InputA(InputType.Hold) 
             && vertical < exitMachineVertical 
-            && onGround)
+            && onGround
+            && GetOffPossible)
         {
             DropItem();
             //入力値のリセット
@@ -369,6 +371,8 @@ public class Machine : Control
             //マシンの割り当てを削除
             Player.Machine = null;
             Player = null;
+            //降車可能フラグをFalseに
+            GetOffPossible = false;
             return;
         }
     }
@@ -491,25 +495,5 @@ public class Machine : Control
             speed *= dashBoardMag;
         }
     }
-    /// <summary>
-    /// 接地判定
-    /// </summary>
-    /// <param name="collision">地面</param>
-    protected virtual void OnCollisionStay(Collision collision)
-    {
-        if (collision.transform.tag == "StageObject" || collision.transform.tag == "NotBackSObject")
-        {
-            onGround = true;
-        }
-    }
-
-    protected virtual void OnCollisionExit(Collision collision)
-    {
-        if (collision.transform.tag == "StageObject" || collision.transform.tag == "NotBackSObject")
-        {
-            onGround = false;
-        }
-    }
-
     #endregion
 }
