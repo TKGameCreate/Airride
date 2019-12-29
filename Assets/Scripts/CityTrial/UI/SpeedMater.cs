@@ -6,9 +6,7 @@ using TMPro;
 
 public class SpeedMater : MonoBehaviour
 {
-    [SerializeField] private Player player;
-    [SerializeField] private GameObject speedTextObject; //Machine時表示するspeedText
-    [SerializeField] private GameObject playerImage; //Human時表示するPlayer画像
+    [SerializeField] private Image playerImage; //Human時表示するPlayer画像
     [SerializeField] private TextMeshProUGUI speedText; //Speed
     [SerializeField] private Image[] chargeGages; //ChargeGage
 
@@ -31,86 +29,77 @@ public class SpeedMater : MonoBehaviour
     private bool humanCharge = false;
     private float nextTime;
 
-    // Update is called once per frame
-    void Update()
+    public void HumanGage()
     {
-        #region SpeedMaterの表示状態処理
-        Player.Condition condition = player.PlayerCondition;
-        switch (condition)
+        //スピードメーターにUnityちゃんの画像を表示
+        if (!playerImage.gameObject.activeSelf)
         {
-            case Player.Condition.Human:
-                //スピードメーターにUnityちゃんの画像を表示
-                if (!playerImage.activeSelf)
-                {
-                    playerImage.SetActive(true);
-                }
-                //スピードメーターを非表示に
-                if (speedTextObject.activeSelf)
-                {
-                    speedTextObject.SetActive(false);
-                }
+            playerImage.gameObject.SetActive(true);
+        }
+        //スピードメーターを非表示に
+        if (speedText.gameObject.activeSelf)
+        {
+            speedText.gameObject.SetActive(false);
+        }
 
-                //chargeGageのリセット
-                if (!humanCharge)
-                {
-                    foreach (var chargeGage in chargeGages)
-                    {
-                        chargeGage.fillAmount = 0;
-                    }
-                    humanCharge = true;
-                }
-                break;
-            case Player.Condition.Machine:
-                if (playerImage.activeSelf)
-                {
-                    playerImage.SetActive(false);
-                }
-                if (!speedTextObject.activeSelf)
-                {
-                    speedTextObject.SetActive(true);
-                }
+        //chargeGageのリセット
+        if (!humanCharge)
+        {
+            foreach (var chargeGage in chargeGages)
+            {
+                chargeGage.fillAmount = 0;
+            }
+            humanCharge = true;
+        }
+    }
 
-                //speed表示
-                speedText.text = player.Machine.SpeedMaterText();
+    public void MachineGage(Machine machine)
+    {
+        if (playerImage.gameObject.activeSelf)
+        {
+            playerImage.gameObject.SetActive(false);
+        }
+        if (!speedText.gameObject.activeSelf)
+        {
+            speedText.gameObject.SetActive(true);
+        }
 
-                float charge = player.Machine.NormalizeCharge();
+        //speed表示
+        speedText.text = machine.SpeedMaterText();
 
-                #region GageColor処理
-                if (charge > 0 && charge < 0.3f)
-                {
-                    //青
-                    color = FlashingColor(blue, whiteBlue);
-                }
-                else if (charge < 0.5f)
-                {
-                    //緑
-                    color = FlashingColor(green, whiteGreen);
-                }
-                else if (charge < 0.75f)
-                {
-                    //オレンジ
-                    color = FlashingColor(orenge, whiteOrenge);
-                }
-                else
-                {
-                    //赤
-                    color = FlashingColor(red, whiteRed);
-                }
-                #endregion
+        float charge = machine.NormalizeCharge();
 
-                //chargeGageの表示
-                foreach (var chargeGage in chargeGages)
-                {
-                    chargeGage.fillAmount = charge;
-                    chargeGage.color = color;
-                }
-
-                humanCharge = false;
-                break;
-            default:
-                break;
+        #region GageColor処理
+        if (charge > 0 && charge < 0.3f)
+        {
+            //青
+            color = FlashingColor(blue, whiteBlue);
+        }
+        else if (charge < 0.5f)
+        {
+            //緑
+            color = FlashingColor(green, whiteGreen);
+        }
+        else if (charge < 0.75f)
+        {
+            //オレンジ
+            color = FlashingColor(orenge, whiteOrenge);
+        }
+        else
+        {
+            //赤
+            color = FlashingColor(red, whiteRed);
         }
         #endregion
+
+        //chargeGageの表示
+        foreach (var chargeGage in chargeGages)
+        {
+            chargeGage.fillAmount = charge;
+            chargeGage.color = color;
+        }
+
+        humanCharge = false;
     }
 
     private Color FlashingColor(Color fromColor, Color toColor)
@@ -126,7 +115,7 @@ public class SpeedMater : MonoBehaviour
         float g;
         float b;
 
-        if(nextTime <= flashingTime)
+        if (nextTime <= flashingTime)
         {
             r = fromColor.r -= toColor.r * flashingTime;
             g = fromColor.g -= toColor.g * flashingTime;

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Cinemachine;
 
 public class Player : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class Player : MonoBehaviour
 
     [SerializeField] private Human human;
     [SerializeField] private Machine DefaultMachine;
+    [SerializeField] private SpeedMater mater;
 
     //conditionが切り替わった時に処理させる条件式に使う比較変数
     private Condition changeCondition = Condition.Machine;
@@ -28,16 +30,23 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        if(StateManager.State == StateManager.GameState.Start)
+        {
+            return;
+        }
+
         switch (PlayerCondition)
         {
             case Condition.Human:
                 human.Controller();
+                mater.HumanGage();
                 break;
             case Condition.Machine:
                 if (Machine != null)
                 {
                     Machine.Controller();
                 }
+                mater.MachineGage(Machine);
                 break;
             default:
                 break;

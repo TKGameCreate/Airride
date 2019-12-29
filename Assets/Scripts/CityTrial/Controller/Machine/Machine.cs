@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class Machine : Control
 {
@@ -21,6 +22,7 @@ public class Machine : Control
     [SerializeField] protected bool debug = false;
     [SerializeField] protected StateManager state;
     [SerializeField] protected MachineStatus status;
+    [SerializeField] private CinemachineVirtualCamera vcamera;
     [SerializeField] private ItemList itemList;
     [SerializeField] private DebugText dText;
     [SerializeField] private int maxGenerate = 4; 
@@ -45,13 +47,25 @@ public class Machine : Control
         }
     }
     public float SaveSpeed { get; private set; } = 0;
-    public bool GetOffPossible { set; private get; } = false;
+    public CinemachineVirtualCamera MachineCamera
+    {
+        get
+        {
+            return vcamera;
+        }
+    }
     #endregion
 
     #region public
     #region Control
     public override void Controller()
     {
+        if (!vcamera.gameObject.activeSelf)
+        {
+            vcamera.Priority = 12; //playerのPriorityより高くする
+            vcamera.gameObject.SetActive(true);
+        }
+
         Move();
         GetOff();
 
@@ -355,10 +369,13 @@ public class Machine : Control
         //スティック下+Aボタンかつ接地しているとき
         if (InputManager.Instance.InputA(InputType.Hold) 
             && vertical < exitMachineVertical 
-            && onGround
-            && GetOffPossible)
+            && onGround)
         {
+            //アイテムを落とす
             DropItem();
+            //マシンのカメラを非表示に
+            vcamera.Priority = 1;//優先度を最低に
+            vcamera.gameObject.SetActive(false);
             //入力値のリセット
             vertical = 0;
             horizontal = 0;
@@ -371,8 +388,6 @@ public class Machine : Control
             //マシンの割り当てを削除
             Player.Machine = null;
             Player = null;
-            //降車可能フラグをFalseに
-            GetOffPossible = false;
             return;
         }
     }
@@ -495,5 +510,25 @@ public class Machine : Control
             speed *= dashBoardMag;
         }
     }
+    /// <summary>
+    /// 接地判定
+    /// </summary>
+    /// <param name="collision">地面</param>
+    protected virtual void OnCollisionStay(Collision collision)
+    {
+        if (collision.transform.tag == "StageObject" || collision.transform.tag == "NotBackSObject")
+        {
+            onGround = true;
+        }
+    }
+
+    protected virtual void OnCollisionExit(Collision collision)
+    {
+        if (collision.transform.tag == "StageObject" || collision.transform.tag == "NotBackSObject")
+        {
+            onGround = false;
+        }
+    }
+
     #endregion
 }

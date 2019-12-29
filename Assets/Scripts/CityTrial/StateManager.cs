@@ -16,16 +16,22 @@ public class StateManager : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI countDownText;
     [SerializeField] private TextMeshProUGUI timeText;
-    [SerializeField] private GameObject countDownTextObject;
-    [SerializeField] private GameObject timeTextObject;
     [SerializeField] private float time = 180;
-    private float countDown = 3;
-    private float startDelay = 1;
+    [SerializeField] private StartUIAnimation startUI;
+    private float countDown = 4;
+    private int iCountStart = 0;
 
     private int minute;
     private int second;
     private float milliSecond;
     public static GameState State { get; private set; } = GameState.Start;
+
+    private void Start()
+    {
+        State = GameState.Start;
+        iCountStart = (int)countDown;
+        DisplayTime();
+    }
 
     // Update is called once per frame
     void Update()
@@ -33,50 +39,37 @@ public class StateManager : MonoBehaviour
         switch (State)
         {
             case GameState.Start:
-                startDelay -= Time.deltaTime;
-                if(startDelay <= 0)
+                if (startUI.CountDown)
                 {
-                    countDownTextObject.SetActive(true);
+                    countDownText.gameObject.SetActive(true);
                     State = GameState.Ready;
                 }
                 break;
             case GameState.Ready:
                 //カウントダウンを開始
-                countDown -= Time.deltaTime;
+                countDown -= Time.deltaTime * 2;
+                int iCountDown = (int)countDown;
 
-                if((int)countDown < 1)
-                {
-                    countDownText.text = "Start";
-                }
-                else
-                {
-                    countDownText.text = countDown.ToString("0");
-                }
+               countDownText.text = iCountDown.ToString();
+
+                startUI.SetCountDownAnimation(iCountDown);
 
                 //カウントが0になった場合
-                if (countDown <= 0)
+                if (iCountDown <= 0)
                 {
-                    countDownTextObject.SetActive(false);
-                    timeTextObject.SetActive(true);
+                    countDownText.text = "Start";
                     State = GameState.Game;
                 }
                 break;
             case GameState.Game:
                 //制限時間の計算と時間表示の計算
                 time -= Time.deltaTime;
-                TimeConversion();
-
-                //制限時間の画面表示
-                timeText.text = minute.ToString("00") 
-                    + "'"
-                    + second.ToString("00")
-                    + "\""
-                    + milliSecond.ToString("00");
+                DisplayTime();
 
                 //制限時間が0になった場合
                 if (time <= 0)
                 {
-                    timeTextObject.SetActive(false);
+                    timeText.gameObject.SetActive(false);
                     State = GameState.End;
                 }
                 break;
@@ -89,7 +82,18 @@ public class StateManager : MonoBehaviour
         }
     }
 
-    void TimeConversion()
+    private void DisplayTime()
+    {
+        TimeConversion();
+        //制限時間の画面表示
+        timeText.text = minute.ToString("00")
+            + "'"
+            + second.ToString("00")
+            + "\""
+            + milliSecond.ToString("00");
+    }
+
+    private void TimeConversion()
     {
         minute = (int)time / 60;
 

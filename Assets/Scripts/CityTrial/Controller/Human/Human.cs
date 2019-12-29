@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using Cinemachine;
 
 public class Human : Control
 {
@@ -21,6 +22,7 @@ public class Human : Control
     [SerializeField] private float downPower;
     [SerializeField] private float getOffXPower;
     [SerializeField] private float getOffYPower;
+    [SerializeField] private CinemachineVirtualCamera playerCamera;
 
     private bool ridePossible = true;
     private bool jumpPushButton = false;
@@ -108,22 +110,26 @@ public class Human : Control
         //前進
         if (!anim.GetBool("getOff"))
         {
-            velocity = new Vector3(horizontal * speed, 0, vertical * speed);
+            Vector3 worldVelocity = new Vector3(0, 0, vertical * speed);
+            Vector3 localVelocity = transform.InverseTransformDirection(worldVelocity);
+            velocity = new Vector3(-localVelocity.x, localVelocity.y, localVelocity.z);
+            Debug.Log(velocity);
+            transform.Rotate(0, horizontal * speed, 0);
 
-            //スティックの角度に回転
-            //アナログスティックのグラつきを想定して±0.01以下をはじく
-            if (Mathf.Abs(horizontal) + Mathf.Abs(vertical) > 0.1f && !anim.GetBool("getOff"))
-            {
-                //カメラからみたプレイヤーの方向ベクトル
-                Vector3 camToPlayer = transform.position - Camera.
-                    main.transform.position;
-                // π/2 - atan2(x,y) == atan2(y,x)
-                float inputAngle = Mathf.Atan2(horizontal, vertical) * Mathf.Rad2Deg;
-                float cameraAngle = Mathf.Atan2(camToPlayer.x, camToPlayer.z) * Mathf.Rad2Deg;
-                Quaternion targetRotation = Quaternion.Euler(0, inputAngle + cameraAngle, 0);
-                //deltaTimeを用いることで常に一定の速度になる
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotSpeed * Time.deltaTime);
-            }
+            ////スティックの角度に回転
+            ////アナログスティックのグラつきを想定して±0.01以下をはじく
+            //if (Mathf.Abs(horizontal) + Mathf.Abs(vertical) > 0.1f)
+            //{
+            //    //カメラからみたプレイヤーの方向ベクトル
+            //    Vector3 camToPlayer = transform.position - Camera.
+            //        main.transform.position;
+            //    // π/2 - atan2(x,y) == atan2(y,x)
+            //    float inputAngle = Mathf.Atan2(horizontal, vertical) * Mathf.Rad2Deg;
+            //    float cameraAngle = Mathf.Atan2(camToPlayer.x, camToPlayer.z) * Mathf.Rad2Deg;
+            //    Quaternion targetRotation = Quaternion.Euler(0, inputAngle + cameraAngle, 0);
+            //    //deltaTimeを用いることで常に一定の速度になる
+            //    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotSpeed * Time.deltaTime);
+            //}
 
             //ジャンプ処理
             if (InputManager.Instance.InputA(InputType.Down))
@@ -251,12 +257,6 @@ public class Human : Control
     public void EndGetOffOnGround()
     {
         ridePossible = true;
-    }
-
-    public void Ride()
-    {
-        //降車可能状態に
-        player.Machine.GetOffPossible = true;
     }
     #endregion
 }
