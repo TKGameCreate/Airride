@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 
 /// <summary>
@@ -21,6 +20,7 @@ public class StateManager : MonoBehaviour
     [SerializeField] private RectTransform pauseDisplayUI;
     [SerializeField] private float time = 180;
     [SerializeField] private StartUIAnimation startUI;
+
     private GameState pauseBeforeState = GameState.Game;
     private float countDown = 4;
     private int iCountStart = 0;

@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Machine DefaultMachine;
     [SerializeField] private SpeedMater mater;
     [SerializeField] private CinemachineVirtualCamera pauseCamera;
+    [SerializeField] private CinemachineVirtualCamera startCamera;
 
     //conditionが切り替わった時に処理させる条件式に使う比較変数
     private Condition changeCondition = Condition.Machine;
@@ -35,6 +36,10 @@ public class Player : MonoBehaviour
         {
             return;
         }
+        if(StateManager.State == StateManager.GameState.Game && startCamera.gameObject.activeSelf)
+        {
+            startCamera.gameObject.SetActive(false);
+        }
 
         switch (PlayerCondition)
         {
@@ -45,9 +50,9 @@ public class Player : MonoBehaviour
             case Condition.Machine:
                 if (Machine != null)
                 {
+                    mater.MachineGage(Machine);
                     Machine.Controller();
                 }
-                mater.MachineGage(Machine);
                 break;
             default:
                 break;

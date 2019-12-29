@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using Cinemachine;
 
 public class Human : Control
 {
@@ -14,6 +15,7 @@ public class Human : Control
     [SerializeField] private Player player;
     [SerializeField] private Machine DefaultMachine;
     [SerializeField] private OnGroundHuman onGroundCollider;
+    [SerializeField] private CinemachineVirtualCamera humanCamera;
     [SerializeField] private float speed = 5.0f; //速度
     [SerializeField] private float rotSpeed = 10.0f; //回転速度
     [SerializeField] private float onGroundRTime;
@@ -145,6 +147,7 @@ public class Human : Control
         //親子関係をPlayerの子供に
         transform.parent = player.transform;
         StartCoroutine(OnGroundResurrection());
+        humanCamera.Priority = 10;
         //降車後処理の完了
         exitMachineProcess = true;
     }
@@ -218,6 +221,10 @@ public class Human : Control
             AnimationControl(AnimationType.Ride);
             //地面の当たり判定を非表示
             onGroundCollider.gameObject.SetActive(false);
+            //カメラの優先度を最低に
+            humanCamera.Priority = 1;
+            //マシンのカメラ優先度を上げる
+            machine.MachineCamera.Priority = 10;
             //降車後の処理フラグをFalseに
             exitMachineProcess = false;
         }

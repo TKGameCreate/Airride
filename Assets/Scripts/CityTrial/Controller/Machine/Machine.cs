@@ -62,8 +62,7 @@ public class Machine : Control
     {
         if (!vcamera.gameObject.activeSelf)
         {
-            vcamera.Priority = 12; //playerのPriorityより高くする
-            vcamera.gameObject.SetActive(true);
+            vcamera.Priority = 10;
         }
 
         Move();
@@ -375,7 +374,6 @@ public class Machine : Control
             DropItem();
             //マシンのカメラを非表示に
             vcamera.Priority = 1;//優先度を最低に
-            vcamera.gameObject.SetActive(false);
             //入力値のリセット
             vertical = 0;
             horizontal = 0;
