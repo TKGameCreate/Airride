@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using UnityEngine;
-using Cinemachine;
 
 public class Human : Control
 {
@@ -22,7 +21,6 @@ public class Human : Control
     [SerializeField] private float downPower;
     [SerializeField] private float getOffXPower;
     [SerializeField] private float getOffYPower;
-    [SerializeField] private CinemachineVirtualCamera playerCamera;
 
     private bool ridePossible = true;
     private bool jumpPushButton = false;

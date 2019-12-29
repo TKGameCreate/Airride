@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using Cinemachine;
 
 public class Player : MonoBehaviour
 {
