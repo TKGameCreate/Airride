@@ -39,6 +39,14 @@ public class InputManager
             return Input.GetAxis("Vertical");
         }
     }
+
+    public bool Pause
+    {
+        get
+        {
+            return Input.GetButtonDown("Pause");
+        }
+    }
     #endregion
 
     #region method

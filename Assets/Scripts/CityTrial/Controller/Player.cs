@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Cinemachine;
 
 public class Player : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Human human;
     [SerializeField] private Machine DefaultMachine;
     [SerializeField] private SpeedMater mater;
+    [SerializeField] private CinemachineVirtualCamera pauseCamera;
 
     //conditionが切り替わった時に処理させる条件式に使う比較変数
     private Condition changeCondition = Condition.Machine;
