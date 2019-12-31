@@ -20,10 +20,12 @@ public class StateManager : MonoBehaviour
     [SerializeField] private RectTransform pauseDisplayUI;
     [SerializeField] private float time = 180;
     [SerializeField] private StartUIAnimation startUI;
+    [SerializeField] private Pause pause;
 
     private GameState pauseBeforeState = GameState.Game;
     private float countDown = 4;
     private int iCountStart = 0;
+    private bool pauseUIActive = false;
 
     private int minute;
     private int second;
@@ -69,7 +71,7 @@ public class StateManager : MonoBehaviour
                 //制限時間の計算と時間表示の計算
                 time -= Time.deltaTime;
                 DisplayTime();
-                Pause();
+                PauseMove();
 
                 //制限時間が0になった場合
                 if (time <= 0)
@@ -82,34 +84,58 @@ public class StateManager : MonoBehaviour
                 Time.timeScale = 0;
                 break;
             case GameState.Pause:
-                Pause();
+                PauseMove();
+                pause.PauseDisplay();
                 break;
             default:
                 break;
         }
     }
 
+    private void SelectContinue()
+    {
+        //pause画面を解除する
+        pauseUIActive = false;
+        Time.timeScale = 1;
+        pause.EndPause();
+        State = pauseBeforeState;
+    }
+
     /// <summary>
     /// ポーズ処理
     /// </summary>
     /// <param name="state">現在のスエート</param>
-    private void Pause()
+    private void PauseMove()
     {
+        if (InputManager.Instance.InputA(InputType.Down))
+        {
+            Pause.Mode mode = pause.SelectMode();
+            switch (mode)
+            {
+                case Pause.Mode.Continue:
+                    SelectContinue();
+                    break;
+                case Pause.Mode.End:
+                    break;
+                default:
+                    break;
+            }
+            pauseDisplayUI.gameObject.SetActive(pauseUIActive);
+            return;
+        }
+
         if (InputManager.Instance.Pause)
         {
-            bool pauseUIActive = true;
             if (State == GameState.Pause)
             {
-                //pause画面を解除する
-                pauseUIActive = false;
-                Time.timeScale = 1;
-                State = pauseBeforeState;
+                SelectContinue();
             }
             else
             {
                 //pause画面にする
                 pauseUIActive = true;
                 Time.timeScale = 0;
+                pause.ResetPause();
                 pauseBeforeState = State;
                 State = GameState.Pause;
             }
