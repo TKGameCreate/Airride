@@ -104,7 +104,7 @@ public class StateManager : MonoBehaviour
     /// <summary>
     /// ポーズ処理
     /// </summary>
-    /// <param name="state">現在のスエート</param>
+    /// <param name="state">現在のステート</param>
     private void PauseMove()
     {
         if (InputManager.Instance.InputA(InputType.Down))

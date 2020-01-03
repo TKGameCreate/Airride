@@ -17,7 +17,7 @@ public class Pause : MonoBehaviour
     [SerializeField] private Sprite[] selectY;
     [SerializeField] private Sprite[] selectN;
     [SerializeField] private Image[] selectMode;
-    [SerializeField] private PauseGetItem getItemDisplay;
+    [SerializeField] private GetItemListDisplay getItemDisplay;
 
     private int selectNo = 0;
     private float interval = 0.25f;
@@ -50,7 +50,6 @@ public class Pause : MonoBehaviour
     public void PauseDisplay()
     {
         float verticalRaw = InputManager.Instance.VerticalRaw;
-        Debug.Log(verticalRaw);
 
         if (selectCoolDown)
         {

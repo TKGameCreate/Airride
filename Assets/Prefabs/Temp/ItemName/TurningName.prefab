@@ -78,7 +78,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278255615
+    rgba: 4278255360
   m_fontColor: {r: 0, g: 1, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -194,7 +194,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 2560989919272763212}
   rectTransform: {fileID: 4361671798042970248}
-  displayTime: 3
+  displayTime: 2
 --- !u!1 &4361671799139088143
 GameObject:
   m_ObjectHideFlags: 0

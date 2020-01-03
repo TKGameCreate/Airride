@@ -205,9 +205,14 @@ public class Machine : Control
     /// </summary>
     /// <param name="num">アイテムの種類</param>
     /// <returns>取得数</returns>
-    public float GetItemTotal(int type)
+    public int GetItemTotal(int type)
     {
-        return getItemList[type] + -defaultStatus;
+        int getNum = getItemList[type] + -defaultStatus;
+        if(getNum < 0)
+        {
+            getNum = 0;
+        }
+        return getNum;
     }
 
     /// <summary>
@@ -217,8 +222,13 @@ public class Machine : Control
     /// <returns>取得数(正規化)</returns>
     public float NormalizeGetItemTotal(int type)
     {
-        int max = limitStatus + -defaultStatus; //ステータス最大値
-        return getItemList[type] / max;
+        float max = limitStatus + -defaultStatus; //18基準
+        float normalize = (getItemList[type] + -defaultStatus) / max;
+        if (normalize < 0)
+        {
+            normalize = 0;
+        }
+        return normalize;
     }
 
     /// <summary>
