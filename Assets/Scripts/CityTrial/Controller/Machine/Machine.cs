@@ -201,6 +201,27 @@ public class Machine : Control
     }
 
     /// <summary>
+    /// アイテムの取得数(0基準)
+    /// </summary>
+    /// <param name="num">アイテムの種類</param>
+    /// <returns>取得数</returns>
+    public float GetItemTotal(int type)
+    {
+        return getItemList[type] + -defaultStatus;
+    }
+
+    /// <summary>
+    /// アイテムの取得数ゲージ用正規化(0基準)
+    /// </summary>
+    /// <param name="type">アイテムの種類</param>
+    /// <returns>取得数(正規化)</returns>
+    public float NormalizeGetItemTotal(int type)
+    {
+        int max = limitStatus + -defaultStatus; //ステータス最大値
+        return getItemList[type] / max;
+    }
+
+    /// <summary>
     /// 正規化したチャージ量
     /// </summary>
     /// <returns>チャージ量</returns>

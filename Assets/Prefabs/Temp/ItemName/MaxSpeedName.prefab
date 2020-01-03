@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2560989919272763212}
   - component: {fileID: 4086321404991824539}
   m_Layer: 5
-  m_Name: MaxSpeedText
+  m_Name: MaxSpeedName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -70,16 +70,16 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: "\u30B5\u30A4\u30B3\u30A6\u30BD\u30AF"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8e58e6739c92e0b47bdc4d6c4bf94c69, type: 2}
-  m_sharedMaterial: {fileID: 6230019520462931323, guid: 8e58e6739c92e0b47bdc4d6c4bf94c69,
+  m_fontAsset: {fileID: 11400000, guid: fcc66513ad611e944aec2993766b0b4f, type: 2}
+  m_sharedMaterial: {fileID: 6616084618791974895, guid: fcc66513ad611e944aec2993766b0b4f,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294964584
-  m_fontColor: {r: 0.41037738, g: 0.96418536, b: 1, a: 1}
+    rgba: 4294967040
+  m_fontColor: {r: 0, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

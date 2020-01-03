@@ -17,6 +17,7 @@ public class Pause : MonoBehaviour
     [SerializeField] private Sprite[] selectY;
     [SerializeField] private Sprite[] selectN;
     [SerializeField] private Image[] selectMode;
+    [SerializeField] private PauseGetItem getItemDisplay;
 
     private int selectNo = 0;
     private float interval = 0.25f;
@@ -32,6 +33,7 @@ public class Pause : MonoBehaviour
         selectMode[selectNo].sprite = selectY[selectNo];
         speedMater.gameObject.SetActive(false);
         selectCoolDown = false;
+        getItemDisplay.SetDisplay();
     }
 
     public void EndPause()
@@ -47,12 +49,15 @@ public class Pause : MonoBehaviour
     // Update is called once per frame
     public void PauseDisplay()
     {
+        float verticalRaw = InputManager.Instance.VerticalRaw;
+        Debug.Log(verticalRaw);
+
         if (selectCoolDown)
         {
             return;
         }
 
-        if(InputManager.Instance.Vertical > 0.75f)
+        if(verticalRaw > 0.75f)
         {
             SetSprite();
             selectNo--;
@@ -61,7 +66,7 @@ public class Pause : MonoBehaviour
                 selectNo = selectMode.Length - 1;
             }
         }
-        else if(InputManager.Instance.Vertical < -0.75f)
+        else if(verticalRaw < -0.75f)
         {
             SetSprite();
             selectNo++;

@@ -40,6 +40,22 @@ public class InputManager
         }
     }
 
+    public float HorizontalRaw
+    {
+        get
+        {
+            return Input.GetAxisRaw("Horizontal");
+        }
+    }
+
+    public float VerticalRaw
+    {
+        get
+        {
+            return Input.GetAxisRaw("Vertical");
+        }
+    }
+
     public bool Pause
     {
         get
