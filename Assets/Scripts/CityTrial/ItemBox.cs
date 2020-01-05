@@ -12,7 +12,7 @@ public class ItemBox : MonoBehaviour
     [SerializeField] private List<Material> materialList = new List<Material>(); //セットするマテリアルのリスト
     [Range(1.1f, 5.0f)][SerializeField] private float firstMaterialDiv; //2段階目マテリアルを判定する際に割る数
     [Range(1.1f, 5.0f)][SerializeField] private float secondMaterialDiv; //３段階目マテリアルを判定する際に割る数
-    [SerializeField] private float defHP; //初期HP
+    [SerializeField] private float defHP; //初期HP0.
     [SerializeField] private int maxGenerate;
     [SerializeField] private float destroyTime;
     [SerializeField] private int flashStage;
@@ -28,7 +28,9 @@ public class ItemBox : MonoBehaviour
     private float hitPoint; //現在のHP
     private bool generate = false; //アイテム生成フラグ
     private bool destroySet = false;
-    
+
+    public Transform InstancePosition { set; private get; }
+    public StageObjectInstance objInstance { set; private get; }
 
     private void Start()
     {
@@ -39,7 +41,7 @@ public class ItemBox : MonoBehaviour
     {
         if(StateManager.State == StateManager.GameState.Game && !destroySet)
         {
-            Destroy(gameObject, destroyTime);
+            StartCoroutine(LimitDestroy());
             destroySet = true;
         }
         flash.FlashTime(myRenderer);
@@ -51,7 +53,7 @@ public class ItemBox : MonoBehaviour
                 int index = Random.Range(0, itemList.ItemLength); //生成するアイテムを決める
                 itemList.InstantiateItem(transform.position, index, generateNum, i);
             }
-            Destroy(gameObject);
+            DestroyObject();
         }
     }
 
@@ -88,5 +90,20 @@ public class ItemBox : MonoBehaviour
         {
             myRenderer.material = materialList[0];
         }
+    }
+
+    IEnumerator LimitDestroy()
+    {
+        yield return new WaitForSeconds(destroyTime);
+        DestroyObject();
+    }
+
+    private void DestroyObject()
+    {
+        if (objInstance != null)
+        {
+            objInstance.AddPosition(InstancePosition);
+        }
+        Destroy(gameObject);
     }
 }

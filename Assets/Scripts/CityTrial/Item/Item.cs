@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Item : MonoBehaviour
@@ -18,7 +19,7 @@ public abstract class Item : MonoBehaviour
     private const float yPower = 8.0f;
     private const float xzPower = 2.75f;
     private const float destroyTime = 60.0f;
-    private static readonly FlashTime[] flashTimeList = 
+    private static readonly FlashTime[] flashTimeList =
     {
         new FlashTime(40.0f, 1.0f),
         new FlashTime(47.5f, 0.5f),
@@ -43,11 +44,14 @@ public abstract class Item : MonoBehaviour
     protected bool limit = false; //下限上限に達しているか
     #endregion
 
+    public Transform InstancePosition { set; private get; }
+    public StageObjectInstance objInstance { set; private get; }
+
     private void Update()
     {
         if (StateManager.State == StateManager.GameState.Game && !destroySet)
         {
-            Destroy(gameObject, destroyTime);
+            StartCoroutine(LimitDestroy());
             destroySet = true;
         }
         flash.FlashTime(spriteRenderer);
@@ -70,7 +74,7 @@ public abstract class Item : MonoBehaviour
     /// </summary>
     public virtual void CatchItem(Machine machine)
     {
-        Destroy(gameObject);
+        DestroyObject();
         UpItemImageDisplay(machine);
         UpItemNameDisplay();
         limit = machine.ItemCount(itemName, mode);
@@ -192,6 +196,21 @@ z 1→右　-1→左
                 return new Vector3(-xzPower, yPower, -xzPower);
             default:
                 return Vector3.zero;
+        }
+    }
+
+    IEnumerator LimitDestroy()
+    {
+        yield return new WaitForSeconds(destroyTime);
+        DestroyObject();
+    }
+
+    private void DestroyObject()
+    {
+        Destroy(gameObject);
+        if(objInstance != null)
+        {
+            objInstance.AddPosition(InstancePosition);
         }
     }
 }
