@@ -12,7 +12,6 @@ public class Player : MonoBehaviour
     [SerializeField] private Human human;
     [SerializeField] private Machine DefaultMachine;
     [SerializeField] private SpeedMater mater;
-    [SerializeField] private CinemachineVirtualCamera pauseCamera;
     [SerializeField] private CinemachineVirtualCamera startCamera;
 
     //conditionが切り替わった時に処理させる条件式に使う比較変数
@@ -20,6 +19,7 @@ public class Player : MonoBehaviour
 
     #region プロパティ
     public Machine Machine { set; get; }
+    public Machine LastRideMachine { set; get; }
     public Condition PlayerCondition { set; get; } = Condition.Machine;
     #endregion
 

@@ -42,6 +42,11 @@ public class Human : Control
     #region public
     public override void Controller()
     {
+        if(StateManager.State != StateManager.GameState.Game)
+        {
+            return;
+        }
+
         //降車時処理
         if (!exitMachineProcess)
         {
@@ -239,6 +244,7 @@ public class Human : Control
             humanCamera.Priority = 1;
             //マシンのカメラ優先度を上げる
             machine.MachineCamera.Priority = 10;
+            player.LastRideMachine = machine;
             //降車後の処理フラグをFalseに
             exitMachineProcess = false;
         }

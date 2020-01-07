@@ -12,6 +12,7 @@ TagManager:
   - InfluenceObject
   - RideTrigger
   - Front
+  - MainGameUI
   layers:
   - Default
   - TransparentFX

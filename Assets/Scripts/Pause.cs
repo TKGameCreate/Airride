@@ -22,6 +22,7 @@ public class Pause : MonoBehaviour
     private int selectNo = 0;
     private float interval = 0.25f;
     private bool selectCoolDown = false;
+    private float coolDownTimMeasure = 0;
 
     public void ResetPause()
     {
@@ -33,7 +34,17 @@ public class Pause : MonoBehaviour
         selectMode[selectNo].sprite = selectY[selectNo];
         speedMater.gameObject.SetActive(false);
         selectCoolDown = false;
-        getItemDisplay.SetDisplay();
+        if(player.Machine != null)
+        {
+            //playerの状態がMachineの場合
+            getItemDisplay.gameObject.SetActive(true);
+            getItemDisplay.SetDisplay();
+        }
+        else
+        {
+            //playerの状態がHumanの場合
+            getItemDisplay.gameObject.SetActive(false);
+        }
     }
 
     public void EndPause()
@@ -83,14 +94,19 @@ public class Pause : MonoBehaviour
 
     private void SetSprite()
     {
-        StartCoroutine(Interval());
+        selectCoolDown = true;
         selectMode[selectNo].sprite = selectN[selectNo];
     }
-
-    private IEnumerator Interval()
+    private void Update()
     {
-        selectCoolDown = true;
-        yield return new WaitForSecondsRealtime(interval);
-        selectCoolDown = false;
+        if (selectCoolDown)
+        {
+            coolDownTimMeasure += Time.unscaledDeltaTime;
+            if(coolDownTimMeasure > interval)
+            {
+                selectCoolDown = false;
+                coolDownTimMeasure = 0;
+            }
+        }
     }
 }

@@ -1,5 +1,8 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
+using System.Collections;
 
 /// <summary>
 /// 時間の制御
@@ -11,16 +14,19 @@ public class StateManager : MonoBehaviour
         Start,
         Ready,
         Game,
+        SetEnd,
         End,
         Pause
     }
 
+    [SerializeField] private Player player;
     [SerializeField] private TextMeshProUGUI countDownText;
     [SerializeField] private TextMeshProUGUI timeText;
     [SerializeField] private RectTransform pauseDisplayUI;
     [SerializeField] private float time = 180;
     [SerializeField] private StartUIAnimation startUI;
     [SerializeField] private Pause pause;
+    [SerializeField] private Result result;
 
     private GameState pauseBeforeState = GameState.Game;
     private float countDown = 4;
@@ -77,11 +83,20 @@ public class StateManager : MonoBehaviour
                 if (time <= 0)
                 {
                     timeText.gameObject.SetActive(false);
-                    State = GameState.End;
+                    State = GameState.SetEnd;
                 }
                 break;
-            case GameState.End:
+            case GameState.SetEnd:
                 Time.timeScale = 0;
+                result.gameObject.SetActive(true);
+                result.DisplayResult();
+                State = GameState.End;
+                break;
+            case GameState.End:
+                if (InputManager.Instance.InputA(InputType.Down))
+                {
+                    AirrideSceneManager.Instance.LoadScene(Scene.CityTrial);
+                }
                 break;
             case GameState.Pause:
                 PauseMove();

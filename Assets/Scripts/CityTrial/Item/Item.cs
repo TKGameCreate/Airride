@@ -60,6 +60,10 @@ public abstract class Item : MonoBehaviour
 
     private void PlayerFrontRotation()
     {
+        if (StateManager.State != StateManager.GameState.Game)
+        {
+            return;
+        }
         //カメラの方向に回転（常に正面を向くように）
         Quaternion lockRotation = Quaternion.LookRotation(Camera.main.transform.position - transform.position, Vector3.up);
 

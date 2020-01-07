@@ -34,9 +34,16 @@ public class LightStar : Machine
         }
     }
 
-    protected override void Start()
+    public void SetPlayer()
     {
         Player = defaultPlayer;
+        Player.LastRideMachine = this;
+        Player.Machine = this;
+    }
+
+    protected override void Start()
+    {
+        SetPlayer();
         base.Start();
     }
 }
