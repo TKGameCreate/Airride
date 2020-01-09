@@ -8,10 +8,12 @@ public class LightStar : Machine
 
     public override void Controller()
     {
+        ChackPauseEngine();
         if (StateManager.State == StateManager.GameState.Game)
         {
             Move();
             GetOff();
+            EngineSound();
             rbody.constraints = RigidbodyConstraints.FreezeRotation;
         }
         else
@@ -43,6 +45,7 @@ public class LightStar : Machine
 
     protected override void Start()
     {
+        engineAudioSource.Play();
         SetPlayer();
         base.Start();
     }

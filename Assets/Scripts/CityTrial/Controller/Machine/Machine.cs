@@ -6,20 +6,22 @@ using Cinemachine;
 public class Machine : Control
 {
     #region const
-    const float chargeDashPossible = 0.75f; //チャージダッシュ可能量
-    const float exitMachineVertical = -0.9f; //降車時スティック最低入力量
-    const float chargeUnderPower = 50000.0f; //charge中に下に加える力
-    const float flyWeightMag = 100f; //滑空時の落下倍率
-    const float flyChargeSpeed = 1500f; //滑空中の自動チャージ速度分率
-    const float dashBoardMag = 2.5f; //ダッシュボード倍率
-    const float GetOffPossibleTime = 2.0f; //乗車してから降車可能までの時間
-    const float itemInsPlusYPos = 2.5f; //降りた時アイテムがインスタンス化されるY軸ポジションのプラス値
-    const int defaultStatus = -2; //アイテム取得数デフォルト値
+    private const float chargeDashPossible = 0.75f; //チャージダッシュ可能量
+    private const float exitMachineVertical = -0.9f; //降車時スティック最低入力量
+    private const float chargeUnderPower = 50000.0f; //charge中に下に加える力
+    private const float flyWeightMag = 100f; //滑空時の落下倍率
+    private const float flyChargeSpeed = 1500f; //滑空中の自動チャージ速度分率
+    private const float dashBoardMag = 2.5f; //ダッシュボード倍率
+    private const float itemInsPlusYPos = 2.5f; //降りた時アイテムがインスタンス化されるY軸ポジションのプラス値
+    private const float maxPitch = 2.0f; //最高ピッチ
+    private const float maxPitchSpeed = 200.0f; //最高ピッチ速度
+    private const int defaultStatus = -2; //アイテム取得数デフォルト値
     public const int limitStatus = 16; //アイテム取得数下限上限
     #endregion
 
     #region Serialize
     [SerializeField] protected bool debug = false;
+    [SerializeField] protected AudioSource engineAudioSource;
     [SerializeField] protected StateManager state;
     [SerializeField] protected MachineStatus status;
     [SerializeField] private CinemachineVirtualCamera vcamera;
@@ -46,6 +48,13 @@ public class Machine : Control
             return status;
         }
     }
+    public AudioSource EngineAudio
+    {
+        get
+        {
+            return engineAudioSource;
+        }
+    }
     public float SaveSpeed { get; private set; } = 0;
     public CinemachineVirtualCamera MachineCamera
     {
@@ -67,6 +76,7 @@ public class Machine : Control
 
         Move();
         GetOff();
+        EngineSound();
 
         if (debug)
         {
@@ -417,8 +427,26 @@ public class Machine : Control
             //マシンの割り当てを削除
             Player.Machine = null;
             Player = null;
+            engineAudioSource.Stop();
             return;
         }
+    }
+
+    protected void ChackPauseEngine()
+    {
+        if (Time.timeScale != 1)
+        {
+            engineAudioSource.Pause();
+        }
+        else
+        {
+            engineAudioSource.UnPause();
+        }
+    }
+
+    protected void EngineSound()
+    {
+        engineAudioSource.pitch = Mathf.Clamp(1 + rbody.velocity.magnitude * (maxPitch / maxPitchSpeed), 1, maxPitch);
     }
 
     /// <summary>

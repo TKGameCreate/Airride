@@ -10,6 +10,8 @@ public class ItemBox : MonoBehaviour
     [SerializeField] private Rigidbody rbody;
     [SerializeField] private Renderer myRenderer;
     [SerializeField] private List<Material> materialList = new List<Material>(); //セットするマテリアルのリスト
+    [SerializeField] private AudioClip damageSE = null;
+    [SerializeField] private AudioClip breakSE = null; 
     [Range(1.1f, 5.0f)][SerializeField] private float firstMaterialDiv; //2段階目マテリアルを判定する際に割る数
     [Range(1.1f, 5.0f)][SerializeField] private float secondMaterialDiv; //３段階目マテリアルを判定する際に割る数
     [SerializeField] private float defHP; //初期HP0.
@@ -53,6 +55,7 @@ public class ItemBox : MonoBehaviour
                 int index = Random.Range(0, itemList.ItemLength); //生成するアイテムを決める
                 itemList.InstantiateItem(transform.position, index, generateNum, i);
             }
+            AudioManager.Instance.PlaySE(breakSE);
             DestroyObject();
         }
     }
@@ -77,6 +80,7 @@ public class ItemBox : MonoBehaviour
         if (hitPoint < 1)
         {
             generate = true;
+            return;
         }
         else if (hitPoint < defHP / firstMaterialDiv && hitPoint > defHP / secondMaterialDiv)
         {
@@ -90,6 +94,7 @@ public class ItemBox : MonoBehaviour
         {
             myRenderer.material = materialList[0];
         }
+        AudioManager.Instance.PlaySE(damageSE);
     }
 
     IEnumerator LimitDestroy()

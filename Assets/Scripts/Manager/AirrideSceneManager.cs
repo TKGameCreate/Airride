@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -24,7 +25,7 @@ public class AirrideSceneManager
     }
     #endregion
 
-    public void LoadScene(Scene scene)
+    public void LoadScene(AirrideScene scene)
     {
         if(Time.timeScale != 1)
         {
@@ -32,9 +33,22 @@ public class AirrideSceneManager
         }
         SceneManager.LoadScene((int)scene);
     }
+    
+    public int SceneIndex()
+    {
+        string sceneName = SceneManager.GetActiveScene().name;
+        foreach(var scene in Enum.GetValues(typeof(AirrideScene)))
+        {
+            if(scene.ToString() == sceneName)
+            {
+                return (int)scene;
+            }
+        }
+        return 0;
+    }
 }
 
-public enum Scene : int
+public enum AirrideScene : int
 {
     Title = 0,
     CityTrial = 1,

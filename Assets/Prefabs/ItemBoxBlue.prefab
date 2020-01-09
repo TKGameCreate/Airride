@@ -128,6 +128,8 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 708033d055f9d494e95eedabcbf98ff2, type: 2}
   - {fileID: 2100000, guid: a96361497c9489e4ba9dc828c524b0a3, type: 2}
   - {fileID: 2100000, guid: 97469684426a0d344b802161d5c1ced6, type: 2}
+  damageSE: {fileID: 8300000, guid: 3fdb0621421c6ae44a4ca32607714a4d, type: 3}
+  breakSE: {fileID: 8300000, guid: b0cd4f74b96e3ba40b955b9ea4594f24, type: 3}
   firstMaterialDiv: 2
   secondMaterialDiv: 3
   defHP: 100

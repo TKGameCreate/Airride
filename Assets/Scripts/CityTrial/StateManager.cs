@@ -95,7 +95,7 @@ public class StateManager : MonoBehaviour
             case GameState.End:
                 if (InputManager.Instance.InputA(InputType.Down))
                 {
-                    AirrideSceneManager.Instance.LoadScene(Scene.CityTrial);
+                    AirrideSceneManager.Instance.LoadScene(AirrideScene.CityTrial);
                 }
                 break;
             case GameState.Pause:
@@ -113,6 +113,7 @@ public class StateManager : MonoBehaviour
         pauseUIActive = false;
         Time.timeScale = 1;
         pause.EndPause();
+        AudioManager.Instance.UnPauseBGM();
         State = pauseBeforeState;
     }
 
@@ -153,6 +154,7 @@ public class StateManager : MonoBehaviour
                 pause.ResetPause();
                 pauseBeforeState = State;
                 State = GameState.Pause;
+                AudioManager.Instance.PauseBGM();
             }
             pauseDisplayUI.gameObject.SetActive(pauseUIActive);
         }

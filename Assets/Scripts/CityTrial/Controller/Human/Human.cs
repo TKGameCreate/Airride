@@ -244,6 +244,8 @@ public class Human : Control
             humanCamera.Priority = 1;
             //マシンのカメラ優先度を上げる
             machine.MachineCamera.Priority = 10;
+            //エンジン音の再生
+            machine.EngineAudio.Play();
             player.LastRideMachine = machine;
             //降車後の処理フラグをFalseに
             exitMachineProcess = false;

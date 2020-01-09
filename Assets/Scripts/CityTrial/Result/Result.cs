@@ -6,6 +6,7 @@ public class Result : MonoBehaviour
 {
     [SerializeField] private Camera mainCamera = null;
     [SerializeField] private Camera resultCamera = null;
+    [SerializeField] private AudioClip resultBGM = null;
     [SerializeField] private Vector3 instancePosition = Vector3.zero;
     [SerializeField] private ResultGetItemList getItemList = null;
     [SerializeField] private Player player = null;
@@ -15,6 +16,9 @@ public class Result : MonoBehaviour
 
     public void DisplayResult()
     {
+        //リザルトBGMの再生
+        AudioManager.Instance.PlayBGM(resultBGM);
+
         GameObject[] mainGameUIs = GameObject.FindGameObjectsWithTag("MainGameUI");
         foreach(GameObject ui in mainGameUIs)
         {
