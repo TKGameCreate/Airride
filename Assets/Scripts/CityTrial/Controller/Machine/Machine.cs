@@ -22,6 +22,7 @@ public class Machine : Control
     #region Serialize
     [SerializeField] protected bool debug = false;
     [SerializeField] protected AudioSource engineAudioSource;
+    [SerializeField] protected AudioClip groundSE;
     [SerializeField] protected StateManager state;
     [SerializeField] protected MachineStatus status;
     [SerializeField] private CinemachineVirtualCamera vcamera;
@@ -277,6 +278,33 @@ public class Machine : Control
     public float Status(StatusType name)
     {
         return statusList[(int)name];
+    }
+
+
+    /// <summary>
+    /// 接地判定
+    /// </summary>
+    /// <param name="other">地面</param>
+    public void OnGround(Collider other)
+    {
+        if (other.transform.tag == "StageObject" || other.transform.tag == "NotBackSObject")
+        {
+            //空中から接地した瞬間
+            if (!onGround)
+            {
+                //接地SEを再生
+                AudioManager.Instance.PlaySE(groundSE);
+            }
+            onGround = true;
+        }
+    }
+
+    public void ExitGround(Collider other)
+    {
+        if (other.transform.tag == "StageObject" || other.transform.tag == "NotBackSObject")
+        {
+            onGround = false;
+        }
     }
     #endregion
     #endregion
@@ -567,25 +595,5 @@ public class Machine : Control
             speed *= dashBoardMag;
         }
     }
-    /// <summary>
-    /// 接地判定
-    /// </summary>
-    /// <param name="collision">地面</param>
-    protected virtual void OnCollisionStay(Collision collision)
-    {
-        if (collision.transform.tag == "StageObject" || collision.transform.tag == "NotBackSObject")
-        {
-            onGround = true;
-        }
-    }
-
-    protected virtual void OnCollisionExit(Collision collision)
-    {
-        if (collision.transform.tag == "StageObject" || collision.transform.tag == "NotBackSObject")
-        {
-            onGround = false;
-        }
-    }
-
     #endregion
 }
