@@ -46,6 +46,7 @@ public class LightStar : Machine
     protected override void Start()
     {
         engineAudioSource.Play();
+        chargeAudioSource.Play();
         SetPlayer();
         base.Start();
     }

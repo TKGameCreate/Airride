@@ -150,6 +150,12 @@ Transform:
   m_Father: {fileID: 1574225807}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &134908156 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 3684031461147998754, guid: aaa0df1af4593fa48bbfa4d38b85e0b7,
+    type: 3}
+  m_PrefabInstance: {fileID: 393630305233500925}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &152630297
 GameObject:
   m_ObjectHideFlags: 0
@@ -1595,7 +1601,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: aa88ff08aaf0d4d42bcae72b16dbfe8c, type: 3}
+  m_audioClip: {fileID: 8300000, guid: d632022dd67d98b41b6b48d009fdcefc, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -3002,7 +3008,7 @@ MonoBehaviour:
   seSource: {fileID: 902505469}
   bgmList:
   - {fileID: 8300000, guid: 2137ca79c7a2c604a85fe3d1c7e39156, type: 3}
-  - {fileID: 8300000, guid: 56fc6f6e07482b14eb898f123e943672, type: 3}
+  - {fileID: 8300000, guid: 60c084d7a1ea5db41a69898f64984f25, type: 3}
   - {fileID: 8300000, guid: 065f6f07ba0f79f4e926032866cf5885, type: 3}
   systemSEList: []
 --- !u!4 &1960374847
@@ -3054,6 +3060,7 @@ MonoBehaviour:
   rbody: {fileID: 1986858291}
   debug: 1
   engineAudioSource: {fileID: 0}
+  chargeAudioSource: {fileID: 0}
   groundSE: {fileID: 0}
   state: {fileID: 1328166210}
   status: {fileID: 11400000, guid: 9fa21f887e59e594682328d834cdb990, type: 2}
@@ -3285,7 +3292,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2116030893}
-  m_LocalRotation: {x: 0.026945572, y: 0.000000017200152, z: -4.6434498e-10, w: 0.99963695}
+  m_LocalRotation: {x: 0.026945572, y: 0.000000017200156, z: -4.6439316e-10, w: 0.99963695}
   m_LocalPosition: {x: 0, y: 2.2657168, z: -4.104397}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -3518,10 +3525,14 @@ PrefabInstance:
       propertyPath: groundSE
       value: 
       objectReference: {fileID: 8300000, guid: 18b67932e0fc7c14aa3cfa6d9fb7e13e, type: 3}
+    - target: {fileID: 994506173, guid: aaa0df1af4593fa48bbfa4d38b85e0b7, type: 3}
+      propertyPath: chargeAudioSource
+      value: 
+      objectReference: {fileID: 134908156}
     - target: {fileID: 4387788850854779893, guid: aaa0df1af4593fa48bbfa4d38b85e0b7,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -4.6434498e-10
+      value: -4.6439316e-10
       objectReference: {fileID: 0}
     - target: {fileID: 4387788850854779893, guid: aaa0df1af4593fa48bbfa4d38b85e0b7,
         type: 3}
@@ -3531,7 +3542,7 @@ PrefabInstance:
     - target: {fileID: 4387788850854779893, guid: aaa0df1af4593fa48bbfa4d38b85e0b7,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000017200152
+      value: 0.000000017200156
       objectReference: {fileID: 0}
     - target: {fileID: 1630245327, guid: aaa0df1af4593fa48bbfa4d38b85e0b7, type: 3}
       propertyPath: m_LocalRotation.x
@@ -3615,6 +3626,11 @@ PrefabInstance:
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 5760225827207554747, guid: aaa0df1af4593fa48bbfa4d38b85e0b7,
+        type: 3}
+      propertyPath: collisionSE
+      value: 
+      objectReference: {fileID: 8300000, guid: 3187e2b2945438140a8242fd422bd6bc, type: 3}
     - target: {fileID: 1926660678000078658, guid: aaa0df1af4593fa48bbfa4d38b85e0b7,
         type: 3}
       propertyPath: m_LocalPosition.y
@@ -3644,6 +3660,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsTrigger
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3684031461147998754, guid: aaa0df1af4593fa48bbfa4d38b85e0b7,
+        type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3684031461147998754, guid: aaa0df1af4593fa48bbfa4d38b85e0b7,
+        type: 3}
+      propertyPath: m_Volume
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 471934182, guid: aaa0df1af4593fa48bbfa4d38b85e0b7, type: 3}

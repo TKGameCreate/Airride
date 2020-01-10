@@ -34,6 +34,7 @@ public abstract class Item : MonoBehaviour
     [SerializeField] private Rigidbody rbody;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Sprite defSprite;
+    [SerializeField] private AudioClip catchSE;
     [SerializeField] protected ItemMode mode = ItemMode.Buff;
     #endregion
 
@@ -81,6 +82,7 @@ public abstract class Item : MonoBehaviour
         DestroyObject();
         UpItemImageDisplay(machine);
         UpItemNameDisplay();
+        AudioManager.Instance.PlaySE(catchSE);
         limit = machine.ItemCount(itemName, mode);
     }
 

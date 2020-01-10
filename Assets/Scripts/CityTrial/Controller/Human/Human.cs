@@ -231,8 +231,8 @@ public class Human : Control
             //マシンを割り当て
             Machine machine = machineObject.GetComponent<Machine>();
             player.Machine = machine;
-            //マシンのPlayerを割り当て
-            machine.Player = player;
+            //マシンの乗車処理を行う
+            machine.RideThisMachine(player);
             //当たり判定をなくす
             LayerSetting(false);
             rbody.constraints = RigidbodyConstraints.FreezeAll;
@@ -242,10 +242,6 @@ public class Human : Control
             onGroundCollider.gameObject.SetActive(false);
             //カメラの優先度を最低に
             humanCamera.Priority = 1;
-            //マシンのカメラ優先度を上げる
-            machine.MachineCamera.Priority = 10;
-            //エンジン音の再生
-            machine.EngineAudio.Play();
             player.LastRideMachine = machine;
             //降車後の処理フラグをFalseに
             exitMachineProcess = false;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using System.Collections;
 
 public class Machine : Control
 {
@@ -22,6 +23,7 @@ public class Machine : Control
     #region Serialize
     [SerializeField] protected bool debug = false;
     [SerializeField] protected AudioSource engineAudioSource;
+    [SerializeField] protected AudioSource chargeAudioSource;
     [SerializeField] protected AudioClip groundSE;
     [SerializeField] protected StateManager state;
     [SerializeField] protected MachineStatus status;
@@ -41,7 +43,7 @@ public class Machine : Control
     #endregion
 
     #region プロパティ
-    public Player Player { set; get; }
+    public Player Player { protected set; get; }
     public MachineStatus MachineStatus
     {
         get
@@ -49,21 +51,7 @@ public class Machine : Control
             return status;
         }
     }
-    public AudioSource EngineAudio
-    {
-        get
-        {
-            return engineAudioSource;
-        }
-    }
     public float SaveSpeed { get; private set; } = 0;
-    public CinemachineVirtualCamera MachineCamera
-    {
-        get
-        {
-            return vcamera;
-        }
-    }
     #endregion
 
     #region public
@@ -152,7 +140,7 @@ public class Machine : Control
     /// </summary>
     /// <param name="name">変動させるステータス</param>
     /// <param name="up">上昇か下降か</param>
-    public void ChangeStatus(StatusType name, ItemMode mode, float mag = 0)
+    public void ChangeStatus(StatusType name, ItemMode mode, float mag = 1)
     {
         bool plus;
         //Statusが基準ステータスより高かったら
@@ -306,6 +294,17 @@ public class Machine : Control
             onGround = false;
         }
     }
+
+    public void RideThisMachine(Player _player)
+    {
+        //マシンのPlayerを割り当て
+        Player = _player;
+        //マシンのカメラ優先度を上げる
+        vcamera.Priority = 10;
+        //エンジン音の再生
+        engineAudioSource.Play();
+        chargeAudioSource.Play();
+    }
     #endregion
     #endregion
 
@@ -344,6 +343,11 @@ public class Machine : Control
         {
             chargeAmount += Status(StatusType.ChargeSpeed) * Time.deltaTime;
         }
+
+        float normalize = NormalizeCharge();
+        chargeAudioSource.volume = normalize;
+        chargeAudioSource.pitch = Mathf.Clamp(1 + normalize * 2, 1, maxPitch + 1);
+
     }
 
     /// <summary>
@@ -378,6 +382,8 @@ public class Machine : Control
         {
             speed += Status(StatusType.Acceleration) * chargeAmount;
         }
+        chargeAudioSource.volume = 0;
+        StartCoroutine(PitchResetOneFlameLater());
         //チャージ量をリセット
         chargeAmount = 1;
         nowBrake = false;
@@ -441,8 +447,8 @@ public class Machine : Control
         {
             //アイテムを落とす
             DropItem();
-            //マシンのカメラを非表示に
-            vcamera.Priority = 1;//優先度を最低に
+            vcamera.Priority = 1;//マシンカメラの優先度を最低に
+            chargeAmount = 0;
             //入力値のリセット
             vertical = 0;
             horizontal = 0;
@@ -456,6 +462,8 @@ public class Machine : Control
             Player.Machine = null;
             Player = null;
             engineAudioSource.Stop();
+            chargeAudioSource.volume = 0;
+            chargeAudioSource.Stop();
             return;
         }
     }
@@ -474,7 +482,7 @@ public class Machine : Control
 
     protected void EngineSound()
     {
-        engineAudioSource.pitch = Mathf.Clamp(1 + rbody.velocity.magnitude * (maxPitch / maxPitchSpeed), 1, maxPitch);
+        engineAudioSource.pitch = Mathf.Clamp(1 + rbody.velocity.magnitude * (maxPitch / maxPitchSpeed), 1, maxPitch + 1);
     }
 
     /// <summary>
@@ -594,6 +602,12 @@ public class Machine : Control
             //ダッシュボードに触れたときの速度に倍率をかける
             speed *= dashBoardMag;
         }
+    }
+
+    IEnumerator PitchResetOneFlameLater()
+    {
+        yield return null;
+        chargeAudioSource.pitch = 1;
     }
     #endregion
 }

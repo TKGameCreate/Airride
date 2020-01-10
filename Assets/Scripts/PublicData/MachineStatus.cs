@@ -86,19 +86,14 @@ public class MachineStatus : ScriptableObject
     /// </summary>
     /// <param name="statusType">ステータスタイプ</param>
     /// <returns>アイテム1つにつき、上昇する値</returns>
-    public float PlusStatus(StatusType statusType, float spMag = 0)
+    public float PlusStatus(StatusType statusType, float mag = 1)
     {
         float max = GetStatus(statusType, Type.Max);
         float dNum = GetStatus(statusType, Type.Default);
         float limit = Machine.limitStatus;
-        if (spMag <= 0)
-        {
-            return (max - dNum) / (limit * changeNumMag[(int)statusType]);
-        }
-        else
-        {
-            return (max - dNum) / (limit / spMag);
-        }
+        float plusNum = (max - dNum) / (limit * changeNumMag[(int)statusType]);
+        plusNum *= mag;
+        return plusNum;
     }
 
     /// <summary>
@@ -106,19 +101,14 @@ public class MachineStatus : ScriptableObject
     /// </summary>
     /// <param name="statusType">ステータスタイプ</param>
     /// <returns>アイテム1つにつき、下降する値</returns>
-    public float MinusStatus(StatusType statusType, float spMag = 0)
+    public float MinusStatus(StatusType statusType, float mag = 0)
     {
         float min = GetStatus(statusType, Type.Min);
         float dNum = GetStatus(statusType, Type.Default);
         float limit = Machine.limitStatus;
-        if (spMag <= 0)
-        {
-            return (dNum - min) / (limit * changeNumMag[(int)statusType]);
-        }
-        else
-        {
-            return (dNum - min) / (limit * spMag);
-        }
+        float minusNum = (dNum - min) / (limit * changeNumMag[(int)statusType]);
+        minusNum *= mag;
+        return minusNum;
     }
 
     /// <summary>

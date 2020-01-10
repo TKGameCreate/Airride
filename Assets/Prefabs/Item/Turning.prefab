@@ -132,4 +132,5 @@ MonoBehaviour:
   rbody: {fileID: 3153256297088488685}
   spriteRenderer: {fileID: 6426235237082741369}
   defSprite: {fileID: 21300000, guid: d4784ef0af604274bbe6620ae70eaa47, type: 3}
+  catchSE: {fileID: 8300000, guid: 362335d0f1acaf746b87356d2d08a4dc, type: 3}
   mode: 0

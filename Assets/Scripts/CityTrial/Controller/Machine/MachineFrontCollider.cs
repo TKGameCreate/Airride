@@ -4,6 +4,7 @@ public class MachineFrontCollider : MonoBehaviour
 {
     private const float bound = 500.0f;
     [SerializeField] private Machine machine;
+    [SerializeField] private AudioClip collisionSE;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -15,6 +16,7 @@ public class MachineFrontCollider : MonoBehaviour
 
         if (other.gameObject.tag == "StageObject")
         {
+            AudioManager.Instance.PlaySE(collisionSE);
             machine.Bound(bound, false);
         }
     }
