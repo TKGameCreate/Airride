@@ -10,7 +10,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource bgmSource = null;
     [SerializeField] private AudioSource seSource = null;
     [SerializeField] private List<AudioClip> bgmList = new List<AudioClip>();
-    [SerializeField] private List<AudioClip> systemSEList = new List<AudioClip>();
+    [SerializeField] private List<AudioClip> seList = new List<AudioClip>();
     #endregion
 
     #region Awake
@@ -64,6 +64,15 @@ public class AudioManager : MonoBehaviour
     public void PlaySE(AudioClip se)
     {
         seSource.PlayOneShot(se);
+    }
+
+    public void PlaySystemSE(int playNo)
+    {
+        if(playNo > seList.Count - 1)
+        {
+            return;
+        }
+        seSource.PlayOneShot(seList[playNo]);
     }
     #endregion
 }

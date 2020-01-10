@@ -89,6 +89,7 @@ public class Pause : MonoBehaviour
         {
             return;
         }
+        AudioManager.Instance.PlaySystemSE(0);
         selectMode[selectNo].sprite = selectY[selectNo];
     }
 

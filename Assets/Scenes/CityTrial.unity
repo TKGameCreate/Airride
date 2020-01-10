@@ -1333,7 +1333,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.35
+  m_Volume: 0.34
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -1545,7 +1545,7 @@ MonoBehaviour:
   countDownText: {fileID: 1088079508}
   timeText: {fileID: 1413058865}
   pauseDisplayUI: {fileID: 2053647431}
-  time: 180
+  time: 120
   startUI: {fileID: 463078230}
   pause: {fileID: 1684285491}
   result: {fileID: 1718331206}
@@ -1601,7 +1601,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: d632022dd67d98b41b6b48d009fdcefc, type: 3}
+  m_audioClip: {fileID: 8300000, guid: aa88ff08aaf0d4d42bcae72b16dbfe8c, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -3010,7 +3010,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 2137ca79c7a2c604a85fe3d1c7e39156, type: 3}
   - {fileID: 8300000, guid: 60c084d7a1ea5db41a69898f64984f25, type: 3}
   - {fileID: 8300000, guid: 065f6f07ba0f79f4e926032866cf5885, type: 3}
-  systemSEList: []
+  seList:
+  - {fileID: 8300000, guid: 84c4710514d3d8547b6f30dcaa537862, type: 3}
 --- !u!4 &1960374847
 Transform:
   m_ObjectHideFlags: 0
@@ -3292,7 +3293,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2116030893}
-  m_LocalRotation: {x: 0.026945572, y: 0.000000017200156, z: -4.6439316e-10, w: 0.99963695}
+  m_LocalRotation: {x: 0.026945593, y: -0.000000017200115, z: 4.6285992e-10, w: 0.99963695}
   m_LocalPosition: {x: 0, y: 2.2657168, z: -4.104397}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -3532,17 +3533,17 @@ PrefabInstance:
     - target: {fileID: 4387788850854779893, guid: aaa0df1af4593fa48bbfa4d38b85e0b7,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -4.6439316e-10
+      value: 4.6285992e-10
       objectReference: {fileID: 0}
     - target: {fileID: 4387788850854779893, guid: aaa0df1af4593fa48bbfa4d38b85e0b7,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.026945572
+      value: 0.026945593
       objectReference: {fileID: 0}
     - target: {fileID: 4387788850854779893, guid: aaa0df1af4593fa48bbfa4d38b85e0b7,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000017200156
+      value: -0.000000017200115
       objectReference: {fileID: 0}
     - target: {fileID: 1630245327, guid: aaa0df1af4593fa48bbfa4d38b85e0b7, type: 3}
       propertyPath: m_LocalRotation.x
@@ -3558,7 +3559,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1630245327, guid: aaa0df1af4593fa48bbfa4d38b85e0b7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.034731
+      value: 4.0347314
       objectReference: {fileID: 0}
     - target: {fileID: 1630245327, guid: aaa0df1af4593fa48bbfa4d38b85e0b7, type: 3}
       propertyPath: m_LocalPosition.y

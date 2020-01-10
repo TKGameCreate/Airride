@@ -19,8 +19,8 @@ MonoBehaviour:
   - 250
   acceleration:
   - 2
-  - 8
-  - 32
+  - 10
+  - 64
   turning:
   - 35
   - 115
@@ -31,7 +31,7 @@ MonoBehaviour:
   - 185
   charge:
   - 1.1
-  - 3.5
+  - 2.5
   - 10.5
   chargeSpeed:
   - 0.2
