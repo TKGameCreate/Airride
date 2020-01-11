@@ -113,6 +113,7 @@ public class StateManager : MonoBehaviour
         pauseUIActive = false;
         Time.timeScale = 1;
         pause.EndPause();
+        AudioManager.Instance.PlaySystemSE(0);
         AudioManager.Instance.UnPauseBGM();
         State = pauseBeforeState;
     }
@@ -123,7 +124,9 @@ public class StateManager : MonoBehaviour
     /// <param name="state">現在のステート</param>
     private void PauseMove()
     {
-        if (InputManager.Instance.InputA(InputType.Down))
+        //Aボタンを押したときの処理
+        if (InputManager.Instance.InputA(InputType.Down)
+            && State == GameState.Pause)
         {
             Pause.Mode mode = pause.SelectMode();
             switch (mode)
@@ -140,6 +143,7 @@ public class StateManager : MonoBehaviour
             return;
         }
 
+        //Pauseボタンを押したときの処理
         if (InputManager.Instance.Pause)
         {
             if (State == GameState.Pause)

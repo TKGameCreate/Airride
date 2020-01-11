@@ -13,11 +13,11 @@ public class Pause : MonoBehaviour
 
     [SerializeField] private Player player;
     [SerializeField] private RectTransform speedMater;
-    [SerializeField] private RectTransform getItemStatus;
     [SerializeField] private Sprite[] selectY;
     [SerializeField] private Sprite[] selectN;
     [SerializeField] private Image[] selectMode;
     [SerializeField] private GetItemListDisplay getItemDisplay;
+    [SerializeField] private AudioClip pauseSE;
 
     private int selectNo = 0;
     private float interval = 0.25f;
@@ -26,6 +26,7 @@ public class Pause : MonoBehaviour
 
     public void ResetPause()
     {
+        AudioManager.Instance.PlaySE(pauseSE);
         selectNo = 0;
         for(int i = 0; i < selectMode.Length; i++)
         {

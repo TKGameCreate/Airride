@@ -15,7 +15,7 @@ MonoBehaviour:
   machineName: 0
   maxSpeed:
   - 5
-  - 32
+  - 34
   - 250
   acceleration:
   - 2
@@ -35,7 +35,7 @@ MonoBehaviour:
   - 10.5
   chargeSpeed:
   - 0.2
-  - 1.75
+  - 0.9
   - 4.5
   weight:
   - 1

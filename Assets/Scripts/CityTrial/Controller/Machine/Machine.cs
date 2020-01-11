@@ -65,6 +65,7 @@ public class Machine : Control
 
         Move();
         GetOff();
+        ChackPauseSound();
         EngineSound();
 
         if (debug)
@@ -468,15 +469,17 @@ public class Machine : Control
         }
     }
 
-    protected void ChackPauseEngine()
+    protected void ChackPauseSound()
     {
         if (Time.timeScale != 1)
         {
             engineAudioSource.Pause();
+            chargeAudioSource.Pause();
         }
         else
         {
             engineAudioSource.UnPause();
+            chargeAudioSource.UnPause();
         }
     }
 

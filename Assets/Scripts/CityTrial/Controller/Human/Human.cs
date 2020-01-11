@@ -16,6 +16,7 @@ public class Human : Control
     [SerializeField] private Machine DefaultMachine;
     [SerializeField] private OnGroundHuman onGroundCollider;
     [SerializeField] private CinemachineVirtualCamera humanCamera;
+    [SerializeField] private AudioClip jumpSE;
     [SerializeField] private float speed = 5.0f; //速度
     [SerializeField] private float rotSpeed = 10.0f; //回転速度
     [SerializeField] private float onGroundRTime;
@@ -93,6 +94,7 @@ public class Human : Control
                 anim.SetBool("getOff", true);
                 ridePossible = false;
                 getOffForce = false;
+                AudioManager.Instance.PlaySE(jumpSE);
                 return;
             case AnimationType.OnGround:
                 if (anim.GetBool("getOff"))
@@ -271,6 +273,11 @@ public class Human : Control
     #endregion
 
     #region AnimationEvent
+    public void JumpSE()
+    {
+        AudioManager.Instance.PlaySE(jumpSE);
+    }
+
     public void JumpEndAnimation()
     {
         ridePossible = true;
