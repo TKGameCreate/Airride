@@ -637,7 +637,7 @@ public class Machine : Control
             Item item = other.gameObject.GetComponent<Item>();
             item.CatchItem(this); //入手したときの処理
         }
-
+        
         if (other.gameObject.tag == "InfluenceObject")
         {
             //ダッシュボードに触れたときの速度に倍率をかける
