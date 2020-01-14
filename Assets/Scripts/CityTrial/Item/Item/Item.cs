@@ -79,11 +79,11 @@ public abstract class Item : MonoBehaviour
     /// </summary>
     public virtual void CatchItem(Machine machine)
     {
-        DestroyObject();
         UpItemImageDisplay(machine);
         UpItemNameDisplay();
         AudioManager.Instance.PlaySE(catchSE);
         limit = machine.ItemCount(itemName, mode);
+        DestroyObject();
     }
 
     public virtual void ChangeStatus(Machine machine, ItemMode itemMode){ }

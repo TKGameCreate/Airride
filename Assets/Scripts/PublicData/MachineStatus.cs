@@ -101,7 +101,7 @@ public class MachineStatus : ScriptableObject
     /// </summary>
     /// <param name="statusType">ステータスタイプ</param>
     /// <returns>アイテム1つにつき、下降する値</returns>
-    public float MinusStatus(StatusType statusType, float mag = 0)
+    public float MinusStatus(StatusType statusType, float mag = 1)
     {
         float min = GetStatus(statusType, Type.Min);
         float dNum = GetStatus(statusType, Type.Default);
