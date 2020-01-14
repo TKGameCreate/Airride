@@ -26,12 +26,11 @@ public class Machine : Control
     [SerializeField] protected AudioSource engineAudioSource;
     [SerializeField] protected AudioSource chargeAudioSource;
     [SerializeField] protected AudioClip groundSE;
-    [SerializeField] protected StateManager state;
     [SerializeField] protected MachineStatus status;
     [SerializeField] private CinemachineVirtualCamera vcamera;
     [SerializeField] private ItemList itemList;
     [SerializeField] private DebugText dText;
-    [SerializeField] private int maxGenerate = 4; 
+    [SerializeField] private int maxGenerate = 4;
     #endregion
 
     #region 変数
