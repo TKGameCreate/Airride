@@ -12,6 +12,7 @@
     {
         if (!startCol)
         {
+            displayTime /= RightGetItemDisplay.RightGetItemUIs.Count;
             DestroyCoroutine();
             anim.SetTrigger("Start");
             startCol = true;

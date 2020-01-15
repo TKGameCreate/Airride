@@ -129,8 +129,8 @@ MonoBehaviour:
     type: 3}
   rightGetItemUIPrefab: {fileID: 4086321404991824539, guid: c6f8a8df26815bc45ad095fd3137ee2d,
     type: 3}
+  itemSprite: {fileID: 21300000, guid: 52fd1d2d6fe83694cbf379d5246aab6a, type: 3}
   rbody: {fileID: 7669628635491875785}
   spriteRenderer: {fileID: 4460203798428300713}
-  defSprite: {fileID: 21300000, guid: 52fd1d2d6fe83694cbf379d5246aab6a, type: 3}
   catchSE: {fileID: 8300000, guid: 362335d0f1acaf746b87356d2d08a4dc, type: 3}
   mode: 0

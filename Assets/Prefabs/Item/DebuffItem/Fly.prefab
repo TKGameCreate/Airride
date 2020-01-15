@@ -106,7 +106,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 700646888896668721}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 7818f63fe2f5f88498a2eb4ccef2d727, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -127,10 +127,10 @@ MonoBehaviour:
   canvas: {fileID: 6228707164483382435, guid: 2e93bf0b5cb929743b82fd3ba9eea3f5, type: 3}
   overHeadPrefab: {fileID: 5576120153606512569, guid: 4e37362171909f24985810ba2d13da62,
     type: 3}
-  rightGetItemUIPrefab: {fileID: 4086321404991824539, guid: 1a64bbbf43e25584886adc32e2536bd1,
+  rightGetItemUIPrefab: {fileID: 924732779143751423, guid: 3fd385f108d1a04478ac79856f762440,
     type: 3}
+  itemSprite: {fileID: 21300000, guid: 33b7c209fa33ac1409114655d4012f8e, type: 3}
   rbody: {fileID: 5197157038735337094}
   spriteRenderer: {fileID: 5748785910787872767}
-  defSprite: {fileID: 21300000, guid: b6a5830051a6fd947ac663a789754592, type: 3}
   catchSE: {fileID: 8300000, guid: 17675e8a3d3774744a1d5a1e608b34a2, type: 3}
   mode: 1

@@ -4,7 +4,6 @@ using UnityEngine.UI;
 public class OverHeadGetItemUI : GetItemUI
 {
     [SerializeField] private Image image;
-    [SerializeField] private Sprite[] itemImages; //自機の上に表示するアイテムの画像
     [SerializeField] private float yPos;
     public Machine Machine { set; private get; } //アイテムを取得したプレイヤーの座標
 
@@ -30,9 +29,9 @@ public class OverHeadGetItemUI : GetItemUI
     /// 表示する画像のセット
     /// </summary>
     /// <param name="itemName">アイテム</param>
-    public void SetSprite(ItemName itemName)
+    public void SetSprite(ItemName itemName, Sprite itemSprite)
     {
-        image.sprite = itemImages[(int)itemName];
+        image.sprite = itemSprite;
     }
 
     public override void FinishDestroy()

@@ -127,10 +127,10 @@ MonoBehaviour:
   canvas: {fileID: 6228707164483382435, guid: 2e93bf0b5cb929743b82fd3ba9eea3f5, type: 3}
   overHeadPrefab: {fileID: 5576120153606512569, guid: 4e37362171909f24985810ba2d13da62,
     type: 3}
-  rightGetItemUIPrefab: {fileID: 4086321404991824539, guid: c6f8a8df26815bc45ad095fd3137ee2d,
+  rightGetItemUIPrefab: {fileID: 3570245501027836814, guid: b4e6c6606803447449b690f05b8e3402,
     type: 3}
+  itemSprite: {fileID: 21300000, guid: 327af18013f5d0341840f847acd4a8b1, type: 3}
   rbody: {fileID: 1199680970777269159}
   spriteRenderer: {fileID: 5128529456662257095}
-  defSprite: {fileID: 21300000, guid: 52fd1d2d6fe83694cbf379d5246aab6a, type: 3}
   catchSE: {fileID: 8300000, guid: 17675e8a3d3774744a1d5a1e608b34a2, type: 3}
   mode: 1

@@ -7,11 +7,13 @@ public class RightGetItemDisplay : MonoBehaviour
 
     private void Start()
     {
+        //リストの初期化
         RightGetItemUIs.Clear();
     }
 
     private void Update()
     {
+        //リストが空だったら処理しない
         if(!(RightGetItemUIs?.Count > 0))
         {
             return;
@@ -19,6 +21,7 @@ public class RightGetItemDisplay : MonoBehaviour
 
         if(!RightGetItemUIs[0].gameObject.activeSelf)
         {
+            //リストの先頭を画面上に表示
             RightGetItemUIs[0].gameObject.SetActive(true);
         }
     }

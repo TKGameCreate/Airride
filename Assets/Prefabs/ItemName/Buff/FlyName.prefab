@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2560989919272763212}
   - component: {fileID: 4086321404991824539}
   m_Layer: 5
-  m_Name: WeightName
+  m_Name: FlyName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -68,7 +68,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: "\u30AA\u30E2\u30B5"
+  m_text: "\u30D2\u30B3\u30A6"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: fcc66513ad611e944aec2993766b0b4f, type: 2}
   m_sharedMaterial: {fileID: 6616084618791974895, guid: fcc66513ad611e944aec2993766b0b4f,
@@ -78,8 +78,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278227423
-  m_fontColor: {r: 0.8745098, g: 0.5686275, b: 0, a: 1}
+    rgba: 4293787647
+  m_fontColor: {r: 1, g: 1, b: 0.92941177, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -194,7 +194,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 2560989919272763212}
   rectTransform: {fileID: 4361671798042970248}
-  displayTime: 2
+  displayTime: 1
 --- !u!1 &4361671799139088143
 GameObject:
   m_ObjectHideFlags: 0

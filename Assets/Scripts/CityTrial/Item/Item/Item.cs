@@ -31,9 +31,9 @@ public abstract class Item : MonoBehaviour
     [SerializeField] private Canvas canvas;
     [SerializeField] private OverHeadGetItemUI overHeadPrefab;
     [SerializeField] private RightGetItemUI rightGetItemUIPrefab;
+    [SerializeField] private Sprite itemSprite;
     [SerializeField] private Rigidbody rbody;
     [SerializeField] private SpriteRenderer spriteRenderer;
-    [SerializeField] private Sprite defSprite;
     [SerializeField] private AudioClip catchSE;
     [SerializeField] protected ItemMode mode = ItemMode.Buff;
     #endregion
@@ -151,7 +151,7 @@ public abstract class Item : MonoBehaviour
         var pref = Instantiate(overHeadPrefab) as OverHeadGetItemUI;
         var canvasPref = Instantiate(canvas) as Canvas;
         pref.transform.SetParent(canvasPref.transform, false);
-        pref.SetSprite(itemName);
+        pref.SetSprite(itemName, itemSprite);
         pref.Machine = machine;
     }
 
