@@ -168,7 +168,7 @@ public class Human : Control
         //親子関係をPlayerの子供に
         transform.parent = player.transform;
         StartCoroutine(OnGroundResurrection());
-        humanCamera.Priority = 10;
+        humanCamera.Priority = 11;
         //降車後処理の完了
         exitMachineProcess = true;
     }

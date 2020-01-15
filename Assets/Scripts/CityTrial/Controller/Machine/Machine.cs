@@ -27,7 +27,7 @@ public class Machine : Control
     [SerializeField] protected AudioSource chargeAudioSource;
     [SerializeField] protected AudioClip groundSE;
     [SerializeField] protected MachineStatus status;
-    [SerializeField] private CinemachineVirtualCamera vcamera;
+    [SerializeField] protected CinemachineVirtualCamera vcamera;
     [SerializeField] private ItemList itemList;
     [SerializeField] private DebugText dText;
     [SerializeField] private int maxGenerate = 4;
@@ -59,11 +59,7 @@ public class Machine : Control
     #region Control
     public override void Controller()
     {
-        if (!vcamera.gameObject.activeSelf)
-        {
-            vcamera.Priority = 10;
-        }
-
+        Debug.Log(onGround);
         Move();
         GetOff();
         ChackPauseSound();
