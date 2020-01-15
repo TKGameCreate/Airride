@@ -12,6 +12,8 @@
     {
         if (!startCol)
         {
+            //リストのサイズが多い場合（アイテムを多く取得していた場合）、
+            //そのリストサイズに合わせて表示時間を減らす
             displayTime /= RightGetItemDisplay.RightGetItemUIs.Count;
             DestroyCoroutine();
             anim.SetTrigger("Start");
