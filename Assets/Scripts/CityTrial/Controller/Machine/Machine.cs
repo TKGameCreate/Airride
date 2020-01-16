@@ -8,7 +8,6 @@ public class Machine : Control
 {
     #region const
     private const float boundPower = 1000.0f; //バウンド
-    private const float exitMachineVertical = -0.9f; //降車時スティック最低入力量
     private const float chargeUnderPower = 50000.0f; //charge中に下に加える力
     private const float flyWeightMag = 100f; //滑空時の落下倍率
     private const float flyChargeSpeed = 1500f; //滑空中の自動チャージ速度分率
@@ -16,7 +15,9 @@ public class Machine : Control
     private const float itemInsPlusYPos = 2.5f; //降りた時アイテムがインスタンス化されるY軸ポジションのプラス値
     private const float maxPitch = 2.0f; //最高ピッチ
     private const float maxPitchSpeed = 200.0f; //最高ピッチ速度
+    private const float getOffCoolTime = 2.0f; //降りることができるまでのクールダウン
     private const int defaultStatus = -2; //アイテム取得数デフォルト値
+    protected const float exitMachineVertical = -0.9f; //降車時スティック最低入力量
     protected const float chargeDashPossible = 0.75f; //チャージダッシュ可能量
     public const int limitStatus = 16; //アイテム取得数下限上限
     #endregion
@@ -30,6 +31,7 @@ public class Machine : Control
     [SerializeField] protected CinemachineVirtualCamera vcamera;
     [SerializeField] private ItemList itemList;
     [SerializeField] private DebugText dText;
+    [SerializeField] private Transform ridePosition;
     [SerializeField] private int maxGenerate = 4;
     #endregion
 
@@ -38,6 +40,7 @@ public class Machine : Control
     protected float chargeAmount = 1; //チャージ量
     protected List<int> getNumberList = new List<int>(); //取得したアイテムのNoリスト
     protected bool nowBrake = false; //charge中かどうか
+    protected bool getOffPossible = false; //降りれるかどうか
     protected Vector3 chargePos;
     private List<int> getNumItemList = new List<int>();    //アイテムの取得状態
     private List<float> statusList = new List<float>();    //ステータスのバフ状態
@@ -53,6 +56,20 @@ public class Machine : Control
         }
     }
     public float SaveSpeed { get; private set; } = 0;
+    public Vector3 RidePosition
+    {
+        get
+        {
+            if(ridePosition == null)
+            {
+                return Vector3.zero;
+            }
+            else
+            {
+                return ridePosition.localPosition;
+            }
+        }
+    }
     #endregion
 
     #region public
@@ -60,9 +77,13 @@ public class Machine : Control
     public override void Controller()
     {
         Move();
-        GetOff();
         ChackPauseSound();
         EngineSound();
+
+        if(getOffPossible)
+        {
+            GetOff();
+        }
 
         if (debug)
         {
@@ -187,7 +208,7 @@ public class Machine : Control
     /// <returns>Textに表示するSpeed</returns>
     public string SpeedMaterText()
     {
-        float moveSpeed = rbody.velocity.magnitude;
+        float moveSpeed = Mathf.Clamp(rbody.velocity.magnitude, 0, 999);
         float intSpeed = moveSpeed - moveSpeed % 1; //整数部分のみ抽出
         float fewSpeed = moveSpeed % 1; //小数部分のみ抽出
 
@@ -300,6 +321,7 @@ public class Machine : Control
         Player = _player;
         //マシンのカメラ優先度を上げる
         vcamera.Priority = 10;
+        StartCoroutine(GetOffCoolTime());
         //エンジン音の再生
         engineAudioSource.Play();
         chargeAudioSource.Play();
@@ -445,8 +467,9 @@ public class Machine : Control
         {
             //アイテムを落とす
             DropItem();
+            getOffPossible = false;
             vcamera.Priority = 1;//マシンカメラの優先度を最低に
-            chargeAmount = 0;
+            chargeAmount = 1;
             //入力値のリセット
             vertical = 0;
             horizontal = 0;
@@ -463,6 +486,41 @@ public class Machine : Control
             chargeAudioSource.volume = 0;
             chargeAudioSource.Stop();
             return;
+        }
+    }
+
+    protected void DropItem()
+    {
+        if (!(getNumberList?.Count > 0))
+        {
+            return;
+        }
+
+        int getItemSum = getNumberList.Count; //生成可能数合計値
+        if (getItemSum > maxGenerate)
+        {
+            getItemSum = maxGenerate;
+        }
+        //生成数の決定
+        int generateNum = UnityEngine.Random.Range(0, getItemSum + 1);
+        for (int i = 0; i < generateNum; i++)
+        {
+            //どのアイテムを生成するか決定する
+            int instanceNo = UnityEngine.Random.Range(0, getNumberList.Count - 1);
+            int itemNo = getNumberList[instanceNo]; //アイテムの番号を取得
+            #region Instance
+            Vector3 instancePos = new Vector3
+                (transform.position.x,
+                transform.position.y + itemInsPlusYPos,
+                transform.position.z);
+            itemList.InstantiateItem(instancePos, itemNo, generateNum, i);
+            #endregion
+            //リストから生成したNoを削除
+            getNumberList.Remove(itemNo);
+            //生成したアイテムをGetItemNumから-1
+            getNumItemList[itemNo]--;
+            //ステータスを減少
+            itemList.ChangeStatusDropItem(itemNo, this);
         }
     }
 
@@ -530,126 +588,54 @@ public class Machine : Control
             getNumItemList.Add(defaultStatus);//Defalut値の設定
         }
     }
+
+    protected IEnumerator PitchResetOneFlameLater()
+    {
+        yield return null;
+        chargeAudioSource.pitch = 1;
+    }
     #endregion
 
     #region private
-    private void DropItem()
-    {
-        if (!(getNumberList?.Count > 0))
-        {
-            return;
-        }
-
-        int getItemSum = getNumberList.Count; //生成可能数合計値
-        if (getItemSum > maxGenerate)
-        {
-            getItemSum = maxGenerate;
-        }
-        //生成数の決定
-        int generateNum = UnityEngine.Random.Range(0, getItemSum + 1);
-        for (int i = 0; i < generateNum; i++)
-        {
-            //どのアイテムを生成するか決定する
-            int instanceNo = UnityEngine.Random.Range(0, getNumberList.Count - 1);
-            int itemNo = getNumberList[instanceNo]; //アイテムの番号を取得
-            #region Instance
-            Vector3 instancePos = new Vector3
-                (transform.position.x,
-                transform.position.y + itemInsPlusYPos,
-                transform.position.z);
-            itemList.InstantiateItem(instancePos, itemNo, generateNum, i);
-            #endregion
-            //リストから生成したNoを削除
-            getNumberList.Remove(itemNo);
-            //生成したアイテムをGetItemNumから-1
-            getNumItemList[itemNo]--;
-            //ステータスを減少
-            itemList.ChangeStatusDropItem(itemNo, this);
-        }
-    }
-
-    //private void DropItem()
-    //{
-    //    //アイテムの生成
-    //    List<int> instancePossibleItems = new List<int>(); //生成可能アイテムの配列番号を格納するリスト
-    //    int getItemSum = 0; //生成可能数合計値
-    //    //アイテム獲得リストの大きさ分回す
-    //    for (int i = 0; i < getNumItemList.Count; i++)
-    //    {
-    //        //アイテム獲得数が、デフォルト値を超えていた場合
-    //        if (getNumItemList[i] > defaultStatus)
-    //        {
-    //            getItemSum += getNumItemList[i] + (-defaultStatus); //基準を0にして足す
-    //            instancePossibleItems.Add(i);//生成できるアイテムの番号
-    //        }
-    //    }
-    //    //アイテムの取得合計数が最大生成可能数を超えていた場合、
-    //    //取得合計数を最大生成可能数に合わせる
-    //    if (getItemSum > maxGenerate)
-    //    {
-    //        getItemSum = maxGenerate;
-    //    }
-        
-    //    //リストが空じゃない場合
-    //    if (instancePossibleItems?.Count > 0)
-    //    {
-    //        //生成数の決定
-    //        int generateNum = UnityEngine.Random.Range(0, getItemSum + 1);
-    //        for (int i = 0; i < generateNum; i++)
-    //        {
-    //            //どのアイテムを生成するか決定する
-    //            int instanceNo = UnityEngine.Random.Range(0, instancePossibleItems.Count);
-    //            int itemNo = instancePossibleItems[instanceNo]; //生成するアイテムの配列番号
-    //            //生成
-    //            Vector3 instancePos = new Vector3
-    //                (transform.position.x,
-    //                transform.position.y + itemInsPlusYPos,
-    //                transform.position.z);
-    //            itemList.InstantiateItem(instancePos, itemNo, generateNum, i);
-    //            //生成したアイテムをGetItemNumから-1
-    //            getNumItemList[itemNo]--;
-    //            Item item = itemList.GetItem(itemNo);
-    //            item.ChangeStatus (this, ItemMode.Debuff);
-    //            //アイテム獲得数がデフォルト値を下回った
-    //            if (getNumItemList[itemNo] < defaultStatus)
-    //            {
-    //                //アイテム生成可能リストから該当アイテムの配列番号を削除
-    //                instancePossibleItems.Remove(instanceNo);
-    //            }
-    //        }
-    //    }
-    //}
-
     /// <summary>
     /// マシン影響オブジェクトに接触した際の処理
     /// </summary>
     /// <param name="other">接触した物体</param>
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Item" && Player != null)
+        if(Player == null)
         {
-            Item item = other.gameObject.GetComponent<Item>();
-            item.CatchItem(this); //入手したときの処理
+            return;
         }
-        
-        if (other.gameObject.tag == "InfluenceObject")
+
+        switch (other.gameObject.tag)
         {
-            //ダッシュボードに触れたときの速度に倍率をかける
-            speed *= dashBoardMag;
-        }
-        if (other.gameObject.tag == "DamageObject")
-        {
-            float damageMag = 5.0f;
-            //ダメージを受けるオブジェクトに触れた場合、アイテムを落とす
-            Bound(boundPower * damageMag, true);
-            DropItem();
+            case "Item":
+                Item item = other.gameObject.GetComponent<Item>();
+                item.CatchItem(this); //入手したときの処理
+                break;
+            case "InfluenceObject":
+                speed *= dashBoardMag;
+                break;
+            case "DamageObject": //ダメージオブジェクト
+                float damageMag = 5.0f;
+                //ダメージを受けるオブジェクトに触れた場合、アイテムを落とす
+                Bound(boundPower * damageMag, true);
+                DropItem();
+                break;
+            case "JumpObject": //ジャンプパッド
+                float jumpPower = other.GetComponent<JumpObject>().JumpPower;
+                rbody.AddForce(new Vector3(0, jumpPower, 0));
+                break;
+            default:
+                break;
         }
     }
 
-    protected IEnumerator PitchResetOneFlameLater()
+    private IEnumerator GetOffCoolTime()
     {
-        yield return null;
-        chargeAudioSource.pitch = 1;
+        yield return new WaitForSeconds(getOffCoolTime);
+        getOffPossible = true;
     }
     #endregion
 }

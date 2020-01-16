@@ -12,36 +12,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6df5f49a99385cd4c91f4f04fb2391da, type: 3}
   m_Name: RuinsStar
   m_EditorClassIdentifier: 
-  machineName: 0
+  machineName: 5
   maxSpeed:
-  - 0
-  - 0
-  - 0
+  - 8
+  - 55
+  - 375
   acceleration:
-  - 0
-  - 0
-  - 0
+  - 8
+  - 55
+  - 375
   turning:
-  - 0
-  - 0
-  - 0
+  - 45
+  - 135
+  - 400
   brake:
-  - 0
-  - 0
-  - 0
+  - 8
+  - 55
+  - 375
   charge:
-  - 0
-  - 0
-  - 0
+  - 1
+  - 1
+  - 1
   chargeSpeed:
-  - 0
-  - 0
-  - 0
+  - 0.08
+  - 1
+  - 2
   weight:
-  - 0
-  - 0
-  - 0
+  - 2
+  - 20
+  - 200
   flySpeed:
-  - 0
-  - 0
-  - 0
+  - 13
+  - 60
+  - 480

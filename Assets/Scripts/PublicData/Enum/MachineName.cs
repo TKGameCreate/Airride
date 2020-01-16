@@ -14,10 +14,5 @@ public enum MachineName
     HeavyStar,
     DevilStar,
     WingStar,
-    JetStar,
     RocketStar,
-    WillyScooter,
-    WillyBike,
-    RexWilly,
-    FlightWarpStar,
 }

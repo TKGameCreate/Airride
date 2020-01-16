@@ -10,38 +10,38 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6df5f49a99385cd4c91f4f04fb2391da, type: 3}
-  m_Name: FormulaStar
+  m_Name: SlickStar
   m_EditorClassIdentifier: 
-  machineName: 3
+  machineName: 4
   maxSpeed:
-  - 12
-  - 72
-  - 550
+  - 0
+  - 0
+  - 0
   acceleration:
-  - 2.2
-  - 12.5
-  - 60
+  - 0
+  - 0
+  - 0
   turning:
-  - 8.75
-  - 28.75
-  - 93.75
+  - 0
+  - 0
+  - 0
   brake:
-  - 5.5
-  - 18.5
-  - 85.5
+  - 0
+  - 0
+  - 0
   charge:
-  - 1.05
-  - 4
-  - 10
+  - 0
+  - 0
+  - 0
   chargeSpeed:
-  - 0.1
-  - 0.75
-  - 4.5
+  - 0
+  - 0
+  - 0
   weight:
-  - 3
-  - 30
-  - 300
+  - 0
+  - 0
+  - 0
   flySpeed:
-  - 12.5
-  - 73
-  - 555
+  - 0
+  - 0
+  - 0

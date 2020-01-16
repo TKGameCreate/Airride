@@ -25,6 +25,7 @@ public class Human : Control
     [SerializeField] private float getOffXPower;
     [SerializeField] private float getOffYPower;
     [SerializeField] private float runPossibleNum;
+    [SerializeField] private float resetRideTime = 2.0f;
 
     private bool ridePossible = true;
     private bool jumpPushButton = false;
@@ -92,6 +93,7 @@ public class Human : Control
                 return;
             case AnimationType.GetOff:
                 anim.SetBool("getOff", true);
+                StartCoroutine(ResetRidePossible());
                 ridePossible = false;
                 getOffForce = false;
                 AudioManager.Instance.PlaySE(jumpSE);
@@ -129,7 +131,6 @@ public class Human : Control
                 float inputAngle = Mathf.Atan2(horizontal, vertical) * Mathf.Rad2Deg;
                 float cameraAngle = Mathf.Atan2(camToPlayer.x, camToPlayer.z) * Mathf.Rad2Deg;
                 Quaternion targetRotation = Quaternion.Euler(0, inputAngle + cameraAngle, 0);
-                float rotHuman = transform.localRotation.w;
                 
                 //deltaTimeを用いることで常に一定の速度になる
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotSpeed * Time.deltaTime);
@@ -221,17 +222,18 @@ public class Human : Control
             && player.PlayerCondition == Player.Condition.Human)
         {
             GameObject machineObject = other.transform.root.gameObject;
+            Machine machine = machineObject.GetComponent<Machine>();
             //自身(人)をマシンの子オブジェクトにする
             transform.parent = machineObject.transform;
             //MachineをPlayerの子オブジェクトに
             machineObject.transform.parent = player.transform;
             //位置をマシンの中心に
             transform.localPosition = Vector3.zero;
+            transform.localPosition += machine.RidePosition;
             transform.localRotation = new Quaternion(0, 0, 0, 0);
             //PlayerのConditionをHumanからMachineに
             player.PlayerCondition = Player.Condition.Machine;
             //マシンを割り当て
-            Machine machine = machineObject.GetComponent<Machine>();
             player.Machine = machine;
             //マシンの乗車処理を行う
             machine.RideThisMachine(player);
@@ -269,6 +271,16 @@ public class Human : Control
         }
 
         onGroundCollider.gameObject.SetActive(true);
+    }
+
+    private IEnumerator ResetRidePossible()
+    {
+        yield return new WaitForSeconds(resetRideTime);
+        if (!onGround)
+        {
+            onGround = true;
+            AnimationControl(AnimationType.OnGround);
+        }
     }
     #endregion
 

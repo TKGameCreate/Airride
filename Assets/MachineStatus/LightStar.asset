@@ -16,7 +16,7 @@ MonoBehaviour:
   maxSpeed:
   - 5
   - 34
-  - 250
+  - 220
   acceleration:
   - 2
   - 10

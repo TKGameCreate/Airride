@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class RuinsStar : Machine
 {
+    protected override void Start()
+    {
+        base.Start();
+        chargeAmount = 0;
+    }
+
     protected override void Move()
     {
         Input();
@@ -58,6 +64,37 @@ public class RuinsStar : Machine
         //チャージ量をリセット
         chargeAmount = 0;
         nowBrake = false;
+    }
+
+    protected override void GetOff()
+    {
+        //スティック下+Aボタンかつ接地しているとき
+        if (InputManager.Instance.InputA(InputType.Hold)
+            && vertical < exitMachineVertical
+            && onGround)
+        {
+            //アイテムを落とす
+            DropItem();
+            getOffPossible = false;
+            vcamera.Priority = 1;//マシンカメラの優先度を最低に
+            chargeAmount = 0;
+            //入力値のリセット
+            vertical = 0;
+            horizontal = 0;
+            //speedを初期化
+            speed = 0;
+            //親子関係の解除
+            transform.parent = null;
+            //PlayerのConditionをMachineからHumanに
+            Player.PlayerCondition = Player.Condition.Human;
+            //マシンの割り当てを削除
+            Player.Machine = null;
+            Player = null;
+            engineAudioSource.Stop();
+            chargeAudioSource.volume = 0;
+            chargeAudioSource.Stop();
+            return;
+        }
     }
 
     public override float NormalizeCharge()

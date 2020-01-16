@@ -7,11 +7,8 @@ public class OnGroundHuman : MonoBehaviour
     [SerializeField] private Human human;
     private void OnTriggerStay(Collider other)
     {
-        if (!other.isTrigger)
-        {
-            human.OnGround = true;
-            human.AnimationControl(Human.AnimationType.OnGround);
-        }
+         human.OnGround = true;
+        human.AnimationControl(Human.AnimationType.OnGround);
     }
 
     private void OnTriggerExit(Collider other)

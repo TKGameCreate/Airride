@@ -12,7 +12,12 @@ public class LightStar : Machine
         if (StateManager.State == StateManager.GameState.Game)
         {
             Move();
-            GetOff();
+
+            if (getOffPossible)
+            {
+                GetOff();
+            }
+
             EngineSound();
             rbody.constraints = RigidbodyConstraints.FreezeRotation;
         }
@@ -48,6 +53,7 @@ public class LightStar : Machine
         engineAudioSource.Play();
         chargeAudioSource.Play();
         SetPlayer();
+        getOffPossible = true;
         base.Start();
     }
 }
