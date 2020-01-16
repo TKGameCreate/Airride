@@ -12,24 +12,17 @@ public abstract class Control : MonoBehaviour
     /// <summary>
     /// Updateで処理するメソッドを呼び出す
     /// </summary>
-    public virtual void Controller()
-    {
-        Debug.Log("【Controller】overrideしてください。");
-    }
+    public virtual void Controller() { }
 
-    public virtual void FixedController()
-    {
-        Debug.Log("【FixedController】overrideしてください。");
-    }
+    public virtual void FixedController() { }
 
-    protected virtual void Move()
+    protected virtual void Move() { }
+
+    protected virtual void GetOff() { }
+
+    protected void Input()
     {
         horizontal = InputManager.Instance.Horizontal;
         vertical = InputManager.Instance.Vertical;
-    }
-
-    protected virtual void GetOff()
-    {
-        Debug.Log("【GetOff】overrideしてください。");
     }
 }

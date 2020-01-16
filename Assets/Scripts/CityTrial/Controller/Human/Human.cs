@@ -112,7 +112,7 @@ public class Human : Control
     #region protected
     protected override void Move()
     {
-        base.Move();
+        Input();
 
         //移動処理
         //前進

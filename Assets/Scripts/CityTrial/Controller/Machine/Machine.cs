@@ -8,7 +8,6 @@ public class Machine : Control
 {
     #region const
     private const float boundPower = 1000.0f; //バウンド
-    private const float chargeDashPossible = 0.75f; //チャージダッシュ可能量
     private const float exitMachineVertical = -0.9f; //降車時スティック最低入力量
     private const float chargeUnderPower = 50000.0f; //charge中に下に加える力
     private const float flyWeightMag = 100f; //滑空時の落下倍率
@@ -18,6 +17,7 @@ public class Machine : Control
     private const float maxPitch = 2.0f; //最高ピッチ
     private const float maxPitchSpeed = 200.0f; //最高ピッチ速度
     private const int defaultStatus = -2; //アイテム取得数デフォルト値
+    protected const float chargeDashPossible = 0.75f; //チャージダッシュ可能量
     public const int limitStatus = 16; //アイテム取得数下限上限
     #endregion
 
@@ -37,10 +37,10 @@ public class Machine : Control
     protected float speed = 0; //現在の速度
     protected float chargeAmount = 1; //チャージ量
     protected List<int> getNumberList = new List<int>(); //取得したアイテムのNoリスト
+    protected bool nowBrake = false; //charge中かどうか
+    protected Vector3 chargePos;
     private List<int> getNumItemList = new List<int>();    //アイテムの取得状態
     private List<float> statusList = new List<float>();    //ステータスのバフ状態
-    private bool nowBrake = false; //charge中かどうか
-    private Vector3 chargePos;
     #endregion
 
     #region プロパティ
@@ -59,7 +59,6 @@ public class Machine : Control
     #region Control
     public override void Controller()
     {
-        Debug.Log(onGround);
         Move();
         GetOff();
         ChackPauseSound();
@@ -234,7 +233,7 @@ public class Machine : Control
     /// 正規化したチャージ量
     /// </summary>
     /// <returns>チャージ量</returns>
-    public float NormalizeCharge()
+    public virtual float NormalizeCharge()
     {
         //0~1の範囲に正規化
         float charge = (chargeAmount - 1) / (Status(StatusType.Charge) - 1);
@@ -311,7 +310,7 @@ public class Machine : Control
     #region protected
     protected override void Move()
     {
-        base.Move();
+        Input();
 
         //Aボタンを押している
         if (InputManager.Instance.InputA(InputType.Hold))
@@ -347,7 +346,6 @@ public class Machine : Control
         float normalize = NormalizeCharge();
         chargeAudioSource.volume = normalize;
         chargeAudioSource.pitch = Mathf.Clamp(1 + normalize * 2, 1, maxPitch + 1);
-
     }
 
     /// <summary>
@@ -648,7 +646,7 @@ public class Machine : Control
         }
     }
 
-    IEnumerator PitchResetOneFlameLater()
+    protected IEnumerator PitchResetOneFlameLater()
     {
         yield return null;
         chargeAudioSource.pitch = 1;
