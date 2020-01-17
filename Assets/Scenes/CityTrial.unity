@@ -618,17 +618,17 @@ PrefabInstance:
     - target: {fileID: 4497164442133499768, guid: bbcfc672eedf0d44dadeb311f748e032,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.026945572
+      value: 0.026945593
       objectReference: {fileID: 0}
     - target: {fileID: 4497164442133499768, guid: bbcfc672eedf0d44dadeb311f748e032,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000017200135
+      value: -0.000000017200136
       objectReference: {fileID: 0}
     - target: {fileID: 4497164442133499768, guid: bbcfc672eedf0d44dadeb311f748e032,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -4.636849e-10
+      value: 4.6358703e-10
       objectReference: {fileID: 0}
     - target: {fileID: 4497164442133499768, guid: bbcfc672eedf0d44dadeb311f748e032,
         type: 3}
@@ -1096,7 +1096,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 725341431, guid: 1a9af59cdadd28b4baf0ae93d6ab24dd, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -4.6386764e-10
+      value: -4.638677e-10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1a9af59cdadd28b4baf0ae93d6ab24dd, type: 3}
@@ -1795,17 +1795,17 @@ PrefabInstance:
     - target: {fileID: 3433108080077919944, guid: a44241e2f1e8e7244b7fc79235936692,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.021392046
+      value: 0.021392025
       objectReference: {fileID: 0}
     - target: {fileID: 3433108080077919944, guid: a44241e2f1e8e7244b7fc79235936692,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000017168913
+      value: -0.00000001726961
       objectReference: {fileID: 0}
     - target: {fileID: 3433108080077919944, guid: a44241e2f1e8e7244b7fc79235936692,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -3.6735992e-10
+      value: 3.6951883e-10
       objectReference: {fileID: 0}
     - target: {fileID: 1157190585880906133, guid: a44241e2f1e8e7244b7fc79235936692,
         type: 3}
@@ -3005,7 +3005,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2116030893}
-  m_LocalRotation: {x: 0.026945572, y: 0.000000017200142, z: -4.6392024e-10, w: 0.99963695}
+  m_LocalRotation: {x: 0.026945593, y: -0.00000001720013, z: 4.633509e-10, w: 0.99963695}
   m_LocalPosition: {x: 0, y: 2.2657168, z: -4.092499}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -3465,17 +3465,17 @@ PrefabInstance:
     - target: {fileID: 4881457642521972419, guid: aaa0df1af4593fa48bbfa4d38b85e0b7,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.026945572
+      value: 0.026945593
       objectReference: {fileID: 0}
     - target: {fileID: 4881457642521972419, guid: aaa0df1af4593fa48bbfa4d38b85e0b7,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -4.6392024e-10
+      value: 4.633509e-10
       objectReference: {fileID: 0}
     - target: {fileID: 4881457642521972419, guid: aaa0df1af4593fa48bbfa4d38b85e0b7,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000017200142
+      value: -0.00000001720013
       objectReference: {fileID: 0}
     - target: {fileID: 3726119450599301104, guid: aaa0df1af4593fa48bbfa4d38b85e0b7,
         type: 3}
@@ -3602,7 +3602,7 @@ PrefabInstance:
     - target: {fileID: 1652683632364061245, guid: 486e763aef9f1e74aa2295bd5ae57f85,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 3.673327e-10
+      value: 3.6733264e-10
       objectReference: {fileID: 0}
     - target: {fileID: 1652683632364061245, guid: 486e763aef9f1e74aa2295bd5ae57f85,
         type: 3}
@@ -3953,6 +3953,11 @@ PrefabInstance:
         type: 3}
       propertyPath: debug
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1930033162469305099, guid: da86fc441ada4de478a94761d1bf30a8,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.72
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da86fc441ada4de478a94761d1bf30a8, type: 3}
