@@ -255,7 +255,7 @@ public class Machine : Control
     /// 正規化したチャージ量
     /// </summary>
     /// <returns>チャージ量</returns>
-    public virtual float NormalizeCharge()
+    public float NormalizeCharge()
     {
         //0~1の範囲に正規化
         float charge = (chargeAmount - defaultChargeAmount) / (Status(StatusType.Charge) - defaultChargeAmount);
@@ -294,7 +294,7 @@ public class Machine : Control
     /// 接地判定
     /// </summary>
     /// <param name="other">地面</param>
-    public virtual void OnGround(Collider other)
+    public void OnGround(Collider other)
     {
         if (other.transform.tag == "StageObject" || other.transform.tag == "NotBackSObject")
         {
