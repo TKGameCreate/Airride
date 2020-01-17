@@ -10,13 +10,13 @@ public class Machine : Control
     private const float boundPower = 1000.0f; //バウンド
     private const float chargeUnderPower = 50000.0f; //charge中に下に加える力
     private const float flyWeightMag = 100f; //滑空時の落下倍率
-    private const float flyChargeSpeed = 1500f; //滑空中の自動チャージ速度分率
     private const float dashBoardMag = 2.5f; //ダッシュボード倍率
     private const float itemInsPlusYPos = 2.5f; //降りた時アイテムがインスタンス化されるY軸ポジションのプラス値
     private const float maxPitch = 2.0f; //最高ピッチ
     private const float maxPitchSpeed = 200.0f; //最高ピッチ速度
     private const float getOffCoolTime = 2.0f; //降りることができるまでのクールダウン
     private const int defaultStatus = -2; //アイテム取得数デフォルト値
+    protected const float flyChargeSpeed = 1500f; //滑空中の自動チャージ速度分率
     protected const float exitMachineVertical = -0.9f; //降車時スティック最低入力量
     protected const float chargeDashPossible = 0.75f; //チャージダッシュ可能量
     public const int limitStatus = 16; //アイテム取得数下限上限
@@ -33,6 +33,7 @@ public class Machine : Control
     [SerializeField] private DebugText dText;
     [SerializeField] private Transform ridePosition;
     [SerializeField] private int maxGenerate = 4;
+    [SerializeField] private float defaultChargeAmount = 1;
     #endregion
 
     #region 変数
@@ -257,7 +258,7 @@ public class Machine : Control
     public virtual float NormalizeCharge()
     {
         //0~1の範囲に正規化
-        float charge = (chargeAmount - 1) / (Status(StatusType.Charge) - 1);
+        float charge = (chargeAmount - defaultChargeAmount) / (Status(StatusType.Charge) - defaultChargeAmount);
         return charge;
     }
     #endregion
@@ -304,7 +305,7 @@ public class Machine : Control
                 if (!InputManager.Instance.InputA(InputType.Hold))
                 {
                     //自動的に溜まったチャージをリセット
-                    chargeAmount = 1;
+                    chargeAmount = defaultChargeAmount;
                 }
                 //接地SEを再生
                 AudioManager.Instance.PlaySE(groundSE);
@@ -411,7 +412,7 @@ public class Machine : Control
         chargeAudioSource.volume = 0;
         StartCoroutine(PitchResetOneFlameLater());
         //チャージ量をリセット
-        chargeAmount = 1;
+        chargeAmount = defaultChargeAmount;
         nowBrake = false;
     }
 
@@ -475,7 +476,7 @@ public class Machine : Control
             DropItem();
             getOffPossible = false;
             vcamera.Priority = 1;//マシンカメラの優先度を最低に
-            chargeAmount = 1;
+            chargeAmount = defaultChargeAmount;
             //入力値のリセット
             vertical = 0;
             horizontal = 0;
@@ -593,6 +594,8 @@ public class Machine : Control
         {
             getNumItemList.Add(defaultStatus);//Defalut値の設定
         }
+
+        chargeAmount = defaultChargeAmount;
     }
 
     protected IEnumerator PitchResetOneFlameLater()

@@ -196,7 +196,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1338155742149812009}
-  m_LocalRotation: {x: 0.026945572, y: 0.000000017200136, z: -4.6366527e-10, w: 0.99963695}
+  m_LocalRotation: {x: 0.026945572, y: 0.000000017200136, z: -4.6366538e-10, w: 0.99963695}
   m_LocalPosition: {x: 0, y: 2.64, z: -7.784996}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -581,7 +581,9 @@ MonoBehaviour:
   itemList: {fileID: 5345072973367110292, guid: e8985f5aab01c384fb45c344a2456320,
     type: 3}
   dText: {fileID: 0}
+  ridePosition: {fileID: 0}
   maxGenerate: 4
+  defaultChargeAmount: 0
 --- !u!1 &6403529452489462636
 GameObject:
   m_ObjectHideFlags: 0

@@ -27,8 +27,8 @@ MonoBehaviour:
   - 135
   brake:
   - 3.5
-  - 15
-  - 135
+  - 10
+  - 100
   charge:
   - 1.05
   - 1.5

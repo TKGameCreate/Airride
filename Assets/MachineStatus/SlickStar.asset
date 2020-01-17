@@ -14,34 +14,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   machineName: 4
   maxSpeed:
-  - 0
-  - 0
-  - 0
+  - 7.5
+  - 50
+  - 350
   acceleration:
-  - 0
-  - 0
-  - 0
+  - 5
+  - 15
+  - 25
   turning:
-  - 0
-  - 0
-  - 0
+  - 20
+  - 70
+  - 230
   brake:
-  - 0
-  - 0
-  - 0
+  - 7.5
+  - 50
+  - 350
   charge:
-  - 0
-  - 0
-  - 0
+  - 0.5
+  - 1
+  - 1.25
   chargeSpeed:
-  - 0
-  - 0
-  - 0
+  - 0.5
+  - 1
+  - 1.25
   weight:
-  - 0
-  - 0
-  - 0
+  - 0.5
+  - 1
+  - 10
   flySpeed:
-  - 0
-  - 0
-  - 0
+  - 13
+  - 56
+  - 480
