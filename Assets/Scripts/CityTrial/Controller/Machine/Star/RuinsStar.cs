@@ -55,7 +55,7 @@ public class RuinsStar : Machine
     protected override void ChargeDash()
     {
         //チャージダッシュはチャージが一定以上でなければ発動しない
-        if (chargeAmount >= Status(StatusType.Charge) * chargeDashPossible)
+        if (chargeAmount >= chargeDashPossible)
         {
             speed += Status(StatusType.Acceleration) * chargeAmount;
         }
@@ -102,5 +102,25 @@ public class RuinsStar : Machine
         //0~1の範囲に正規化
         float charge = chargeAmount / Status(StatusType.Charge);
         return charge;
+    }
+
+    public override void OnGround(Collider other)
+    {
+        if (other.transform.tag == "StageObject" || other.transform.tag == "NotBackSObject")
+        {
+            //空中から接地した瞬間
+            if (!onGround)
+            {
+                //チャージ中じゃない場合
+                if (!InputManager.Instance.InputA(InputType.Hold))
+                {
+                    //自動的に溜まったチャージをリセット
+                    chargeAmount = 0;
+                }
+                //接地SEを再生
+                AudioManager.Instance.PlaySE(groundSE);
+            }
+            onGround = true;
+        }
     }
 }

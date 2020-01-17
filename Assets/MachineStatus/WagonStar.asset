@@ -10,38 +10,38 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6df5f49a99385cd4c91f4f04fb2391da, type: 3}
-  m_Name: WingStar
+  m_Name: WagonStar
   m_EditorClassIdentifier: 
-  machineName: 9
+  machineName: 6
   maxSpeed:
-  - 14
-  - 43
-  - 250
-  acceleration:
-  - 1.2
   - 7.5
-  - 55
+  - 47.5
+  - 340
+  acceleration:
+  - 15
+  - 23.75
+  - 170
   turning:
-  - 15
-  - 50
-  - 135
+  - 10
+  - 35
+  - 115
   brake:
-  - 3.5
   - 15
-  - 135
+  - 23.75
+  - 170
   charge:
-  - 1.05
-  - 1.5
-  - 5.25
+  - 0
+  - 0
+  - 0
   chargeSpeed:
-  - 0.1
-  - 0.45
-  - 2.75
+  - 0
+  - 0
+  - 0
   weight:
-  - 0.5
-  - 4
-  - 30
+  - 5.5
+  - 55
+  - 550
   flySpeed:
-  - 20
-  - 59
-  - 500
+  - 15.5
+  - 57
+  - 485

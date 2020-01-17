@@ -30,9 +30,9 @@ MonoBehaviour:
   - 18.5
   - 85.5
   charge:
-  - 1.05
-  - 4
-  - 10
+  - 1.01
+  - 3
+  - 5
   chargeSpeed:
   - 0.1
   - 0.75

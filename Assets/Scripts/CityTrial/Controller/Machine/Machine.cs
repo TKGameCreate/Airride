@@ -293,13 +293,19 @@ public class Machine : Control
     /// 接地判定
     /// </summary>
     /// <param name="other">地面</param>
-    public void OnGround(Collider other)
+    public virtual void OnGround(Collider other)
     {
         if (other.transform.tag == "StageObject" || other.transform.tag == "NotBackSObject")
         {
             //空中から接地した瞬間
             if (!onGround)
             {
+                //チャージ中じゃない場合
+                if (!InputManager.Instance.InputA(InputType.Hold))
+                {
+                    //自動的に溜まったチャージをリセット
+                    chargeAmount = 1;
+                }
                 //接地SEを再生
                 AudioManager.Instance.PlaySE(groundSE);
             }
@@ -398,7 +404,7 @@ public class Machine : Control
     protected virtual void ChargeDash()
     {
         //チャージダッシュはチャージが一定以上でなければ発動しない
-        if (chargeAmount >= Status(StatusType.Charge) * chargeDashPossible)
+        if (NormalizeCharge() >= chargeDashPossible)
         {
             speed += Status(StatusType.Acceleration) * chargeAmount;
         }
