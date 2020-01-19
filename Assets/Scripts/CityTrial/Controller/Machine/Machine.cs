@@ -12,10 +12,10 @@ public class Machine : Control
     private const float flyWeightMag = 100f; //滑空時の落下倍率
     private const float dashBoardMag = 2.5f; //ダッシュボード倍率
     private const float itemInsPlusYPos = 2.5f; //降りた時アイテムがインスタンス化されるY軸ポジションのプラス値
-    private const float maxPitch = 2.0f; //最高ピッチ
     private const float maxPitchSpeed = 200.0f; //最高ピッチ速度
     private const float getOffCoolTime = 2.0f; //降りることができるまでのクールダウン
     private const int defaultStatus = -2; //アイテム取得数デフォルト値
+    protected const float maxPitch = 2.0f; //最高ピッチ
     protected const float flyChargeSpeed = 1500f; //滑空中の自動チャージ速度分率
     protected const float exitMachineVertical = -0.9f; //降車時スティック最低入力量
     protected const float chargeDashPossible = 0.75f; //チャージダッシュ可能量
@@ -435,11 +435,6 @@ public class Machine : Control
 
         //Maxスピードオーバーの許容範囲
         float tolerance = 1.0f;
-
-        if (nowBrake)
-        {
-            nowBrake = false;
-        }
 
         if (maxSpeed  > speed)
         {

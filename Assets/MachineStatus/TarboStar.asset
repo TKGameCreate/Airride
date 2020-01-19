@@ -15,11 +15,11 @@ MonoBehaviour:
   machineName: 2
   maxSpeed:
   - 0
-  - 0
+  - 52
   - 0
   acceleration:
   - 0
-  - 0
+  - 13.5
   - 0
   turning:
   - 0
@@ -38,10 +38,10 @@ MonoBehaviour:
   - 0
   - 0
   weight:
-  - 0
-  - 0
-  - 0
+  - 4.45
+  - 44.5
+  - 445
   flySpeed:
   - 0
-  - 0
+  - 100
   - 0

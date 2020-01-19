@@ -24,8 +24,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1225630385919467848}
-  m_LocalRotation: {x: 0.026945593, y: -0.000000017200135, z: 4.6363136e-10, w: 0.99963695}
-  m_LocalPosition: {x: 3.4833333, y: 2.1786704, z: -5.9708295}
+  m_LocalRotation: {x: 0.026945572, y: 0.000000017200136, z: -4.6364063e-10, w: 0.99963695}
+  m_LocalPosition: {x: 0, y: 2.1999998, z: -6.487496}
   m_LocalScale: {x: 0.75, y: 0.74423, z: 0.77116}
   m_Children:
   - {fileID: 5586551562332015960}
@@ -50,8 +50,8 @@ MonoBehaviour:
   m_StreamingVersion: 20170927
   m_Priority: 1
   m_StandbyUpdate: 2
-  m_LookAt: {fileID: 0}
-  m_Follow: {fileID: 0}
+  m_LookAt: {fileID: 5681427999318288473}
+  m_Follow: {fileID: 5681427999318288473}
   m_Lens:
     FieldOfView: 40
     OrthographicSize: 10
@@ -298,7 +298,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68e0a6d1b8b9c2d48baca56990ff38fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  machine: {fileID: 0}
+  machine: {fileID: 2108649113474863754}
   collisionSE: {fileID: 8300000, guid: 3187e2b2945438140a8242fd422bd6bc, type: 3}
 --- !u!1 &3812908615493404464
 GameObject:
@@ -344,7 +344,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b6fd64e3287f6444ae528579cb71b5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  machine: {fileID: 0}
+  machine: {fileID: 2108649113474863754}
 --- !u!135 &812644573388869462
 SphereCollider:
   m_ObjectHideFlags: 0
