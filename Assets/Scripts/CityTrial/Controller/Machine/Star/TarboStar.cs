@@ -4,24 +4,71 @@ using UnityEngine;
 
 public class TarboStar : Machine
 {
-    [SerializeField] private float brakeCap = 0;
-    [SerializeField] private float posTolerance = 1.0f;
-    [SerializeField] private float speedTolerance = 5.0f;
-    [SerializeField] private float maxSpeedCapMag = 0.8f;
-    [SerializeField] private float turningMag = 3.0f;
+    private bool front = true; //チャージ時に正面を向いているか
 
-    protected override void Charge()
+    [SerializeField] private float brakeCapMag = 0.2f; //Brakeが効くキャップ値
+    [SerializeField] private float posTolerance = 1.0f; //正面向いているかどうかの判定をする判定余裕値
+    [SerializeField] private float speedTolerance = 5.0f; //
+    [SerializeField] private float maxSpeedCapMag = 0.8f;
+    [SerializeField] private float chargeTurningMag = 3.0f;
+    [SerializeField] private float notFrontBrakeMag = 0.3f;
+    [SerializeField] private float frontChargeMag = 0.2f;
+    private float turningMag = 1.0f;
+
+    private void CheckFront()
     {
         float chargePosZ = chargePos.z;
         float nowPosZ = transform.forward.z;
-        float chargeMag = 1;
+
         //ほぼ正面を向いている場合
-        if(chargePosZ < nowPosZ + posTolerance && chargePosZ > nowPosZ - posTolerance
-            && speed < speedTolerance)
+        if (nowPosZ < chargePosZ + posTolerance &&
+            nowPosZ > chargePosZ - posTolerance)
         {
-            Debug.Log("IN");
-            //ほぼチャージされない
-            chargeMag = 0.1f;
+            front = true;
+        }
+        else
+        {
+            front = false;
+        }
+    }
+
+    protected override void Move()
+    {
+        Input();
+
+        //Aボタンを押している
+        if (InputManager.Instance.InputA(InputType.Hold))
+        {
+            Charge();
+            CheckFront();
+            Brake();
+        }
+        //Aボタンを離した
+        else if (InputManager.Instance.InputA(InputType.Up))
+        {
+            ChargeDash();
+        }
+        //Aボタンを押していない
+        else
+        {
+            Accelerator();
+        }
+
+        transform.Rotate(0, horizontal * Status(StatusType.Turning) * turningMag * Time.deltaTime, 0);
+    }
+
+    protected override void Charge()
+    {
+        //charge倍率
+        float chargeMag = 1;
+        //旋回倍率を変更
+        turningMag = chargeTurningMag;
+
+        //正面を向いている場合 or 指定速度以下の場合
+        if (front || speed < speedTolerance)
+        {
+            //チャージ倍率が低くなる
+            chargeMag = frontChargeMag;
         }
 
         //チャージ
@@ -44,25 +91,39 @@ public class TarboStar : Machine
         }
 
         //ブレーキ
-        if (speed - Status(StatusType.Brake) * Time.deltaTime > brakeCap)
+        float brakeMag = 1.0f;
+        float nowBrakeSpeed = speed - Status(StatusType.Brake) * Time.deltaTime;
+        float brakeCapSpeed = Status(StatusType.MaxSpeed) * brakeCapMag;
+        //正面以外を向いている場合もしくは、現在の速度がブレーキキャップ値を下回った場合
+        if (!front || nowBrakeSpeed < brakeCapSpeed)
         {
-            speed -= Status(StatusType.Brake) * Time.deltaTime;
+            //倍率の変更
+            brakeMag = notFrontBrakeMag;
+        }
+
+        if (nowBrakeSpeed > 0)
+        {
+            speed -= Status(StatusType.Brake) * brakeMag * Time.deltaTime;
         }
         else
         {
-            //ブレーキ限界値を超えた場合、ブレーキの効果が2/1になる
-            speed = Mathf.Clamp(speed - Status(StatusType.Brake) / 2 * Time.deltaTime, 0, brakeCap);
+            speed = 0;
         }
+    }
+
+    protected override void ChargeDash()
+    {
+        base.ChargeDash();
+        turningMag = 1.0f;
     }
 
     protected override void Accelerator()
     {
         //最高速度
-        float max = Status(StatusType.MaxSpeed);
-        float maxSpeed = max;
+        float maxSpeed = Status(StatusType.MaxSpeed);
         //地面に接地していないときの処理
         if (!onGround)
-        {
+        {                               
             maxSpeed = Status(StatusType.FlySpeed);
             //徐々にチャージがたまる
             chargeAmount += Status(StatusType.ChargeSpeed) / flyChargeSpeed;

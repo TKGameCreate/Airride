@@ -22,9 +22,9 @@ MonoBehaviour:
   - 9
   - 30
   turning:
-  - 25
-  - 98
-  - 350
+  - 45
+  - 118
+  - 370
   brake:
   - 2
   - 15
