@@ -15,6 +15,7 @@ public class Machine : Control
     private const float maxPitchSpeed = 200.0f; //最高ピッチ速度
     private const float getOffCoolTime = 2.0f; //降りることができるまでのクールダウン
     private const int defaultStatus = -2; //アイテム取得数デフォルト値
+    protected const int maxGenerate = 4; //最大アイテム生成数
     protected const float maxPitch = 2.0f; //最高ピッチ
     protected const float flyChargeSpeed = 1500f; //滑空中の自動チャージ速度分率
     protected const float exitMachineVertical = -0.9f; //降車時スティック最低入力量
@@ -32,8 +33,7 @@ public class Machine : Control
     [SerializeField] private ItemList itemList;
     [SerializeField] private DebugText dText;
     [SerializeField] private Transform ridePosition;
-    [SerializeField] private int maxGenerate = 4;
-    [SerializeField] private float defaultChargeAmount = 1;
+    [SerializeField] protected float defaultChargeAmount = 1;
     #endregion
 
     #region 変数
