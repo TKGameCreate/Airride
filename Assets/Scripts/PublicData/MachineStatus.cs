@@ -26,14 +26,14 @@ public class MachineStatus : ScriptableObject
     //ステータスに干渉するアイテムの数+(独自倍率のものはその)倍率
     private float[] changeNumMag = new float[8]
     {
-        2.1f,
+        1.1f,
+        1,
+        1,
         2,
-        2,
-        3,
-        2,
-        2,
-        2,
-        3
+        1,
+        1,
+        1,
+        2
     };
 
     public MachineName MachineName
@@ -91,6 +91,7 @@ public class MachineStatus : ScriptableObject
         float max = GetStatus(statusType, Type.Max);
         float dNum = GetStatus(statusType, Type.Default);
         float limit = Machine.limitStatus;
+        //(ステータス最大値 - デフォルト値) / (ステータス最大量 * 影響アイテム数)
         float plusNum = (max - dNum) / (limit * changeNumMag[(int)statusType]);
         plusNum *= mag;
         return plusNum;

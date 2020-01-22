@@ -325,9 +325,9 @@ GameObject:
   - component: {fileID: 1448323409308096497}
   - component: {fileID: 1663289141831343929}
   - component: {fileID: 2741030532716924176}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: warpstar
-  m_TagString: Untagged
+  m_TagString: Machine
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -548,7 +548,6 @@ MonoBehaviour:
     type: 3}
   dText: {fileID: 0}
   ridePosition: {fileID: 0}
-  maxGenerate: 4
   defaultChargeAmount: 1
 --- !u!1 &7968544352051266489
 GameObject:
@@ -691,7 +690,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9103872214966452409}
-  m_LocalRotation: {x: 0.026945593, y: -0.000000017200135, z: 4.6363308e-10, w: 0.99963695}
+  m_LocalRotation: {x: 0.026945593, y: -0.00000001738542, z: 4.686306e-10, w: 0.99963695}
   m_LocalPosition: {x: 0, y: 1.6500002, z: -4.8656225}
   m_LocalScale: {x: 0.9375, y: 0.9302874, z: 0.9639499}
   m_Children:
