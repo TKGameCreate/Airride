@@ -165,7 +165,7 @@ public class Machine : Control
     {
         bool plus;
         //Statusが基準ステータスより高かったら
-        if(statusList[(int)name] <= status.GetStatus(name, MachineStatus.Type.Default))
+        if(statusList[(int)name] >= status.GetStatus(name, MachineStatus.Type.Default))
         {
             //計算基準をPlus値で行う
             plus = true;
@@ -174,6 +174,10 @@ public class Machine : Control
         {
             plus = false;
         }
+
+        Debug.Log("statusList[(int)name]" + statusList[(int)name]);
+        Debug.Log("status.GetStatus(name, MachineStatus.Type.Default)" + status.GetStatus(name, MachineStatus.Type.Default));
+        Debug.Log("plus" + plus);
 
         if (plus)
         {
