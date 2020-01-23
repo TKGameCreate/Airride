@@ -12,11 +12,11 @@ public class AllItem : Item
         }
     }
 
-    public override void ChangeStatus(Machine machine, ItemMode itemMode)
-    {
-        foreach (StatusType type in Enum.GetValues(typeof(StatusType)))
-        {
-            machine.ChangeStatus(type, itemMode);
-        }
-    }
+    //public override void ChangeStatus(Machine machine, ItemMode itemMode)
+    //{
+    //    foreach (StatusType type in Enum.GetValues(typeof(StatusType)))
+    //    {
+    //        machine.ChangeStatus(type, itemMode);
+    //    }
+    //}
 }

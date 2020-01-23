@@ -14,8 +14,8 @@ public class Turningitem : Item
         }
     }
 
-    public override void ChangeStatus(Machine machine, ItemMode itemMode)
-    {
-        machine.ChangeStatus(StatusType.Turning, itemMode);
-    }
+    //public override void ChangeStatus(Machine machine, ItemMode itemMode)
+    //{
+    //    machine.ChangeStatus(StatusType.Turning, itemMode);
+    //}
 }

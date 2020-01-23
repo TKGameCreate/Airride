@@ -10,10 +10,10 @@
         }
     }
 
-    public override void ChangeStatus(Machine machine, ItemMode itemMode)
-    {
-        ItemMode reverceWeight = ReverseBuff(itemMode);
-        machine.ChangeStatus(StatusType.FlySpeed, itemMode);
-        machine.ChangeStatus(StatusType.Weight, reverceWeight);
-    }
+    //public override void ChangeStatus(Machine machine, ItemMode itemMode)
+    //{
+    //    ItemMode reverceWeight = ReverseBuff(itemMode);
+    //    machine.ChangeStatus(StatusType.FlySpeed, itemMode);
+    //    machine.ChangeStatus(StatusType.Weight, reverceWeight);
+    //}
 }

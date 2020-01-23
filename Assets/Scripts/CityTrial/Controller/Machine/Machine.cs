@@ -180,7 +180,7 @@ public class Machine : Control
         //影響するアイテムの配列番号(行)リスト
         List<int> influenceItemNumberList = new List<int>();
         //影響するアイテムを調べる
-        foreach(var influence in influenceStatusNumberList)
+        foreach(int influence in influenceStatusNumberList)
         {
             for(int row = 0; row < status.ChangeStatusListRowLength(); row++)
             {
@@ -191,18 +191,50 @@ public class Machine : Control
                 }
             }
         }
-
-        float nowPlusNum;
-        foreach (var influenceItem in influenceItemNumberList)
+        
+        //影響するアイテムの種類
+        foreach (int influenceItem in influenceItemNumberList)
         {
-            //アイテムの種類 * アイテム取得数
-            nowPlusNum = influenceItem * getNumberList[influenceItem];
+            //適用パラメーターの種類
+            foreach(int influenceStatus in influenceStatusNumberList)
+            {
+                //影響するアイテムの取得数と影響値をかける
+                float changeStatusSum = 
+                    getNumberList[influenceItem] * status.GetItemChangeStatusMag(influenceItem, influenceStatus);
+                //影響値合計を現在のステータスから引く
+                float statusNum = statusList[influenceStatus] - changeStatusSum;
+                if(mode == ItemMode.Buff)
+                {
+                    //ステータスがプラスの場合
+                    if (statusNum > status.GetStatus((StatusType)influenceStatus, MachineStatus.Type.Default))
+                    {
+                        statusList[influenceStatus] += status.PlusStatus((StatusType)influenceStatus);
+                    }
+                    //ステータスがマイナスの場合
+                    else
+                    {
+                        statusList[influenceStatus] += status.MinusStatus((StatusType)influenceStatus);
+                    }
+                }
+                else
+                {
+                    //ステータスがプラスの場合
+                    if (statusNum > status.GetStatus((StatusType)influenceStatus, MachineStatus.Type.Default))
+                    {
+                        statusList[influenceStatus] -= status.PlusStatus((StatusType)influenceStatus);
+                    }
+                    //ステータスがマイナスの場合
+                    else
+                    {
+                        statusList[influenceStatus] -= status.MinusStatus((StatusType)influenceStatus);
+                    }
+                }
+                //if (val < min || val > max)
+                //{
+                //    Debug.LogError("error;");
+                //}
+            }
         }
-
-        //    //ステータスを上昇
-        //    statusList[(int)name] += status.PlusStatus(name,  mag);
-        //    //ステータスを下降
-        //    statusList[(int)name] -= status.PlusStatus(name, mag);
     }
     #endregion
 

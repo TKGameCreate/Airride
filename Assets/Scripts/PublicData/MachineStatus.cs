@@ -32,19 +32,29 @@ public class MachineStatus : ScriptableObject
         {0   ,     0, 0, 0, 0, 0, -1,  1 } //Fly
     };
 
+    private float GetSumStatus(StatusType statusType)
+    {
+        float sum = 0;
+        for(int col = 0; col < ChangeStatusListRowLength(); col++)
+        {
+            sum += GetItemChangeStatusMag((int)statusType, col);
+        }
+        return sum;
+    }
+
     public float GetItemChangeStatusMag(int column, int row)
     {
-        return itemChangeStatusList[column, row];
+        return itemChangeStatusList[row, column];
     }
 
     public int ChangeStatusListColumnLength()
     {
-        return itemChangeStatusList.GetLength(0);
+        return itemChangeStatusList.GetLength(1);
     }
 
     public int ChangeStatusListRowLength()
     {
-        return itemChangeStatusList.GetLength(1);
+        return itemChangeStatusList.GetLength(0);
     }
 
     public MachineName MachineName
@@ -97,8 +107,9 @@ public class MachineStatus : ScriptableObject
         float max = GetStatus(statusType, Type.Max);
         float dNum = GetStatus(statusType, Type.Default);
         float limit = Machine.limitStatus;
+        float sum = GetSumStatus(statusType);
         //(ステータス最大値 - デフォルト値) / (ステータス最大量 * 影響アイテム数)
-        float plusNum = (max - dNum) / limit;
+        float plusNum = (max - dNum) / limit * sum;
         return plusNum;
     }
 
@@ -112,7 +123,8 @@ public class MachineStatus : ScriptableObject
         float min = GetStatus(statusType, Type.Min);
         float dNum = GetStatus(statusType, Type.Default);
         float limit = Machine.limitStatus;
-        float minusNum = (dNum - min) / limit;
+        float sum = GetSumStatus(statusType);
+        float minusNum = (dNum - min) / limit * sum;
         return minusNum;
     }
 

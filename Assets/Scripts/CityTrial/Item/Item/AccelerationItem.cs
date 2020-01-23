@@ -13,8 +13,8 @@ public class AccelerationItem : Item
         }
     }
 
-    public override void ChangeStatus(Machine machine, ItemMode itemMode)
-    {
-        machine.ChangeStatus(StatusType.Acceleration, itemMode);
-    }
+    //public override void ChangeStatus(Machine machine, ItemMode itemMode)
+    //{
+    //    machine.ChangeStatus(itemName, itemMode);
+    //}
 }

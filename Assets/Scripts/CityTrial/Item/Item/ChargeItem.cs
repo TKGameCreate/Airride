@@ -10,9 +10,8 @@
         }
     }
 
-    public override void ChangeStatus(Machine machine, ItemMode itemMode)
-    {
-        machine.ChangeStatus(StatusType.Charge, itemMode);
-        machine.ChangeStatus(StatusType.ChargeSpeed, itemMode);
-    }
+    //public override void ChangeStatus(Machine machine, ItemMode itemMode)
+    //{
+    //    machine.ChangeStatus(itemName, itemMode);
+    //}
 }

@@ -86,7 +86,10 @@ public abstract class Item : MonoBehaviour
         DestroyObject();
     }
 
-    public virtual void ChangeStatus(Machine machine, ItemMode itemMode){ }
+    public void ChangeStatus(Machine machine, ItemMode itemMode)
+    {
+        machine.ChangeStatus(itemName, itemMode);
+    }
 
     /// <param name="num">生成数</param>
     /// <param name="no">生成する番号</param>
