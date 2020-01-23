@@ -34,7 +34,7 @@ MonoBehaviour:
   - 2.5
   - 10.5
   chargeSpeed:
-  - 0.2
+  - 0.05
   - 0.9
   - 4.5
   weight:

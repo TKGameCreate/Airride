@@ -86,7 +86,7 @@ public abstract class Item : MonoBehaviour
         DestroyObject();
     }
 
-    public void ChangeStatus(Machine machine, ItemMode itemMode)
+    public virtual void ChangeStatus(Machine machine, ItemMode itemMode)
     {
         machine.ChangeStatus(itemName, itemMode);
     }

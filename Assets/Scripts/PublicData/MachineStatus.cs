@@ -24,11 +24,11 @@ public class MachineStatus : ScriptableObject
 
     private float[,] itemChangeStatusList = new float[6, 8]//ItemName,StatuType
     {
-        {0.9f,     0, 0, 1, 0, 0,  0,  1 },//MaxSpeed
+        {0.9f,     0, 0, 0.5f, 0, 0,  0,  1 },//MaxSpeed
         {0   ,     1, 0, 0, 0, 0,  0,  0 },//Acceleration
         {0   ,     0, 1, 0, 0, 0,  0,  0 },//Turning
         {0   ,     0, 0, 0, 1, 1,  0,  0 },//Charge
-        {0.1f, -0.3f, 0, 1, 0, 0,  1, -1 },//Weight
+        {0.1f, -0.3f, 0, 0.5f, 0, 0,  1, -1 },//Weight
         {0   ,     0, 0, 0, 0, 0, -1,  1 } //Fly
     };
 
@@ -37,12 +37,13 @@ public class MachineStatus : ScriptableObject
         float sum = 0;
         for(int col = 0; col < ChangeStatusListRowLength(); col++)
         {
-            sum += GetItemChangeStatusMag((int)statusType, col);
+            sum += GetItemChangeStatusMag(col, (int)statusType);
         }
         return sum;
     }
 
-    public float GetItemChangeStatusMag(int column, int row)
+    //列、行
+    public float GetItemChangeStatusMag(int row, int column)
     {
         return itemChangeStatusList[row, column];
     }
@@ -108,7 +109,7 @@ public class MachineStatus : ScriptableObject
         float dNum = GetStatus(statusType, Type.Default);
         float limit = Machine.limitStatus;
         float sum = GetSumStatus(statusType);
-        //(ステータス最大値 - デフォルト値) / (ステータス最大量 * 影響アイテム数)
+        //(ステータス最大値 - デフォルト値) / (ステータス最大量 * 合計アイテム倍率)
         float plusNum = (max - dNum) / limit * sum;
         return plusNum;
     }
@@ -132,11 +133,11 @@ public class MachineStatus : ScriptableObject
     /// ゲーム開始時のステータス値
     /// </summary>
     /// <param name="statusType">ステータスタイプ</param>
-    /// <returns>ゲーム開始時のステータス(-2)の値</returns>
-    public float StartStatus(StatusType statusType)
+    /// <returns>ゲーム開始時のステータスの値</returns>
+    public float StartStatus(StatusType statusType, int startStatus)
     {
         float dNum = GetStatus(statusType, Type.Default);
         float down = MinusStatus(statusType);
-        return dNum - down * 2;
+        return dNum + down * 0;
     }
 }

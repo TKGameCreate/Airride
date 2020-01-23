@@ -166,75 +166,114 @@ public class Machine : Control
         //影響するパラメーターの配列番号(列)リスト
         List<int> influenceStatusNumberList = new List<int>();
         int itemNameRow = (int)name;//アイテム名（行）
-        //拾ったアイテムが影響するパラメーターを調べる（列）
+       //拾ったアイテムが影響するパラメーターを調べる（列）
         for (int col = 0; col < status.ChangeStatusListColumnLength(); col++)
         {
             //アイテムがステータスに影響する
-            if(0 < status.GetItemChangeStatusMag(col, itemNameRow))
+            if (0 < status.GetItemChangeStatusMag(itemNameRow, col))
             {
                 //影響するパラメータ番号をリストに追加
                 influenceStatusNumberList.Add(col);
+                //Debug.Log((StatusType)col);
             }
         }
 
-        //影響するアイテムの配列番号(行)リスト
-        List<int> influenceItemNumberList = new List<int>();
-        //影響するアイテムを調べる
         foreach(int influence in influenceStatusNumberList)
         {
-            for(int row = 0; row < status.ChangeStatusListRowLength(); row++)
+            float modeMag = 1;
+            if (mode == ItemMode.Debuff)
             {
-                if(0 < status.GetItemChangeStatusMag(influence, row))
-                {
-                    //影響するアイテムの番号をリストに追加
-                    influenceItemNumberList.Add(row);
-                }
+                modeMag = -1;
+            }
+
+            if (0 < getNumItemList[itemNameRow])
+            {
+                statusList[influence] +=
+                    status.PlusStatus((StatusType)influence) *
+                    status.GetItemChangeStatusMag(itemNameRow, influence) *
+                    modeMag;
+                Debug.Log(status.PlusStatus((StatusType)influence) *
+                    status.GetItemChangeStatusMag(itemNameRow, influence) *
+                    modeMag);
+            }
+            else
+            {
+                statusList[influence] +=
+                    status.MinusStatus((StatusType)influence) *
+                    status.GetItemChangeStatusMag(itemNameRow, influence) *
+                    modeMag;
             }
         }
-        
-        //影響するアイテムの種類
-        foreach (int influenceItem in influenceItemNumberList)
-        {
-            //適用パラメーターの種類
-            foreach(int influenceStatus in influenceStatusNumberList)
-            {
-                //影響するアイテムの取得数と影響値をかける
-                float changeStatusSum = 
-                    getNumberList[influenceItem] * status.GetItemChangeStatusMag(influenceItem, influenceStatus);
-                //影響値合計を現在のステータスから引く
-                float statusNum = statusList[influenceStatus] - changeStatusSum;
-                if(mode == ItemMode.Buff)
-                {
-                    //ステータスがプラスの場合
-                    if (statusNum > status.GetStatus((StatusType)influenceStatus, MachineStatus.Type.Default))
-                    {
-                        statusList[influenceStatus] += status.PlusStatus((StatusType)influenceStatus);
-                    }
-                    //ステータスがマイナスの場合
-                    else
-                    {
-                        statusList[influenceStatus] += status.MinusStatus((StatusType)influenceStatus);
-                    }
-                }
-                else
-                {
-                    //ステータスがプラスの場合
-                    if (statusNum > status.GetStatus((StatusType)influenceStatus, MachineStatus.Type.Default))
-                    {
-                        statusList[influenceStatus] -= status.PlusStatus((StatusType)influenceStatus);
-                    }
-                    //ステータスがマイナスの場合
-                    else
-                    {
-                        statusList[influenceStatus] -= status.MinusStatus((StatusType)influenceStatus);
-                    }
-                }
-                //if (val < min || val > max)
-                //{
-                //    Debug.LogError("error;");
-                //}
-            }
-        }
+
+
+        //    //影響するパラメーターの配列番号(列)リスト
+        //    List<int> influenceStatusNumberList = new List<int>();
+        //    int itemNameRow = (int)name;//アイテム名（行）
+        //    //拾ったアイテムが影響するパラメーターを調べる（列）
+        //    for (int col = 0; col < status.ChangeStatusListColumnLength(); col++)
+        //    {
+        //        //アイテムがステータスに影響する
+        //        if (0 < status.GetItemChangeStatusMag(itemNameRow, col))
+        //        {
+        //            //影響するパラメータ番号をリストに追加
+        //            influenceStatusNumberList.Add(col);
+        //            //Debug.Log((StatusType)col);
+        //        }
+        //    }
+
+        //    //影響するアイテムの配列番号(行)リスト
+        //    List<int> influenceItemNumberList = new List<int>();
+        //    //影響するアイテムを調べる
+        //    foreach (int influence in influenceStatusNumberList)
+        //    {
+        //        for (int row = 0; row < status.ChangeStatusListRowLength(); row++)
+        //        {
+        //            if (0 < status.GetItemChangeStatusMag(row, influence))
+        //            {
+        //                //影響するアイテムの番号をリストに追加
+        //                influenceItemNumberList.Add(row);
+        //                //Debug.Log((ItemName)row);
+        //            }
+        //        }
+        //    }
+
+        //    //影響するアイテムの種類
+        //    foreach (int influenceItem in influenceItemNumberList)
+        //    {
+        //        //適用パラメーターの種類
+        //        foreach (int influenceStatus in influenceStatusNumberList)
+        //        {
+        //            //影響するアイテムの取得数と影響値をかける
+        //            float changeStatusSum =
+        //                getNumItemList[influenceItem] * status.GetItemChangeStatusMag(influenceItem, influenceStatus);
+        //            //影響値合計を現在のステータスから引く
+        //            float statusNum = statusList[influenceStatus] - status.PlusStatus((StatusType)influenceStatus) * changeStatusSum;
+        //            //Debug.Log("getNumItemList : " + getNumItemList[influenceItem]);
+        //            //Debug.Log("statusMag : " + status.GetItemChangeStatusMag(influenceItem, influenceStatus));
+        //            Debug.Log(name.ToString() + "→changeStatusSum : " + changeStatusSum + "  ==influenceStatus==" + influenceStatus);
+        //            Debug.Log(name.ToString() +":" + (StatusType)influenceStatus + "→statusNum : " + statusNum);
+        //        }
+        //    }
+        //}
+
+        ////適用パラメーターの種類
+        //    float modeMag = 1;
+        //    if (mode == ItemMode.Debuff)
+        //    {
+        //        modeMag = -1;
+        //    }
+        //    //アイテム取得数がプラスの場合
+        //    if (0 <= getNumItemList[(int)name])
+        //    {
+        //        Debug.Log("Plus");
+        //        statusList[influenceStatus] += status.PlusStatus((StatusType)influenceStatus) * modeMag;
+        //    }
+        //    //マイナスの場合
+        //    else
+        //    {
+        //        Debug.Log("Minus");
+        //        statusList[influenceStatus] += status.MinusStatus((StatusType)influenceStatus) * modeMag;
+        //    }
     }
     #endregion
 
@@ -616,7 +655,7 @@ public class Machine : Control
         Array statusType = Enum.GetValues(typeof(StatusType));
         for (int i = 0; i < statusType.Length; i++)
         {
-            statusList.Add(status.StartStatus((StatusType)i)); //初期値
+            statusList.Add(status.StartStatus((StatusType)i, defaultStatus)); //初期値
         }
 
         //アイテム取得リストの初期化
@@ -625,7 +664,6 @@ public class Machine : Control
         {
             getNumItemList.Add(defaultStatus);//Defalut値の設定
         }
-
         chargeAmount = defaultChargeAmount;
     }
 
