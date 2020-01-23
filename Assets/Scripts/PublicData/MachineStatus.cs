@@ -22,18 +22,14 @@ public class MachineStatus : ScriptableObject
     [SerializeField] private float[] weight = new float[3];//重さ
     [SerializeField] private float[] flySpeed = new float[3];//滑空速度
 
-    //ALLがある為、基準は２
-    //ステータスに干渉するアイテムの数+(独自倍率のものはその)倍率
-    private float[] changeNumMag = new float[8]
+    private float[,] itemChangeStatusList = new float[6, 8]//ItemName,StatuType
     {
-        1.1f,
-        1,
-        1,
-        2,
-        1,
-        1,
-        1,
-        2
+        {0.9f,     0, 0, 1, 0, 0,  0,  1 },//MaxSpeed
+        {0   ,     1, 0, 0, 0, 0,  0,  0 },//Acceleration
+        {0   ,     0, 1, 0, 0, 0,  0,  0 },//Turning
+        {0   ,     0, 0, 0, 1, 1,  0,  0 },//Charge
+        {0.1f, -0.3f, 0, 1, 0, 0,  1, -1 },//Weight
+        {0   ,     0, 0, 0, 0, 0, -1,  1 } //Fly
     };
 
     public MachineName MachineName
@@ -42,11 +38,6 @@ public class MachineStatus : ScriptableObject
         {
             return machineName;
         }
-    }
-
-    public float WeightChangeMaxSpeed()
-    {
-        return changeNumMag[0] - 2;
     }
 
     /// <summary>
@@ -92,7 +83,7 @@ public class MachineStatus : ScriptableObject
         float dNum = GetStatus(statusType, Type.Default);
         float limit = Machine.limitStatus;
         //(ステータス最大値 - デフォルト値) / (ステータス最大量 * 影響アイテム数)
-        float plusNum = (max - dNum) / (limit * changeNumMag[(int)statusType]);
+        float plusNum = (max - dNum) / limit;
         plusNum *= mag;
         return plusNum;
     }
@@ -107,7 +98,7 @@ public class MachineStatus : ScriptableObject
         float min = GetStatus(statusType, Type.Min);
         float dNum = GetStatus(statusType, Type.Default);
         float limit = Machine.limitStatus;
-        float minusNum = (dNum - min) / (limit * changeNumMag[(int)statusType]);
+        float minusNum = (dNum - min) / limit;
         minusNum *= mag;
         return minusNum;
     }

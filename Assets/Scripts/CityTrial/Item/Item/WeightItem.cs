@@ -20,6 +20,6 @@ public class WeightItem : Item
         machine.ChangeStatus(StatusType.Brake, itemMode);
         machine.ChangeStatus(StatusType.MaxSpeed, itemMode, 0.1f);
         machine.ChangeStatus(StatusType.FlySpeed, reverceMode);
-        machine.ChangeStatus(StatusType.Acceleration, reverceMode);
+        machine.ChangeStatus(StatusType.Acceleration, reverceMode, 0.3f);
     }
 }

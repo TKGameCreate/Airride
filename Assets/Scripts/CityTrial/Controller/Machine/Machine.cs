@@ -61,7 +61,7 @@ public class Machine : Control
     {
         get
         {
-            if(ridePosition == null)
+            if (ridePosition == null)
             {
                 return Vector3.zero;
             }
@@ -81,7 +81,7 @@ public class Machine : Control
         ChackPauseSound();
         EngineSound();
 
-        if(getOffPossible)
+        if (getOffPossible)
         {
             GetOff();
         }
@@ -163,46 +163,11 @@ public class Machine : Control
     /// <param name="up">上昇か下降か</param>
     public void ChangeStatus(StatusType name, ItemMode mode, float mag = 1)
     {
-        bool plus;
-        //Statusが基準ステータスより高かったら
-        if(statusList[(int)name] >= status.GetStatus(name, MachineStatus.Type.Default))
-        {
-            //計算基準をPlus値で行う
-            plus = true;
-        }
-        else
-        {
-            plus = false;
-        }
-
-        Debug.Log("statusList[(int)name]" + statusList[(int)name]);
-        Debug.Log("status.GetStatus(name, MachineStatus.Type.Default)" + status.GetStatus(name, MachineStatus.Type.Default));
-        Debug.Log("plus" + plus);
-
-        if (plus)
-        {
-            //ステータスを上昇
-            if (mode == ItemMode.Buff)
-            {
-                statusList[(int)name] += status.PlusStatus(name, mag);
-            }
-            //ステータスを下降
-            else
-            {
-                statusList[(int)name] -= status.PlusStatus(name, mag);
-            }
-        }
-        else
-        {
-            if (mode == ItemMode.Buff)
-            {
-                statusList[(int)name] += status.MinusStatus(name, mag);
-            }
-            else
-            {
-                statusList[(int)name] -= status.MinusStatus(name, mag);
-            }
-        }
+       
+        //    //ステータスを上昇
+        //    statusList[(int)name] += status.PlusStatus(name,  mag);
+        //    //ステータスを下降
+        //    statusList[(int)name] -= status.PlusStatus(name, mag);
     }
     #endregion
 
