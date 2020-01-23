@@ -32,6 +32,21 @@ public class MachineStatus : ScriptableObject
         {0   ,     0, 0, 0, 0, 0, -1,  1 } //Fly
     };
 
+    public float GetItemChangeStatusMag(int column, int row)
+    {
+        return itemChangeStatusList[column, row];
+    }
+
+    public int ChangeStatusListColumnLength()
+    {
+        return itemChangeStatusList.GetLength(0);
+    }
+
+    public int ChangeStatusListRowLength()
+    {
+        return itemChangeStatusList.GetLength(1);
+    }
+
     public MachineName MachineName
     {
         get
@@ -77,14 +92,13 @@ public class MachineStatus : ScriptableObject
     /// </summary>
     /// <param name="statusType">ステータスタイプ</param>
     /// <returns>アイテム1つにつき、上昇する値</returns>
-    public float PlusStatus(StatusType statusType, float mag = 1)
+    public float PlusStatus(StatusType statusType)
     {
         float max = GetStatus(statusType, Type.Max);
         float dNum = GetStatus(statusType, Type.Default);
         float limit = Machine.limitStatus;
         //(ステータス最大値 - デフォルト値) / (ステータス最大量 * 影響アイテム数)
         float plusNum = (max - dNum) / limit;
-        plusNum *= mag;
         return plusNum;
     }
 
@@ -93,13 +107,12 @@ public class MachineStatus : ScriptableObject
     /// </summary>
     /// <param name="statusType">ステータスタイプ</param>
     /// <returns>アイテム1つにつき、下降する値</returns>
-    public float MinusStatus(StatusType statusType, float mag = 1)
+    public float MinusStatus(StatusType statusType)
     {
         float min = GetStatus(statusType, Type.Min);
         float dNum = GetStatus(statusType, Type.Default);
         float limit = Machine.limitStatus;
         float minusNum = (dNum - min) / limit;
-        minusNum *= mag;
         return minusNum;
     }
 

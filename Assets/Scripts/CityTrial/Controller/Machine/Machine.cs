@@ -161,9 +161,44 @@ public class Machine : Control
     /// </summary>
     /// <param name="name">変動させるステータス</param>
     /// <param name="up">上昇か下降か</param>
-    public void ChangeStatus(StatusType name, ItemMode mode, float mag = 1)
+    public void ChangeStatus(ItemName name, ItemMode mode)
     {
-       
+        //影響するパラメーターの配列番号(列)リスト
+        List<int> influenceStatusNumberList = new List<int>();
+        int itemNameRow = (int)name;//アイテム名（行）
+        //拾ったアイテムが影響するパラメーターを調べる（列）
+        for (int col = 0; col < status.ChangeStatusListColumnLength(); col++)
+        {
+            //アイテムがステータスに影響する
+            if(0 < status.GetItemChangeStatusMag(col, itemNameRow))
+            {
+                //影響するパラメータ番号をリストに追加
+                influenceStatusNumberList.Add(col);
+            }
+        }
+
+        //影響するアイテムの配列番号(行)リスト
+        List<int> influenceItemNumberList = new List<int>();
+        //影響するアイテムを調べる
+        foreach(var influence in influenceStatusNumberList)
+        {
+            for(int row = 0; row < status.ChangeStatusListRowLength(); row++)
+            {
+                if(0 < status.GetItemChangeStatusMag(influence, row))
+                {
+                    //影響するアイテムの番号をリストに追加
+                    influenceItemNumberList.Add(row);
+                }
+            }
+        }
+
+        float nowPlusNum;
+        foreach (var influenceItem in influenceItemNumberList)
+        {
+            //アイテムの種類 * アイテム取得数
+            nowPlusNum = influenceItem * getNumberList[influenceItem];
+        }
+
         //    //ステータスを上昇
         //    statusList[(int)name] += status.PlusStatus(name,  mag);
         //    //ステータスを下降
