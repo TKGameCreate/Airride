@@ -138,6 +138,6 @@ public class MachineStatus : ScriptableObject
     {
         float dNum = GetStatus(statusType, Type.Default);
         float down = MinusStatus(statusType);
-        return dNum + down * 0;
+        return dNum + down * startStatus;
     }
 }
