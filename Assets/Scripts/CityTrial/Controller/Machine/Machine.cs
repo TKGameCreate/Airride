@@ -15,7 +15,6 @@ public class Machine : Control
     private const float maxPitchSpeed = 200.0f; //最高ピッチ速度
     private const float getOffCoolTime = 2.0f; //降りることができるまでのクールダウン
     private const int defaultStatus = -2; //アイテム取得数デフォルト値
-    protected const int maxGenerate = 4; //最大アイテム生成数
     protected const float maxPitch = 2.0f; //最高ピッチ
     protected const float flyChargeSpeed = 1500f; //滑空中の自動チャージ速度分率
     protected const float exitMachineVertical = -0.9f; //降車時スティック最低入力量
@@ -143,8 +142,6 @@ public class Machine : Control
                 return true;
             //デバフアイテム
             case ItemMode.Debuff:
-                Debug.Log(getNumItemList.Length);
-                Debug.Log(getNumItemList[(int)name]);
                 //下限チェック
                 if (getNumItemList[(int)name] > -limitStatus)
                 {
@@ -553,9 +550,9 @@ public class Machine : Control
         }
 
         int getItemSum = getNumberList.Count; //生成可能数合計値
-        if (getItemSum > maxGenerate)
+        if (getItemSum > Item.maxGenerate)
         {
-            getItemSum = maxGenerate;
+            getItemSum = Item.maxGenerate;
         }
         //生成数の決定
         int generateNum = UnityEngine.Random.Range(0, getItemSum + 1);
@@ -637,8 +634,11 @@ public class Machine : Control
         var itemName = Enum.GetValues(typeof(ItemName));
         foreach (ItemName name in itemName)
         {
-            ItemCount(name, ItemMode.Debuff);
-            ChangeStatus(name, ItemMode.Debuff);
+            for(int i = 0; i < Mathf.Abs(defaultStatus); i++)
+            {
+                ItemCount(name, ItemMode.Debuff);
+                ChangeStatus(name, ItemMode.Debuff);
+            }
         }
         chargeAmount = defaultChargeAmount;
     }

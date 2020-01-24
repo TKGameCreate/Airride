@@ -16,6 +16,7 @@ public abstract class Item : MonoBehaviour
     }
 
     #region const
+    public const int maxGenerate = 4; //最大アイテム生成量
     private const float yPower = 8.0f;
     private const float xzPower = 2.75f;
     private const float destroyTime = 60.0f;
