@@ -22,14 +22,16 @@ public class MachineStatus : ScriptableObject
     [SerializeField] private float[] weight = new float[3];//重さ
     [SerializeField] private float[] flySpeed = new float[3];//滑空速度
 
-    private float[,] itemChangeStatusList = new float[6, 8]//ItemName,StatuType
+    public const int itemNameNum = 6;
+    public const int statusTypeNum = 8;
+    private float[,] itemChangeStatusList = new float[itemNameNum, statusTypeNum]//ItemName,StatuType
     {
-        {0.9f,     0, 0, 0.5f, 0, 0,  0,  1 },//MaxSpeed
-        {0   ,     1, 0, 0, 0, 0,  0,  0 },//Acceleration
-        {0   ,     0, 1, 0, 0, 0,  0,  0 },//Turning
-        {0   ,     0, 0, 0, 1, 1,  0,  0 },//Charge
+        {0.9f,     0, 0, 0.5f, 0, 0,  0,  0.5f },//MaxSpeed
+        {0   ,     1, 0,    0, 0, 0,  0,  0 },//Acceleration
+        {0   ,     0, 1,    0, 0, 0,  0,  0 },//Turning
+        {0   ,     0, 0,    0, 1, 1,  0,  0 },//Charge
         {0.1f, -0.3f, 0, 0.5f, 0, 0,  1, -1 },//Weight
-        {0   ,     0, 0, 0, 0, 0, -1,  1 } //Fly
+        {0   ,     0, 0,    0, 0, 0, -1,  0.5f } //Fly
     };
 
     private float GetSumStatus(StatusType statusType)
@@ -37,7 +39,10 @@ public class MachineStatus : ScriptableObject
         float sum = 0;
         for(int col = 0; col < ChangeStatusListRowLength(); col++)
         {
-            sum += GetItemChangeStatusMag(col, (int)statusType);
+            if (0 < GetItemChangeStatusMag(col, (int)statusType))
+            {
+                sum += GetItemChangeStatusMag(col, (int)statusType);
+            }
         }
         return sum;
     }
@@ -138,6 +143,6 @@ public class MachineStatus : ScriptableObject
     {
         float dNum = GetStatus(statusType, Type.Default);
         float down = MinusStatus(statusType);
-        return dNum + down * 0;
+        return dNum + down * startStatus;
     }
 }

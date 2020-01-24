@@ -43,8 +43,8 @@ public class Machine : Control
     protected bool nowBrake = false; //charge中かどうか
     protected bool getOffPossible = false; //降りれるかどうか
     protected Vector3 chargePos;
-    private List<int> getNumItemList = new List<int>();    //アイテムの取得状態
-    private List<float> statusList = new List<float>();    //ステータスのバフ状態
+    private int[] getNumItemList = new int[MachineStatus.itemNameNum];  //アイテムの取得状態
+    private float[] statusList = new float[MachineStatus.statusTypeNum];    //ステータスのバフ状態
     #endregion
 
     #region プロパティ
@@ -136,18 +136,20 @@ public class Machine : Control
                     if (getNumItemList[(int)name] < limitStatus)
                     {
                         getNumberList.Add((int)name);
-                        getNumItemList[(int)name]++; //アイテムの取得数を増やす
+                        getNumItemList[(int)name] += 1; //アイテムの取得数を増やす
                         return false;
                     }
                 }
                 return true;
             //デバフアイテム
             case ItemMode.Debuff:
+                Debug.Log(getNumItemList.Length);
+                Debug.Log(getNumItemList[(int)name]);
                 //下限チェック
                 if (getNumItemList[(int)name] > -limitStatus)
                 {
                     getNumberList.Remove((int)name);
-                    getNumItemList[(int)name]--; //アイテム取得数を減らす
+                    getNumItemList[(int)name]-=1; //アイテム取得数を減らす
                     return false;
                 }
                 return true;
@@ -174,7 +176,6 @@ public class Machine : Control
             {
                 //影響するパラメータ番号をリストに追加
                 influenceStatusNumberList.Add(col);
-                //Debug.Log((StatusType)col);
             }
         }
 
@@ -192,9 +193,6 @@ public class Machine : Control
                     status.PlusStatus((StatusType)influence) *
                     status.GetItemChangeStatusMag(itemNameRow, influence) *
                     modeMag;
-                Debug.Log(status.PlusStatus((StatusType)influence) *
-                    status.GetItemChangeStatusMag(itemNameRow, influence) *
-                    modeMag);
             }
             else
             {
@@ -255,25 +253,6 @@ public class Machine : Control
         //        }
         //    }
         //}
-
-        ////適用パラメーターの種類
-        //    float modeMag = 1;
-        //    if (mode == ItemMode.Debuff)
-        //    {
-        //        modeMag = -1;
-        //    }
-        //    //アイテム取得数がプラスの場合
-        //    if (0 <= getNumItemList[(int)name])
-        //    {
-        //        Debug.Log("Plus");
-        //        statusList[influenceStatus] += status.PlusStatus((StatusType)influenceStatus) * modeMag;
-        //    }
-        //    //マイナスの場合
-        //    else
-        //    {
-        //        Debug.Log("Minus");
-        //        statusList[influenceStatus] += status.MinusStatus((StatusType)influenceStatus) * modeMag;
-        //    }
     }
     #endregion
 
@@ -632,8 +611,7 @@ public class Machine : Control
             + "\nTurning : " + getNumItemList[2]
             + "\nCharge : " + getNumItemList[3]
             + "\nWeight : " + getNumItemList[4]
-            + "\nFly : " + getNumItemList[5]
-            + "\nAll : " + getNumItemList[6],
+            + "\nFly : " + getNumItemList[5],
             Player);
 
         dText.Debug(DebugText.Position.Left,
@@ -651,18 +629,16 @@ public class Machine : Control
 
     protected virtual void Start()
     {
-        //ステータス倍率リストの初期化
-        Array statusType = Enum.GetValues(typeof(StatusType));
-        for (int i = 0; i < statusType.Length; i++)
+        for(int statusTypeNum = 0; statusTypeNum < MachineStatus.statusTypeNum; statusTypeNum++)
         {
-            statusList.Add(status.StartStatus((StatusType)i, defaultStatus)); //初期値
+            statusList[statusTypeNum] = status.GetStatus((StatusType)statusTypeNum, MachineStatus.Type.Default);
         }
 
-        //アイテム取得リストの初期化
-        var itemType = Enum.GetValues(typeof(ItemName));
-        foreach (var item in itemType)
+        var itemName = Enum.GetValues(typeof(ItemName));
+        foreach (ItemName name in itemName)
         {
-            getNumItemList.Add(defaultStatus);//Defalut値の設定
+            ItemCount(name, ItemMode.Debuff);
+            ChangeStatus(name, ItemMode.Debuff);
         }
         chargeAmount = defaultChargeAmount;
     }

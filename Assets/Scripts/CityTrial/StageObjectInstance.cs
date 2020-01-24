@@ -21,7 +21,10 @@ public class StageObjectInstance : MonoBehaviour
     /// <param name="position">ポジション</param>
     public void AddPosition(Transform position)
     {
-        positions.Add(position);
+        if (!positions.Contains(position))
+        {
+            positions.Add(position);
+        }
     }
 
     // Start is called before the first frame update
