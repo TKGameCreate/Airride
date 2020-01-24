@@ -16,6 +16,7 @@ public abstract class Item : MonoBehaviour
     }
 
     #region const
+    public const int maxGenerate = 4; //最大アイテム生成量
     private const float yPower = 8.0f;
     private const float xzPower = 2.75f;
     private const float destroyTime = 60.0f;
@@ -82,13 +83,14 @@ public abstract class Item : MonoBehaviour
         UpItemImageDisplay(machine);
         UpItemNameDisplay();
         AudioManager.Instance.PlaySE(catchSE);
-        limit = machine.ItemCount(itemName, mode);
+        limit = machine.CheckLimit(itemName, mode);
         DestroyObject();
     }
 
     public virtual void ChangeStatus(Machine machine, ItemMode itemMode)
     {
         machine.ChangeStatus(itemName, itemMode);
+        machine.ItemCount(itemName, mode);
     }
 
     /// <param name="num">生成数</param>

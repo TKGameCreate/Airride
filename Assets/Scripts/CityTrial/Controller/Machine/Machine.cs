@@ -15,7 +15,6 @@ public class Machine : Control
     private const float maxPitchSpeed = 200.0f; //最高ピッチ速度
     private const float getOffCoolTime = 2.0f; //降りることができるまでのクールダウン
     private const int defaultStatus = -2; //アイテム取得数デフォルト値
-    protected const int maxGenerate = 4; //最大アイテム生成数
     protected const float maxPitch = 2.0f; //最高ピッチ
     protected const float flyChargeSpeed = 1500f; //滑空中の自動チャージ速度分率
     protected const float exitMachineVertical = -0.9f; //降車時スティック最低入力量
@@ -43,8 +42,8 @@ public class Machine : Control
     protected bool nowBrake = false; //charge中かどうか
     protected bool getOffPossible = false; //降りれるかどうか
     protected Vector3 chargePos;
-    private List<int> getNumItemList = new List<int>();    //アイテムの取得状態
-    private List<float> statusList = new List<float>();    //ステータスのバフ状態
+    private int[] getNumItemList = new int[MachineStatus.itemNameNum];  //アイテムの取得状態
+    private float[] statusList = new float[MachineStatus.statusTypeNum];    //ステータスのバフ状態
     #endregion
 
     #region プロパティ
@@ -78,7 +77,7 @@ public class Machine : Control
     public override void Controller()
     {
         Move();
-        ChackPauseSound();
+        CheckPauseSound();
         EngineSound();
 
         if (getOffPossible)
@@ -118,41 +117,52 @@ public class Machine : Control
     #endregion
 
     #region アイテム処理
+    public bool CheckLimit(ItemName name, ItemMode mode)
+    {
+        switch (mode)
+        {
+            case ItemMode.Buff:
+                //上限チェック
+                if (getNumItemList[(int)name] < limitStatus)
+                {
+                    return false;
+                }
+                break;
+            case ItemMode.Debuff:
+                //下限チェック
+                if (getNumItemList[(int)name] > -limitStatus)
+                {
+                    return false;
+                }
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
+
     /// <summary>
     /// 取得したアイテムのカウント
     /// </summary>
     /// <param name="name">変動させるステータス</param>
     /// <param name="mode">変更値</param>
     /// <returns>上限下限か</returns>
-    public bool ItemCount(ItemName name, ItemMode mode)
+    public void ItemCount(ItemName name, ItemMode mode)
     {
         switch (mode)
         {
             //バフアイテム
             case ItemMode.Buff:
-                if (mode == ItemMode.Buff)
-                {
-                    //上限チェック
-                    if (getNumItemList[(int)name] < limitStatus)
-                    {
-                        getNumberList.Add((int)name);
-                        getNumItemList[(int)name]++; //アイテムの取得数を増やす
-                        return false;
-                    }
-                }
-                return true;
+                getNumberList.Add((int)name);
+                getNumItemList[(int)name]++; //アイテムの取得数を増やす
+                break;
             //デバフアイテム
             case ItemMode.Debuff:
-                //下限チェック
-                if (getNumItemList[(int)name] > -limitStatus)
-                {
-                    getNumberList.Remove((int)name);
-                    getNumItemList[(int)name]--; //アイテム取得数を減らす
-                    return false;
-                }
-                return true;
+                getNumberList.Remove((int)name);
+                getNumItemList[(int)name]--; //アイテム取得数を減らす
+                break;
             default:
-                return false;
+                break;
         }
     }
 
@@ -174,106 +184,38 @@ public class Machine : Control
             {
                 //影響するパラメータ番号をリストに追加
                 influenceStatusNumberList.Add(col);
-                //Debug.Log((StatusType)col);
             }
         }
 
         foreach(int influence in influenceStatusNumberList)
         {
             float modeMag = 1;
+            int standard = 0;
+
+            //BUFF　 0以上  1PLUS 0PLUS -1MINUS
+            //DEBUFF 1以上　1PLUS 0MINUS -1MINUS
             if (mode == ItemMode.Debuff)
             {
+                standard = 1;
                 modeMag = -1;
             }
 
-            if (0 < getNumItemList[itemNameRow])
-            {
+
+            if (standard < getNumItemList[itemNameRow])
+            {//Plus基準で計算
                 statusList[influence] +=
                     status.PlusStatus((StatusType)influence) *
                     status.GetItemChangeStatusMag(itemNameRow, influence) *
                     modeMag;
-                Debug.Log(status.PlusStatus((StatusType)influence) *
-                    status.GetItemChangeStatusMag(itemNameRow, influence) *
-                    modeMag);
             }
             else
-            {
+            {//Minus基準で計算
                 statusList[influence] +=
                     status.MinusStatus((StatusType)influence) *
                     status.GetItemChangeStatusMag(itemNameRow, influence) *
                     modeMag;
             }
         }
-
-
-        //    //影響するパラメーターの配列番号(列)リスト
-        //    List<int> influenceStatusNumberList = new List<int>();
-        //    int itemNameRow = (int)name;//アイテム名（行）
-        //    //拾ったアイテムが影響するパラメーターを調べる（列）
-        //    for (int col = 0; col < status.ChangeStatusListColumnLength(); col++)
-        //    {
-        //        //アイテムがステータスに影響する
-        //        if (0 < status.GetItemChangeStatusMag(itemNameRow, col))
-        //        {
-        //            //影響するパラメータ番号をリストに追加
-        //            influenceStatusNumberList.Add(col);
-        //            //Debug.Log((StatusType)col);
-        //        }
-        //    }
-
-        //    //影響するアイテムの配列番号(行)リスト
-        //    List<int> influenceItemNumberList = new List<int>();
-        //    //影響するアイテムを調べる
-        //    foreach (int influence in influenceStatusNumberList)
-        //    {
-        //        for (int row = 0; row < status.ChangeStatusListRowLength(); row++)
-        //        {
-        //            if (0 < status.GetItemChangeStatusMag(row, influence))
-        //            {
-        //                //影響するアイテムの番号をリストに追加
-        //                influenceItemNumberList.Add(row);
-        //                //Debug.Log((ItemName)row);
-        //            }
-        //        }
-        //    }
-
-        //    //影響するアイテムの種類
-        //    foreach (int influenceItem in influenceItemNumberList)
-        //    {
-        //        //適用パラメーターの種類
-        //        foreach (int influenceStatus in influenceStatusNumberList)
-        //        {
-        //            //影響するアイテムの取得数と影響値をかける
-        //            float changeStatusSum =
-        //                getNumItemList[influenceItem] * status.GetItemChangeStatusMag(influenceItem, influenceStatus);
-        //            //影響値合計を現在のステータスから引く
-        //            float statusNum = statusList[influenceStatus] - status.PlusStatus((StatusType)influenceStatus) * changeStatusSum;
-        //            //Debug.Log("getNumItemList : " + getNumItemList[influenceItem]);
-        //            //Debug.Log("statusMag : " + status.GetItemChangeStatusMag(influenceItem, influenceStatus));
-        //            Debug.Log(name.ToString() + "→changeStatusSum : " + changeStatusSum + "  ==influenceStatus==" + influenceStatus);
-        //            Debug.Log(name.ToString() +":" + (StatusType)influenceStatus + "→statusNum : " + statusNum);
-        //        }
-        //    }
-        //}
-
-        ////適用パラメーターの種類
-        //    float modeMag = 1;
-        //    if (mode == ItemMode.Debuff)
-        //    {
-        //        modeMag = -1;
-        //    }
-        //    //アイテム取得数がプラスの場合
-        //    if (0 <= getNumItemList[(int)name])
-        //    {
-        //        Debug.Log("Plus");
-        //        statusList[influenceStatus] += status.PlusStatus((StatusType)influenceStatus) * modeMag;
-        //    }
-        //    //マイナスの場合
-        //    else
-        //    {
-        //        Debug.Log("Minus");
-        //        statusList[influenceStatus] += status.MinusStatus((StatusType)influenceStatus) * modeMag;
-        //    }
     }
     #endregion
 
@@ -574,9 +516,9 @@ public class Machine : Control
         }
 
         int getItemSum = getNumberList.Count; //生成可能数合計値
-        if (getItemSum > maxGenerate)
+        if (getItemSum > Item.maxGenerate)
         {
-            getItemSum = maxGenerate;
+            getItemSum = Item.maxGenerate;
         }
         //生成数の決定
         int generateNum = UnityEngine.Random.Range(0, getItemSum + 1);
@@ -601,7 +543,7 @@ public class Machine : Control
         }
     }
 
-    protected void ChackPauseSound()
+    protected void CheckPauseSound()
     {
         if (Time.timeScale != 1)
         {
@@ -632,8 +574,7 @@ public class Machine : Control
             + "\nTurning : " + getNumItemList[2]
             + "\nCharge : " + getNumItemList[3]
             + "\nWeight : " + getNumItemList[4]
-            + "\nFly : " + getNumItemList[5]
-            + "\nAll : " + getNumItemList[6],
+            + "\nFly : " + getNumItemList[5],
             Player);
 
         dText.Debug(DebugText.Position.Left,
@@ -651,18 +592,19 @@ public class Machine : Control
 
     protected virtual void Start()
     {
-        //ステータス倍率リストの初期化
-        Array statusType = Enum.GetValues(typeof(StatusType));
-        for (int i = 0; i < statusType.Length; i++)
+        for(int statusTypeNum = 0; statusTypeNum < MachineStatus.statusTypeNum; statusTypeNum++)
         {
-            statusList.Add(status.StartStatus((StatusType)i, defaultStatus)); //初期値
+            statusList[statusTypeNum] = status.GetStatus((StatusType)statusTypeNum, MachineStatus.Type.Default);
         }
 
-        //アイテム取得リストの初期化
-        var itemType = Enum.GetValues(typeof(ItemName));
-        foreach (var item in itemType)
+        var itemName = Enum.GetValues(typeof(ItemName));
+        foreach (ItemName name in itemName)
         {
-            getNumItemList.Add(defaultStatus);//Defalut値の設定
+            for(int i = 0; i < Mathf.Abs(defaultStatus); i++)
+            {
+                ItemCount(name, ItemMode.Debuff);
+                ChangeStatus(name, ItemMode.Debuff);
+            }
         }
         chargeAmount = defaultChargeAmount;
     }

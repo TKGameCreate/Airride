@@ -15,7 +15,6 @@ public class ItemBox : MonoBehaviour
     [Range(1.1f, 5.0f)][SerializeField] private float firstMaterialDiv; //2段階目マテリアルを判定する際に割る数
     [Range(1.1f, 5.0f)][SerializeField] private float secondMaterialDiv; //３段階目マテリアルを判定する際に割る数
     [SerializeField] private float defHP; //初期HP0.
-    [SerializeField] private int maxGenerate;
     [SerializeField] private float destroyTime;
     [SerializeField] private int flashStage;
     [SerializeField] private ItemList itemList;
@@ -49,7 +48,8 @@ public class ItemBox : MonoBehaviour
         flash.FlashTime(myRenderer);
         if (generate)
         {
-            int generateNum = Random.Range(1, maxGenerate + 1); ; //生成する数をランダムに決める
+            int generateNum = Random.Range(1, Item.maxGenerate + 1); //生成する数をランダムに決める
+            Debug.Log(generateNum);
             for (int i = 0; i < generateNum; i++)
             {
                 int index = Random.Range(0, itemList.ItemLength); //生成するアイテムを決める
