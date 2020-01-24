@@ -77,7 +77,7 @@ public class Machine : Control
     public override void Controller()
     {
         Move();
-        ChackPauseSound();
+        CheckPauseSound();
         EngineSound();
 
         if (getOffPossible)
@@ -117,41 +117,52 @@ public class Machine : Control
     #endregion
 
     #region アイテム処理
+    public bool CheckLimit(ItemName name, ItemMode mode)
+    {
+        switch (mode)
+        {
+            case ItemMode.Buff:
+                //上限チェック
+                if (getNumItemList[(int)name] < limitStatus)
+                {
+                    return false;
+                }
+                break;
+            case ItemMode.Debuff:
+                //下限チェック
+                if (getNumItemList[(int)name] > -limitStatus)
+                {
+                    return false;
+                }
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
+
     /// <summary>
     /// 取得したアイテムのカウント
     /// </summary>
     /// <param name="name">変動させるステータス</param>
     /// <param name="mode">変更値</param>
     /// <returns>上限下限か</returns>
-    public bool ItemCount(ItemName name, ItemMode mode)
+    public void ItemCount(ItemName name, ItemMode mode)
     {
         switch (mode)
         {
             //バフアイテム
             case ItemMode.Buff:
-                if (mode == ItemMode.Buff)
-                {
-                    //上限チェック
-                    if (getNumItemList[(int)name] < limitStatus)
-                    {
-                        getNumberList.Add((int)name);
-                        getNumItemList[(int)name] += 1; //アイテムの取得数を増やす
-                        return false;
-                    }
-                }
-                return true;
+                getNumberList.Add((int)name);
+                getNumItemList[(int)name]++; //アイテムの取得数を増やす
+                break;
             //デバフアイテム
             case ItemMode.Debuff:
-                //下限チェック
-                if (getNumItemList[(int)name] > -limitStatus)
-                {
-                    getNumberList.Remove((int)name);
-                    getNumItemList[(int)name]-=1; //アイテム取得数を減らす
-                    return false;
-                }
-                return true;
+                getNumberList.Remove((int)name);
+                getNumItemList[(int)name]--; //アイテム取得数を減らす
+                break;
             default:
-                return false;
+                break;
         }
     }
 
@@ -179,77 +190,32 @@ public class Machine : Control
         foreach(int influence in influenceStatusNumberList)
         {
             float modeMag = 1;
+            int standard = 0;
+
+            //BUFF　 0以上  1PLUS 0PLUS -1MINUS
+            //DEBUFF 1以上　1PLUS 0MINUS -1MINUS
             if (mode == ItemMode.Debuff)
             {
+                standard = 1;
                 modeMag = -1;
             }
 
-            if (0 < getNumItemList[itemNameRow])
-            {
+
+            if (standard < getNumItemList[itemNameRow])
+            {//Plus基準で計算
                 statusList[influence] +=
                     status.PlusStatus((StatusType)influence) *
                     status.GetItemChangeStatusMag(itemNameRow, influence) *
                     modeMag;
             }
             else
-            {
+            {//Minus基準で計算
                 statusList[influence] +=
                     status.MinusStatus((StatusType)influence) *
                     status.GetItemChangeStatusMag(itemNameRow, influence) *
                     modeMag;
             }
         }
-
-
-        //    //影響するパラメーターの配列番号(列)リスト
-        //    List<int> influenceStatusNumberList = new List<int>();
-        //    int itemNameRow = (int)name;//アイテム名（行）
-        //    //拾ったアイテムが影響するパラメーターを調べる（列）
-        //    for (int col = 0; col < status.ChangeStatusListColumnLength(); col++)
-        //    {
-        //        //アイテムがステータスに影響する
-        //        if (0 < status.GetItemChangeStatusMag(itemNameRow, col))
-        //        {
-        //            //影響するパラメータ番号をリストに追加
-        //            influenceStatusNumberList.Add(col);
-        //            //Debug.Log((StatusType)col);
-        //        }
-        //    }
-
-        //    //影響するアイテムの配列番号(行)リスト
-        //    List<int> influenceItemNumberList = new List<int>();
-        //    //影響するアイテムを調べる
-        //    foreach (int influence in influenceStatusNumberList)
-        //    {
-        //        for (int row = 0; row < status.ChangeStatusListRowLength(); row++)
-        //        {
-        //            if (0 < status.GetItemChangeStatusMag(row, influence))
-        //            {
-        //                //影響するアイテムの番号をリストに追加
-        //                influenceItemNumberList.Add(row);
-        //                //Debug.Log((ItemName)row);
-        //            }
-        //        }
-        //    }
-
-        //    //影響するアイテムの種類
-        //    foreach (int influenceItem in influenceItemNumberList)
-        //    {
-        //        //適用パラメーターの種類
-        //        foreach (int influenceStatus in influenceStatusNumberList)
-        //        {
-        //            //影響するアイテムの取得数と影響値をかける
-        //            float changeStatusSum =
-        //                getNumItemList[influenceItem] * status.GetItemChangeStatusMag(influenceItem, influenceStatus);
-        //            //影響値合計を現在のステータスから引く
-        //            float statusNum = statusList[influenceStatus] - status.PlusStatus((StatusType)influenceStatus) * changeStatusSum;
-        //            //Debug.Log("getNumItemList : " + getNumItemList[influenceItem]);
-        //            //Debug.Log("statusMag : " + status.GetItemChangeStatusMag(influenceItem, influenceStatus));
-        //            Debug.Log(name.ToString() + "→changeStatusSum : " + changeStatusSum + "  ==influenceStatus==" + influenceStatus);
-        //            Debug.Log(name.ToString() +":" + (StatusType)influenceStatus + "→statusNum : " + statusNum);
-        //        }
-        //    }
-        //}
     }
     #endregion
 
@@ -577,7 +543,7 @@ public class Machine : Control
         }
     }
 
-    protected void ChackPauseSound()
+    protected void CheckPauseSound()
     {
         if (Time.timeScale != 1)
         {

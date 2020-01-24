@@ -8,7 +8,7 @@ public class LightStar : Machine
 
     public override void Controller()
     {
-        ChackPauseSound();
+        CheckPauseSound();
         if (StateManager.State == StateManager.GameState.Game)
         {
             Move();

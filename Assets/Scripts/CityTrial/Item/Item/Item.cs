@@ -83,13 +83,14 @@ public abstract class Item : MonoBehaviour
         UpItemImageDisplay(machine);
         UpItemNameDisplay();
         AudioManager.Instance.PlaySE(catchSE);
-        limit = machine.ItemCount(itemName, mode);
+        limit = machine.CheckLimit(itemName, mode);
         DestroyObject();
     }
 
     public virtual void ChangeStatus(Machine machine, ItemMode itemMode)
     {
         machine.ChangeStatus(itemName, itemMode);
+        machine.ItemCount(itemName, mode);
     }
 
     /// <param name="num">生成数</param>
