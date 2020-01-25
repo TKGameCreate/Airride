@@ -49,7 +49,6 @@ public class ItemBox : MonoBehaviour
         if (generate)
         {
             int generateNum = Random.Range(1, Item.maxGenerate + 1); //生成する数をランダムに決める
-            Debug.Log(generateNum);
             for (int i = 0; i < generateNum; i++)
             {
                 int index = Random.Range(0, itemList.ItemLength); //生成するアイテムを決める

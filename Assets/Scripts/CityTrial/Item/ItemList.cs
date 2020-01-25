@@ -11,11 +11,6 @@ public class ItemList : MonoBehaviour
         }
     }
 
-    public void ChangeStatusDropItem(int itemNo, Machine machine)
-    {
-        itemPrefabs[itemNo].ChangeStatus(machine, ItemMode.Debuff);
-    }
-
     public Item GetItem(int itemNo)
     {
         return itemPrefabs[itemNo];

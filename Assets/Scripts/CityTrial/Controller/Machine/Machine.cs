@@ -153,8 +153,11 @@ public class Machine : Control
         {
             //バフアイテム
             case ItemMode.Buff:
-                getNumberList.Add((int)name);
                 getNumItemList[(int)name]++; //アイテムの取得数を増やす
+                if(getNumItemList[(int)name] > 0)
+                {
+                    getNumberList.Add((int)name);
+                }
                 break;
             //デバフアイテム
             case ItemMode.Debuff:
@@ -514,6 +517,7 @@ public class Machine : Control
         {
             return;
         }
+        Debug.Log(getNumberList.Count);
 
         int getItemSum = getNumberList.Count; //生成可能数合計値
         if (getItemSum > Item.maxGenerate)
@@ -534,12 +538,8 @@ public class Machine : Control
                 transform.position.z);
             itemList.InstantiateItem(instancePos, itemNo, generateNum, i);
             #endregion
-            //リストから生成したNoを削除
-            getNumberList.Remove(itemNo);
-            //生成したアイテムをGetItemNumから-1
-            getNumItemList[itemNo]--;
-            //ステータスを減少
-            itemList.ChangeStatusDropItem(itemNo, this);
+            ChangeStatus((ItemName)itemNo, ItemMode.Debuff);  //ステータスを減少
+            ItemCount((ItemName)itemNo, ItemMode.Debuff);
         }
     }
 
