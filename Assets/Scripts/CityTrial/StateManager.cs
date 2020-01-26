@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
-using UnityEngine.SceneManagement;
-using System.Collections;
 
 /// <summary>
 /// 時間の制御
@@ -15,6 +12,7 @@ public class StateManager : MonoBehaviour
         Ready,
         Game,
         SetEnd,
+        TimeUp,
         End,
         Pause
     }
@@ -83,7 +81,7 @@ public class StateManager : MonoBehaviour
                 if (time <= 0)
                 {
                     timeText.gameObject.SetActive(false);
-                    State = GameState.SetEnd;
+                    State = GameState.TimeUp;
                 }
                 break;
             case GameState.SetEnd:
