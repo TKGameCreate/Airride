@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using TMPro;
+using System.Collections;
 
 /// <summary>
 /// 時間の制御
@@ -11,8 +12,8 @@ public class StateManager : MonoBehaviour
         Start,
         Ready,
         Game,
-        SetEnd,
         TimeUp,
+        Result,
         End,
         Pause
     }
@@ -25,6 +26,7 @@ public class StateManager : MonoBehaviour
     [SerializeField] private StartUIAnimation startUI;
     [SerializeField] private Pause pause;
     [SerializeField] private Result result;
+    [SerializeField] private Animator timeUp;
 
     private GameState pauseBeforeState = GameState.Game;
     private float countDown = 4;
@@ -75,17 +77,26 @@ public class StateManager : MonoBehaviour
                 //制限時間の計算と時間表示の計算
                 time -= Time.deltaTime;
                 DisplayTime();
-                PauseMove();
+
+                //Pauseボタンを押したときの処理
+                if (InputManager.Instance.Pause)
+                {
+                    ChangePause();
+                }
 
                 //制限時間が0になった場合
                 if (time <= 0)
                 {
                     timeText.gameObject.SetActive(false);
                     State = GameState.TimeUp;
+                    StartCoroutine(ChangeResult());
                 }
                 break;
-            case GameState.SetEnd:
+            case GameState.TimeUp:
                 Time.timeScale = 0;
+                timeUp.gameObject.SetActive(true);
+                break;
+            case GameState.Result:
                 result.gameObject.SetActive(true);
                 result.DisplayResult();
                 State = GameState.End;
@@ -105,6 +116,12 @@ public class StateManager : MonoBehaviour
         }
     }
 
+    private IEnumerator ChangeResult()
+    {
+        yield return new WaitForSecondsRealtime(2.0f);
+        State = GameState.Result;
+    }
+
     private void SelectContinue()
     {
         //pause画面を解除する
@@ -114,6 +131,19 @@ public class StateManager : MonoBehaviour
         AudioManager.Instance.PlaySystemSE(0);
         AudioManager.Instance.UnPauseBGM();
         State = pauseBeforeState;
+        pauseDisplayUI.gameObject.SetActive(pauseUIActive);
+    }
+
+    private void ChangePause()
+    {
+        //pause画面にする
+        pauseUIActive = true;
+        Time.timeScale = 0;
+        pause.ResetPause();
+        pauseBeforeState = State;
+        State = GameState.Pause;
+        AudioManager.Instance.PauseBGM();
+        pauseDisplayUI.gameObject.SetActive(pauseUIActive);
     }
 
     /// <summary>
@@ -122,43 +152,22 @@ public class StateManager : MonoBehaviour
     /// <param name="state">現在のステート</param>
     private void PauseMove()
     {
-        //Aボタンを押したときの処理
-        if (InputManager.Instance.InputA(InputType.Down)
-            && State == GameState.Pause)
-        {
-            Pause.Mode mode = pause.SelectMode();
-            switch (mode)
-            {
-                case Pause.Mode.Continue:
-                    SelectContinue();
-                    break;
-                case Pause.Mode.End:
-                    break;
-                default:
-                    break;
-            }
-            pauseDisplayUI.gameObject.SetActive(pauseUIActive);
-            return;
-        }
-
-        //Pauseボタンを押したときの処理
         if (InputManager.Instance.Pause)
         {
-            if (State == GameState.Pause)
+            SelectContinue();
+        }
+        //Aボタンかポーズボタンを押したときの処理
+        if (InputManager.Instance.InputA(InputType.Down))
+        {
+            Pause.Mode mode = pause.SelectMode();
+            if (mode == Pause.Mode.Continue)
             {
                 SelectContinue();
             }
             else
             {
-                //pause画面にする
-                pauseUIActive = true;
-                Time.timeScale = 0;
-                pause.ResetPause();
-                pauseBeforeState = State;
-                State = GameState.Pause;
-                AudioManager.Instance.PauseBGM();
+
             }
-            pauseDisplayUI.gameObject.SetActive(pauseUIActive);
         }
     }
 

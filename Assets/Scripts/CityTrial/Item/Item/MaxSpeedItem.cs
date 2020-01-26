@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class MaxSpeedItem : Item
 {
-    private float maxSpeedMag = 0.9f;
-
     public override void CatchItem(Machine machine)
     {
         itemName = ItemName.MaxSpeed;

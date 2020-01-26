@@ -29,6 +29,7 @@ public class Result : MonoBehaviour
         SetResultCamera();
         //取得アイテムの表示
         getItemList.SetDisplay();
+        Debug.Log("終了");
     }
 
     /// <summary>
@@ -62,7 +63,7 @@ public class Result : MonoBehaviour
 
     private void Update()
     {
-        transform.RotateAround(machine.transform.position,
+        player.Machine.transform.RotateAround(machine.transform.position,
             resultCamera.transform.position,
             Time.unscaledDeltaTime * rotSpeed);
     }
