@@ -63,6 +63,22 @@ public class InputManager
             return Input.GetButtonDown("Pause");
         }
     }
+
+    public bool Any
+    {
+        get
+        {
+            return Input.anyKeyDown;
+        }
+    }
+
+    public bool InputB
+    {
+        get
+        {
+            return Input.GetButtonDown("B");
+        }
+    }
     #endregion
 
     #region method

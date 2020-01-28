@@ -99,6 +99,7 @@ public class Pause : MonoBehaviour
         selectCoolDown = true;
         selectMode[selectNo].sprite = selectN[selectNo];
     }
+
     private void Update()
     {
         if (selectCoolDown)
