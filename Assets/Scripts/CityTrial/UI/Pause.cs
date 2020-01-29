@@ -22,7 +22,7 @@ public class Pause : MonoBehaviour
     private int selectNo = 0;
     private float interval = 0.25f;
     private bool selectCoolDown = false;
-    private float coolDownTimMeasure = 0;
+    private float coolDownTimeMeasure = 0;
 
     public void ResetPause()
     {
@@ -104,11 +104,11 @@ public class Pause : MonoBehaviour
     {
         if (selectCoolDown)
         {
-            coolDownTimMeasure += Time.unscaledDeltaTime;
-            if(coolDownTimMeasure > interval)
+            coolDownTimeMeasure += Time.unscaledDeltaTime;
+            if(coolDownTimeMeasure > interval)
             {
                 selectCoolDown = false;
-                coolDownTimMeasure = 0;
+                coolDownTimeMeasure = 0;
             }
         }
     }

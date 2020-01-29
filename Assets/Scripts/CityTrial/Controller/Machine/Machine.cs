@@ -517,7 +517,6 @@ public class Machine : Control
         {
             return;
         }
-        Debug.Log(getNumberList.Count);
 
         int getItemSum = getNumberList.Count; //生成可能数合計値
         if (getItemSum > Item.maxGenerate)

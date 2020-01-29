@@ -5,31 +5,51 @@ using UnityEngine.UI;
 
 public class ModeSelect : MonoBehaviour
 {
-    [SerializeField] private Image[] selectModeImage = { };
-    [SerializeField] private RectTransform[] selectModeTransform = { };
-    private int selectNo = 0;
-    private float interval = 0.25f;
-    private bool selectCoolDown = false;
-    private float coolDownTimMeasure = 0;
-    private float notActiveSizeMag = 0.8f;
-    private List<Vector2> selectModeSize = new List<Vector2>();
-
-    private void Start()
+    private enum Mode : int
     {
-        foreach(var trans in selectModeTransform)
-        {
-            selectModeSize.Add(trans.sizeDelta);
-        }
+        CityTrial = 0,
+        Option = 1
     }
 
-    private void ResetSelect()
+    [SerializeField] private Sprite[] active = { };
+    [SerializeField] private Sprite[] notActive = { };
+    [SerializeField] private Image[] mode = { };
+
+    private int selectNo = 0;
+    private bool selectCoolDown = false;
+
+    public void ResetSelect()
     {
         selectNo = 0;
         selectCoolDown = false;
+        for (int i = 0; i < mode.Length; i++)
+        {
+            mode[i].sprite = notActive[i];
+        }
+        mode[selectNo].sprite = active[selectNo];
     }
 
-    private void Select()
+    private void Decision()
     {
+        switch ((Mode)selectNo)
+        {
+            case Mode.CityTrial:
+                AirrideSceneManager.Instance.LoadScene(AirrideScene.CityTrial);
+                break;
+            case Mode.Option:
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void Select()
+    {
+        if (InputManager.Instance.InputA(InputType.Down))
+        {
+            Decision();
+        }
+
         float horizontalRaw = InputManager.Instance.HorizontalRaw;
 
         if (selectCoolDown)
@@ -39,20 +59,20 @@ public class ModeSelect : MonoBehaviour
 
         if (horizontalRaw > 0.75f)
         {
-            selectCoolDown = true;
-            NotActiveIcon();
+            StartCoroutine(CoolDown());
+            SetSprite();
             selectNo--;
             if (selectNo < 0)
             {
-                selectNo = selectModeImage.Length - 1;
+                selectNo = mode.Length - 1;
             }
         }
         else if (horizontalRaw < -0.75f)
         {
-            selectCoolDown = true;
-            NotActiveIcon();
+            StartCoroutine(CoolDown());
+            SetSprite();
             selectNo++;
-            if (selectNo > selectModeImage.Length - 1)
+            if (selectNo > mode.Length - 1)
             {
                 selectNo = 0;
             }
@@ -61,33 +81,19 @@ public class ModeSelect : MonoBehaviour
         {
             return;
         }
-
-        ActiveIcon();
+        mode[selectNo].sprite = active[selectNo];
     }
 
-
-    private void ActiveIcon()
+    private void SetSprite()
     {
-        selectModeTransform[selectNo].sizeDelta = selectModeSize[selectNo] * notActiveSizeMag;
-        selectModeImage[selectNo].color = new Color(0, 0, 0, 1f);
+        selectCoolDown = true;
+        mode[selectNo].sprite = notActive[selectNo];
     }
 
-    private void NotActiveIcon()
+    private IEnumerator CoolDown()
     {
-        selectModeTransform[selectNo].sizeDelta = selectModeSize[selectNo];
-        selectModeImage[selectNo].color = new Color(0, 0, 0, 0.5f);
-    }
-
-    private void Update()
-    {
-        if (selectCoolDown)
-        {
-            coolDownTimMeasure += Time.unscaledDeltaTime;
-            if (coolDownTimMeasure > interval)
-            {
-                selectCoolDown = false;
-                coolDownTimMeasure = 0;
-            }
-        }
+        float interval = 0.15f;
+        yield return new WaitForSeconds(interval);
+        selectCoolDown = false;
     }
 }

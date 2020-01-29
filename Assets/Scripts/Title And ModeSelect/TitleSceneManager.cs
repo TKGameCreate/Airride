@@ -12,6 +12,7 @@ public class TitleSceneManager : MonoBehaviour
 
     [SerializeField] private RectTransform titleScene = null;
     [SerializeField] private RectTransform modeSelectScene = null;
+    [SerializeField] private ModeSelect modeSelect = null;
 
     private Scene scene = Scene.Title;
 
@@ -29,7 +30,9 @@ public class TitleSceneManager : MonoBehaviour
                 if (InputManager.Instance.InputB)
                 {
                     ChangeToTitle();
+                    break;
                 }
+                modeSelect.Select();
                 break;
             default:
                 break;
@@ -51,6 +54,7 @@ public class TitleSceneManager : MonoBehaviour
     private void ChangeToModeSelect()
     {
         ChangeScene(titleScene, modeSelectScene);
+        modeSelect.ResetSelect();
         scene = Scene.ModeSelect;
     }
 
