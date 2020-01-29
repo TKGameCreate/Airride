@@ -166,7 +166,7 @@ public class StateManager : MonoBehaviour
             }
             else
             {
-
+                AirrideSceneManager.Instance.LoadScene(AirrideScene.Title);
             }
         }
     }
