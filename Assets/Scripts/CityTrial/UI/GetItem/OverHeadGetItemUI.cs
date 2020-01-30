@@ -8,7 +8,7 @@ public class OverHeadGetItemUI : GetItemUI
     public Machine Machine { set; private get; } //アイテムを取得したプレイヤーの座標
 
     // Update is called once per frame
-    protected override void Update()
+    protected override void LateUpdate()
     {
         if(Machine.Player != null)
         {

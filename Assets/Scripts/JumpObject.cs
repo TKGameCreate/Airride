@@ -4,12 +4,11 @@ using UnityEngine;
 
 public class JumpObject : MonoBehaviour
 {
-    [SerializeField] private float jumpPower = 0;
-    public float JumpPower
+    [SerializeField] private float jumpPowerY = 0;
+    [SerializeField] private float jumpPowerZ = 0;
+
+    public void Jump(Rigidbody rb)
     {
-        get
-        {
-            return jumpPower;
-        }
+        rb.AddForce(0, jumpPowerY, jumpPowerZ);
     }
 }

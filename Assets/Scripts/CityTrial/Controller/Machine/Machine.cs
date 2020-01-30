@@ -10,7 +10,7 @@ public class Machine : Control
     private const float boundPower = 1000.0f; //バウンド
     private const float chargeUnderPower = 50000.0f; //charge中に下に加える力
     private const float flyWeightMag = 100f; //滑空時の落下倍率
-    private const float dashBoardMag = 2.5f; //ダッシュボード倍率
+    private const float dashBoardUpSpeed = 125.0f; //ダッシュボード倍率
     private const float itemInsPlusYPos = 2.5f; //降りた時アイテムがインスタンス化されるY軸ポジションのプラス値
     private const float maxPitchSpeed = 200.0f; //最高ピッチ速度
     private const float getOffCoolTime = 2.0f; //降りることができるまでのクールダウン
@@ -44,6 +44,7 @@ public class Machine : Control
     protected Vector3 chargePos;
     private int[] getNumItemList = new int[MachineStatus.itemNameNum];  //アイテムの取得状態
     private float[] statusList = new float[MachineStatus.statusTypeNum];    //ステータスのバフ状態
+    private bool jumpCoolDown = false;
     #endregion
 
     #region プロパティ
@@ -634,7 +635,7 @@ public class Machine : Control
                 item.CatchItem(this); //入手したときの処理
                 break;
             case "InfluenceObject":
-                speed *= dashBoardMag;
+                speed += dashBoardUpSpeed;
                 break;
             case "DamageObject": //ダメージオブジェクト
                 float damageMag = 5.0f;
@@ -643,12 +644,23 @@ public class Machine : Control
                 DropItem();
                 break;
             case "JumpObject": //ジャンプパッド
-                float jumpPower = other.GetComponent<JumpObject>().JumpPower;
-                rbody.AddForce(new Vector3(0, jumpPower, 0));
+                if (!jumpCoolDown)
+                {
+                    other.GetComponent<JumpObject>().Jump(rbody);
+                    StartCoroutine(JumpCoolDown());
+                }
                 break;
             default:
                 break;
         }
+    }
+
+    private IEnumerator JumpCoolDown()
+    {
+        jumpCoolDown = true;
+        float coolDownTime = 1.0f;
+        yield return new WaitForSeconds(coolDownTime);
+        jumpCoolDown = false;
     }
 
     private IEnumerator GetOffCoolTime()

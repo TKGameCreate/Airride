@@ -22,7 +22,7 @@ public class Human : Control
     [SerializeField] private float onGroundRTime;
     [SerializeField] private float jumpPower = 1.5f;
     [SerializeField] private float downPower;
-    [SerializeField] private float getOffXPower;
+    [SerializeField] private float getOffZPower;
     [SerializeField] private float getOffYPower;
     [SerializeField] private float runPossibleNum;
     [SerializeField] private float resetRideTime = 2.0f;
@@ -60,25 +60,28 @@ public class Human : Control
 
     public override void FixedController()
     {
+        rbody.AddForce(Vector3.down * downPower);
+
+        if (!getOffForce)
+        {
+            rbody.AddRelativeForce(
+            0,
+            getOffYPower,
+            getOffZPower,
+            ForceMode.Impulse);
+            getOffForce = true;
+        }
+        else
+        {
+            rbody.velocity = velocity;
+        }
+
         if (jumpPushButton)
         {
             rbody.AddForce(Vector3.up * jumpPower);
             ridePossible = false;
             jumpPushButton = false;
         }
-
-        if (!getOffForce)
-        {
-            rbody.AddRelativeForce(
-            getOffXPower,
-            getOffYPower,
-            0,
-            ForceMode.Impulse);
-            getOffForce = true;
-        }
-
-        rbody.AddForce(Vector3.down * downPower);
-        rbody.velocity = velocity;
     }
 
     public void AnimationControl(AnimationType type)
@@ -95,7 +98,6 @@ public class Human : Control
                 anim.SetBool("getOff", true);
                 StartCoroutine(ResetRidePossible());
                 ridePossible = false;
-                getOffForce = false;
                 AudioManager.Instance.PlaySE(jumpSE);
                 return;
             case AnimationType.OnGround:
@@ -118,40 +120,33 @@ public class Human : Control
 
         //移動処理
         //前進
-        if (!anim.GetBool("getOff"))
+        //スティックの角度に回転
+        //アナログスティックのグラつきを想定して±0.01以下をはじく
+        if (Mathf.Abs(horizontal) + Mathf.Abs(vertical) > 0.1f && !anim.GetBool("getOff"))
         {
-            //スティックの角度に回転
-            //アナログスティックのグラつきを想定して±0.01以下をはじく
-            if (Mathf.Abs(horizontal) + Mathf.Abs(vertical) > 0.1f)
-            {
-                //カメラからみたプレイヤーの方向ベクトル
-                Vector3 camToPlayer = transform.position - Camera.
-                    main.transform.position;
-                // π/2 - atan2(x,y) == atan2(y,x)
-                float inputAngle = Mathf.Atan2(horizontal, vertical) * Mathf.Rad2Deg;
-                float cameraAngle = Mathf.Atan2(camToPlayer.x, camToPlayer.z) * Mathf.Rad2Deg;
-                Quaternion targetRotation = Quaternion.Euler(0, inputAngle + cameraAngle, 0);
+            //カメラからみたプレイヤーの方向ベクトル
+            Vector3 camToPlayer = transform.position - Camera.
+                main.transform.position;
+            // π/2 - atan2(x,y) == atan2(y,x)
+            float inputAngle = Mathf.Atan2(horizontal, vertical) * Mathf.Rad2Deg;
+            float cameraAngle = Mathf.Atan2(camToPlayer.x, camToPlayer.z) * Mathf.Rad2Deg;
+            Quaternion targetRotation = Quaternion.Euler(0, inputAngle + cameraAngle, 0);
                 
-                //deltaTimeを用いることで常に一定の速度になる
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotSpeed * Time.deltaTime);
+            //deltaTimeを用いることで常に一定の速度になる
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotSpeed * Time.deltaTime);
                                
-                //移動処理
-                Vector3 worldVelocity = Vector3.zero;
-                if(Mathf.Abs(horizontal) > Mathf.Abs(0.5f))
-                {
-                    worldVelocity = new Vector3(0, 0, Mathf.Abs(horizontal) * speed);
-                }
-                else
-                {
-                    worldVelocity = new Vector3(0, 0, Mathf.Abs(vertical) * speed);
-                }
-                velocity = transform.InverseTransformDirection(worldVelocity);
-                velocity = new Vector3(-velocity.x, velocity.y, velocity.z);
+            //移動処理
+            Vector3 worldVelocity = Vector3.zero;
+            if(Mathf.Abs(horizontal) > Mathf.Abs(0.5f))
+            {
+                worldVelocity = new Vector3(0, 0, Mathf.Abs(horizontal) * speed);
             }
             else
             {
-                velocity = Vector3.zero;
+                worldVelocity = new Vector3(0, 0, Mathf.Abs(vertical) * speed);
             }
+            velocity = transform.InverseTransformDirection(worldVelocity);
+            velocity = new Vector3(-velocity.x, velocity.y, velocity.z);
 
             //ジャンプ処理
             if (InputManager.Instance.InputA(InputType.Down))
@@ -159,6 +154,10 @@ public class Human : Control
                 jump = true;
                 jumpPushButton = true;
             }
+        }
+        else
+        {
+            velocity = Vector3.zero;
         }
     }
 
@@ -170,6 +169,7 @@ public class Human : Control
         transform.parent = player.transform;
         StartCoroutine(OnGroundResurrection());
         humanCamera.Priority = 11;
+        getOffForce = false;
         //降車後処理の完了
         exitMachineProcess = true;
     }
@@ -203,7 +203,7 @@ public class Human : Control
             anim.SetFloat("speed", 0);
         }
         //ジャンプアニメーション
-        if (jump)
+        if (jump &&  !anim.GetBool("getOff"))
         {
             anim.SetBool("jump", true);
         }

@@ -15,6 +15,8 @@ public class GetItemUI : MonoBehaviour
 
     protected virtual void Update() { }
 
+    protected virtual void LateUpdate() { }
+
     protected void DestroyCoroutine()
     {
         StartCoroutine(DestroyMeasure());
