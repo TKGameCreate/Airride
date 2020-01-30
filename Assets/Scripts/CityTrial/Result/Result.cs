@@ -12,7 +12,6 @@ public class Result : MonoBehaviour
     [SerializeField] private Player player = null;
     [SerializeField] private float rotSpeed = 1;
     private Machine machine = default;
-    private Human human = null;
 
     public void DisplayResult()
     {
@@ -63,8 +62,9 @@ public class Result : MonoBehaviour
 
     private void Update()
     {
-        player.Machine.transform.RotateAround(machine.transform.position,
-            resultCamera.transform.position,
-            Time.unscaledDeltaTime * rotSpeed);
+        Debug.Log(machine);
+        machine.transform.RotateAround(machine.transform.position,
+        resultCamera.transform.position,
+        Time.unscaledDeltaTime * rotSpeed);
     }
 }

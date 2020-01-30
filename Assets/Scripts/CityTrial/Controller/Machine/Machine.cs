@@ -234,10 +234,16 @@ public class Machine : Control
         float intSpeed = moveSpeed - moveSpeed % 1; //整数部分のみ抽出
         float fewSpeed = moveSpeed % 1; //小数部分のみ抽出
 
+        string few = fewSpeed.ToString(".00");
+        if(fewSpeed.ToString(".00") == "1.00")
+        {
+            few = ".00";
+        }
+
         return intSpeed.ToString("000")
             + "\n"
             + "<size=30>"
-            + fewSpeed.ToString(".00")
+            + few
             + "</size>";
     }
 

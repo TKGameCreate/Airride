@@ -265,10 +265,10 @@ public class Human : Control
         float measureTime = 0f;
 
         while (measureTime < onGroundRTime)
-        {
+         {
             measureTime += Time.deltaTime;
             yield return null;
-        }
+         }
 
         onGroundCollider.gameObject.SetActive(true);
     }
@@ -276,7 +276,7 @@ public class Human : Control
     private IEnumerator ResetRidePossible()
     {
         yield return new WaitForSeconds(resetRideTime);
-        if (!onGround)
+        if (anim.GetBool("getOff"))
         {
             onGround = true;
             AnimationControl(AnimationType.OnGround);
