@@ -10,7 +10,7 @@ public class Machine : Control
     private const float boundPower = 1000.0f; //バウンド
     private const float chargeUnderPower = 50000.0f; //charge中に下に加える力
     private const float flyWeightMag = 100f; //滑空時の落下倍率
-    private const float dashBoardUpSpeed = 125.0f; //ダッシュボード倍率
+    private const float dashBoardUpSpeed = 125.0f; //ダッシュボード加算速度
     private const float itemInsPlusYPos = 2.5f; //降りた時アイテムがインスタンス化されるY軸ポジションのプラス値
     private const float maxPitchSpeed = 200.0f; //最高ピッチ速度
     private const float getOffCoolTime = 2.0f; //降りることができるまでのクールダウン
@@ -45,6 +45,7 @@ public class Machine : Control
     private int[] getNumItemList = new int[MachineStatus.itemNameNum];  //アイテムの取得状態
     private float[] statusList = new float[MachineStatus.statusTypeNum];    //ステータスのバフ状態
     private bool jumpCoolDown = false;
+    private bool dashCoolDown = false;
     #endregion
 
     #region プロパティ
@@ -623,6 +624,17 @@ public class Machine : Control
     #endregion
 
     #region private
+    private void OnTriggerStay(Collider other)
+    {
+        if(other.gameObject.tag == "InfluenceObject" 
+            && InputManager.Instance.InputA(InputType.Down)
+            && !dashCoolDown)
+        {
+            speed += dashBoardUpSpeed;
+            StartCoroutine(DashCoolDown());
+        }
+    }
+
     /// <summary>
     /// マシン影響オブジェクトに接触した際の処理
     /// </summary>
@@ -673,6 +685,14 @@ public class Machine : Control
     {
         yield return new WaitForSeconds(getOffCoolTime);
         getOffPossible = true;
+    }
+
+    private IEnumerator DashCoolDown()
+    {
+        dashCoolDown = true;
+        float interval = 10.0f;
+        yield return new WaitForSeconds(interval);
+        dashCoolDown = false;
     }
     #endregion
 }
