@@ -13,7 +13,7 @@ public class Human : Control
 
     [SerializeField] private Animator anim;
     [SerializeField] private Player player;
-    [SerializeField] private Machine DefaultMachine;
+    [SerializeField] private Machine defaultMachine;
     [SerializeField] private OnGroundHuman onGroundCollider;
     [SerializeField] private CinemachineVirtualCamera humanCamera;
     [SerializeField] private AudioClip jumpSE;

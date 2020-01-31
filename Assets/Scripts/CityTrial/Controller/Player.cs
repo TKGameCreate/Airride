@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
     }
 
     [SerializeField] private Human human;
-    [SerializeField] private Machine DefaultMachine;
+    [SerializeField] private Machine defaultMachine;
     [SerializeField] private SpeedMater mater;
     [SerializeField] private CinemachineVirtualCamera startCamera;
 
@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        Machine = DefaultMachine;
+        Machine = defaultMachine;
         changeCondition = PlayerCondition;
     }
 
@@ -75,5 +75,12 @@ public class Player : MonoBehaviour
                 return;
         }
         control.FixedController();
+    }
+
+    private void OnDestroy()
+    {
+        MachineName name = LastRideMachine.MachineStatus.MachineName;
+        float[] status = LastRideMachine.StatusList;
+        StadiumInstanceMachine.SetMachine(name, status);
     }
 }

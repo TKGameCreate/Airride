@@ -71,6 +71,13 @@ public class Machine : Control
             }
         }
     }
+    public float[] StatusList
+    {
+        get
+        {
+            return statusList;
+        }
+    }
     #endregion
 
     #region public
@@ -359,6 +366,14 @@ public class Machine : Control
         //エンジン音の再生
         engineAudioSource.Play();
         chargeAudioSource.Play();
+    }
+
+    public void SetStatus(float[] _status)
+    {
+        for(int i = 0; i < _status.Length; i++)
+        {
+            statusList[i] = _status[i];
+        }
     }
     #endregion
     #endregion
