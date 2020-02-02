@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class ModeSelect : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class ModeSelect : MonoBehaviour
     [SerializeField] private Sprite[] active = { };
     [SerializeField] private Sprite[] notActive = { };
     [SerializeField] private Image[] mode = { };
+    [SerializeField] private TextMeshProUGUI description = null;
+    [SerializeField] private RectTransform option = null;
 
     private int selectNo = 0;
     private bool selectCoolDown = false;
@@ -37,14 +40,30 @@ public class ModeSelect : MonoBehaviour
                 AirrideSceneManager.Instance.LoadScene(AirrideScene.CityTrial);
                 break;
             case Mode.Option:
+                gameObject.SetActive(false);
+                option.gameObject.SetActive(true);
                 break;
             default:
                 break;
         }
     }
 
+    private void DescriptionText()
+    {
+        switch ((Mode)selectNo)
+        {
+            case Mode.CityTrial:
+                description.text = "ひとつの街でパワーアップして、最終決戦に挑め!";
+                break;
+            case Mode.Option:
+                description.text = "好みに合わせてさまざまな設定をする";
+                break;
+        }
+    }
+
     public void Select()
     {
+        if (!gameObject.activeSelf) return;
         if (InputManager.Instance.InputA(InputType.Down))
         {
             Decision();
@@ -59,6 +78,7 @@ public class ModeSelect : MonoBehaviour
 
         if (horizontalRaw > 0.75f)
         {
+            AudioManager.Instance.PlaySystemSE(0);
             StartCoroutine(CoolDown());
             SetSprite();
             selectNo--;
@@ -69,6 +89,7 @@ public class ModeSelect : MonoBehaviour
         }
         else if (horizontalRaw < -0.75f)
         {
+            AudioManager.Instance.PlaySystemSE(0);
             StartCoroutine(CoolDown());
             SetSprite();
             selectNo++;
@@ -82,6 +103,7 @@ public class ModeSelect : MonoBehaviour
             return;
         }
         mode[selectNo].sprite = active[selectNo];
+        DescriptionText();
     }
 
     private void SetSprite()

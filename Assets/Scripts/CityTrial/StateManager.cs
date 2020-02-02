@@ -22,7 +22,6 @@ public class StateManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI countDownText;
     [SerializeField] private TextMeshProUGUI timeText;
     [SerializeField] private RectTransform pauseDisplayUI;
-    [SerializeField] private float time = 180;
     [SerializeField] private StartUIAnimation startUI;
     [SerializeField] private Pause pause;
     [SerializeField] private Result result;
@@ -37,6 +36,7 @@ public class StateManager : MonoBehaviour
     private int second;
     private float milliSecond;
     public static GameState State { get; private set; } = GameState.Start;
+    public static float Time { set; get; } = 180;
 
     private void Start()
     {
@@ -59,7 +59,7 @@ public class StateManager : MonoBehaviour
                 break;
             case GameState.Ready:
                 //カウントダウンを開始
-                countDown -= Time.deltaTime * 2;
+                countDown -= UnityEngine.Time.deltaTime * 2;
                 int iCountDown = (int)countDown;
 
                countDownText.text = iCountDown.ToString();
@@ -75,7 +75,7 @@ public class StateManager : MonoBehaviour
                 break;
             case GameState.Game:
                 //制限時間の計算と時間表示の計算
-                time -= Time.deltaTime;
+                Time -= UnityEngine.Time.deltaTime;
                 DisplayTime();
 
                 //Pauseボタンを押したときの処理
@@ -85,15 +85,16 @@ public class StateManager : MonoBehaviour
                 }
 
                 //制限時間が0になった場合
-                if (time <= 0)
+                if (Time <= 0)
                 {
                     timeText.gameObject.SetActive(false);
                     State = GameState.TimeUp;
                     StartCoroutine(ChangeResult());
+                    Time = TimeSetting.LastSetting;
                 }
                 break;
             case GameState.TimeUp:
-                Time.timeScale = 0;
+                UnityEngine.Time.timeScale = 0;
                 timeUp.gameObject.SetActive(true);
                 break;
             case GameState.Result:
@@ -126,7 +127,7 @@ public class StateManager : MonoBehaviour
     {
         //pause画面を解除する
         pauseUIActive = false;
-        Time.timeScale = 1;
+        UnityEngine.Time.timeScale = 1;
         pause.EndPause();
         AudioManager.Instance.PlaySystemSE(0);
         AudioManager.Instance.UnPauseBGM();
@@ -138,7 +139,7 @@ public class StateManager : MonoBehaviour
     {
         //pause画面にする
         pauseUIActive = true;
-        Time.timeScale = 0;
+        UnityEngine.Time.timeScale = 0;
         pause.ResetPause();
         pauseBeforeState = State;
         State = GameState.Pause;
@@ -184,18 +185,18 @@ public class StateManager : MonoBehaviour
 
     private void TimeConversion()
     {
-        minute = (int)time / 60;
+        minute = (int)Time / 60;
 
         if (minute > 0)
         {
-            second = (int)time % 60;
+            second = (int)Time % 60;
         }
         else
         {
-            second = (int)time;
+            second = (int)Time;
         }
 
-        milliSecond = time % 1;
+        milliSecond = Time % 1;
         milliSecond *= 100;
 
         if (milliSecond > 99)

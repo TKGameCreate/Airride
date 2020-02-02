@@ -12,6 +12,6 @@ EditorBuildSettings:
     path: Assets/Scenes/CityTrial.unity
     guid: 285f00edf9814d248b972cdcfcb541f9
   - enabled: 1
-    path: Assets/Scenes/Result.unity
+    path: Assets/Scenes/Stadium.unity
     guid: dda9ee6b026041f41924de445ed2caed
   m_configObjects: {}

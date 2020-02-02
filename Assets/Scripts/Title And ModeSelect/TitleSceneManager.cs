@@ -7,7 +7,8 @@ public class TitleSceneManager : MonoBehaviour
     private enum Scene
     {
         Title,
-        ModeSelect
+        ModeSelect,
+        Option
     }
 
     [SerializeField] private RectTransform titleScene = null;
@@ -23,12 +24,14 @@ public class TitleSceneManager : MonoBehaviour
             case Scene.Title:
                 if (InputManager.Instance.Any)
                 {
+                    AudioManager.Instance.PlaySystemSE(0);
                     ChangeToModeSelect();
                 }
                 break;
             case Scene.ModeSelect:
                 if (InputManager.Instance.InputB)
                 {
+                    AudioManager.Instance.PlaySystemSE(0);
                     ChangeToTitle();
                     break;
                 }
