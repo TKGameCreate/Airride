@@ -1007,7 +1007,7 @@ MonoBehaviour:
   - {fileID: 1098628789}
   - {fileID: 1229006326}
   description: {fileID: 1749205713}
-  option: {fileID: 557653407}
+  titleSceneManager: {fileID: 1503856376}
 --- !u!1 &1088259273
 GameObject:
   m_ObjectHideFlags: 0
@@ -1675,7 +1675,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   titleScene: {fileID: 511637520}
   modeSelectScene: {fileID: 736512621}
+  optionScene: {fileID: 557653407}
   modeSelect: {fileID: 736512623}
+  timeSetting: {fileID: 1313302594}
 --- !u!1 &1661043666
 GameObject:
   m_ObjectHideFlags: 0

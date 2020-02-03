@@ -16,7 +16,7 @@ public class ModeSelect : MonoBehaviour
     [SerializeField] private Sprite[] notActive = { };
     [SerializeField] private Image[] mode = { };
     [SerializeField] private TextMeshProUGUI description = null;
-    [SerializeField] private RectTransform option = null;
+    [SerializeField] private TitleSceneManager titleSceneManager = null;
 
     private int selectNo = 0;
     private bool selectCoolDown = false;
@@ -32,6 +32,9 @@ public class ModeSelect : MonoBehaviour
         mode[selectNo].sprite = active[selectNo];
     }
 
+    /// <summary>
+    /// ModeSelectのモード選択決定
+    /// </summary>
     private void Decision()
     {
         switch ((Mode)selectNo)
@@ -40,8 +43,7 @@ public class ModeSelect : MonoBehaviour
                 AirrideSceneManager.Instance.LoadScene(AirrideScene.CityTrial);
                 break;
             case Mode.Option:
-                gameObject.SetActive(false);
-                option.gameObject.SetActive(true);
+                titleSceneManager.ChangeToOption();
                 break;
             default:
                 break;

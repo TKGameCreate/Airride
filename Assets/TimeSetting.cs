@@ -6,23 +6,21 @@ using TMPro;
 public class TimeSetting : MonoBehaviour
 {
     private const int maxNo = 3;
+    public static float LastSetting { private set; get; }
+    private static int selectNo = 0; //時間の設定は保存しておく
+
+    [SerializeField] private TextMeshProUGUI timeText = null;
+
     private bool selectCoolDown = false;
 
-    [SerializeField] private RectTransform modeSelect = null;
-    [SerializeField] private TextMeshProUGUI timeText = null;
-    private int selectNo = 0;
-    public static float LastSetting { private set; get; } = StateManager.Time;
+    public void LastTimeSetting()
+    {
+        LastSetting = StateManager.Time;
+    }
 
     // Update is called once per frame
-    void Update()
+    public void Setting()
     {
-        if (InputManager.Instance.InputB)
-        {
-            AudioManager.Instance.PlaySystemSE(0);
-            gameObject.SetActive(false);
-            modeSelect.gameObject.SetActive(true);
-            LastSetting = StateManager.Time;
-        }
         if (selectCoolDown)
         {
             return;

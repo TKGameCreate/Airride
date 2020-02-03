@@ -13,7 +13,9 @@ public class TitleSceneManager : MonoBehaviour
 
     [SerializeField] private RectTransform titleScene = null;
     [SerializeField] private RectTransform modeSelectScene = null;
+    [SerializeField] private RectTransform optionScene = null;
     [SerializeField] private ModeSelect modeSelect = null;
+    [SerializeField] private TimeSetting timeSetting = null;
 
     private Scene scene = Scene.Title;
 
@@ -22,20 +24,36 @@ public class TitleSceneManager : MonoBehaviour
         switch (scene)
         {
             case Scene.Title:
-                if (InputManager.Instance.Any)
+                //ModeSelect画面に
+                if (InputManager.Instance.Any && 
+                    !InputManager.Instance.InputB)
                 {
                     AudioManager.Instance.PlaySystemSE(0);
                     ChangeToModeSelect();
                 }
                 break;
             case Scene.ModeSelect:
+                //戻る
                 if (InputManager.Instance.InputB)
                 {
                     AudioManager.Instance.PlaySystemSE(0);
                     ChangeToTitle();
                     break;
                 }
+                //モード選択
                 modeSelect.Select();
+                break;
+            case Scene.Option:
+                //戻る
+                if (InputManager.Instance.InputB)
+                {
+                    AudioManager.Instance.PlaySystemSE(0);
+                    timeSetting.LastTimeSetting();
+                    ChangeScene(optionScene, modeSelectScene);
+                    scene = Scene.ModeSelect;
+                }
+                //Timeの設定
+                timeSetting.Setting();
                 break;
             default:
                 break;
@@ -59,6 +77,12 @@ public class TitleSceneManager : MonoBehaviour
         ChangeScene(titleScene, modeSelectScene);
         modeSelect.ResetSelect();
         scene = Scene.ModeSelect;
+    }
+
+    public void ChangeToOption()
+    {
+        ChangeScene(modeSelectScene, optionScene);
+        scene = Scene.Option;
     }
 
     private void ChangeScene(RectTransform from, RectTransform to)
