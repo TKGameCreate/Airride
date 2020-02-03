@@ -31,7 +31,7 @@ public class AirrideSceneManager
         {
             Time.timeScale = 1;
         }
-        SceneManager.LoadScene((int)scene);
+        SceneManager.LoadSceneAsync((int)scene);
     }
     
     public int SceneIndex()
