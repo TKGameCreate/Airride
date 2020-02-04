@@ -53,6 +53,7 @@ public class StateManager : MonoBehaviour
             case GameState.Start:
                 time = TimeSetting.LastSetting;
                 DisplayTime();
+                Debug.Log(startUI.CountDown);
                 if (startUI.CountDown)
                 {
                     countDownText.gameObject.SetActive(true);

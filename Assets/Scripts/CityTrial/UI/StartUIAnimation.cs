@@ -16,6 +16,9 @@ public class StartUIAnimation : MonoBehaviour
     private int nowCount = 0;
     public bool CountDown { private set; get; } = false;
 
+    /// <summary>
+    /// TimeLineでActiveをTrueにしたタイミングで呼び出し
+    /// </summary>
     public void CountDownStart()
     {
         speedMater.gameObject.SetActive(true);
