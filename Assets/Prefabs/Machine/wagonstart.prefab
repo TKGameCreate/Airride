@@ -410,7 +410,7 @@ GameObject:
   - component: {fileID: 228125669606648489}
   - component: {fileID: 5330919628899196196}
   m_Layer: 10
-  m_Name: OnGround
+  m_Name: wagonstart
   m_TagString: Machine
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -628,6 +628,8 @@ MonoBehaviour:
   rbody: {fileID: 461902550938830032}
   engineAudioSource: {fileID: 228125669606648489}
   chargeAudioSource: {fileID: 3342083671394492262}
+  jumpPanelSE: {fileID: 8300000, guid: d7fa8860931c02845a661f63fbc50ee7, type: 3}
+  damageSE: {fileID: 8300000, guid: 3fdb0621421c6ae44a4ca32607714a4d, type: 3}
   groundSE: {fileID: 8300000, guid: 18b67932e0fc7c14aa3cfa6d9fb7e13e, type: 3}
   status: {fileID: 11400000, guid: 94b613cc3255ef74fa7cd6c503f3a6e3, type: 2}
   vcamera: {fileID: 340708769780171208}

@@ -409,15 +409,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rbody: {fileID: 2849338314108895710}
-  debug: 0
   engineAudioSource: {fileID: 1673587025747622467}
   chargeAudioSource: {fileID: 1208496358}
+  jumpPanelSE: {fileID: 8300000, guid: d7fa8860931c02845a661f63fbc50ee7, type: 3}
+  damageSE: {fileID: 8300000, guid: 3fdb0621421c6ae44a4ca32607714a4d, type: 3}
   groundSE: {fileID: 8300000, guid: 18b67932e0fc7c14aa3cfa6d9fb7e13e, type: 3}
   status: {fileID: 11400000, guid: fdf42c32225088a40930edf356be65f3, type: 2}
   vcamera: {fileID: 2347897706404776253}
   itemList: {fileID: 5345072973367110292, guid: e8985f5aab01c384fb45c344a2456320,
     type: 3}
-  dText: {fileID: 0}
   ridePosition: {fileID: 0}
   onGroundPosition: {fileID: 1609242618}
   defaultChargeAmount: 1

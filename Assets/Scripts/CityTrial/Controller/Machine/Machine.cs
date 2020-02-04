@@ -25,6 +25,8 @@ public class Machine : Control
     #region Serialize
     [SerializeField] protected AudioSource engineAudioSource;
     [SerializeField] protected AudioSource chargeAudioSource;
+    [SerializeField] protected AudioClip jumpPanelSE;
+    [SerializeField] protected AudioClip damageSE;
     [SerializeField] protected AudioClip groundSE;
     [SerializeField] protected MachineStatus status;
     [SerializeField] protected CinemachineVirtualCamera vcamera;
@@ -617,12 +619,14 @@ public class Machine : Control
                 //ダメージを受けるオブジェクトに触れた場合、アイテムを落とす
                 Bound(boundPower * damageMag, true);
                 DropItem();
+                AudioManager.Instance.PlaySE(damageSE);
                 break;
             case "JumpObject": //ジャンプパッド
                 if (!jumpCoolDown)
                 {
                     other.GetComponent<JumpObject>().Jump(rbody);
                     StartCoroutine(JumpCoolDown());
+                    AudioManager.Instance.PlaySE(jumpPanelSE);
                 }
                 break;
             default:

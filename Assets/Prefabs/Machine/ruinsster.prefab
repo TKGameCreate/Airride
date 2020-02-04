@@ -574,12 +574,13 @@ MonoBehaviour:
   rbody: {fileID: 8011273390159178400}
   engineAudioSource: {fileID: 7281708356837483727}
   chargeAudioSource: {fileID: 3208161491488324682}
+  jumpPanelSE: {fileID: 8300000, guid: d7fa8860931c02845a661f63fbc50ee7, type: 3}
+  damageSE: {fileID: 8300000, guid: 3fdb0621421c6ae44a4ca32607714a4d, type: 3}
   groundSE: {fileID: 8300000, guid: 18b67932e0fc7c14aa3cfa6d9fb7e13e, type: 3}
   status: {fileID: 11400000, guid: ebc220199657dcb4991d607c123128cf, type: 2}
   vcamera: {fileID: 8319022131912605514}
   itemList: {fileID: 5345072973367110292, guid: e8985f5aab01c384fb45c344a2456320,
     type: 3}
-  dText: {fileID: 0}
   ridePosition: {fileID: 0}
   onGroundPosition: {fileID: 6335012854041256069}
   defaultChargeAmount: 0

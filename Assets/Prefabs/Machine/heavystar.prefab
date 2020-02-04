@@ -236,6 +236,8 @@ MonoBehaviour:
   rbody: {fileID: 2495530142766728863}
   engineAudioSource: {fileID: 553694065888175943}
   chargeAudioSource: {fileID: 2151114331100164900}
+  jumpPanelSE: {fileID: 8300000, guid: d7fa8860931c02845a661f63fbc50ee7, type: 3}
+  damageSE: {fileID: 8300000, guid: 3fdb0621421c6ae44a4ca32607714a4d, type: 3}
   groundSE: {fileID: 8300000, guid: 18b67932e0fc7c14aa3cfa6d9fb7e13e, type: 3}
   status: {fileID: 11400000, guid: 7d485ad7f21d9684fba5f180fb56e900, type: 2}
   vcamera: {fileID: 7471782591681258338}
