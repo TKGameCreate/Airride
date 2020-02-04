@@ -538,7 +538,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rbody: {fileID: 1663289141831343929}
-  debug: 0
   engineAudioSource: {fileID: 1448323409308096497}
   chargeAudioSource: {fileID: 4475963174260916285}
   groundSE: {fileID: 8300000, guid: 18b67932e0fc7c14aa3cfa6d9fb7e13e, type: 3}
@@ -546,8 +545,8 @@ MonoBehaviour:
   vcamera: {fileID: 8139631623531158393}
   itemList: {fileID: 5345072973367110292, guid: e8985f5aab01c384fb45c344a2456320,
     type: 3}
-  dText: {fileID: 0}
   ridePosition: {fileID: 0}
+  onGroundPosition: {fileID: 7464130547201080254}
   defaultChargeAmount: 1
 --- !u!1 &7968544352051266489
 GameObject:
@@ -617,10 +616,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7464130547201080254}
-  - component: {fileID: 4169179939473032796}
-  - component: {fileID: 1800810930176465237}
   m_Layer: 12
-  m_Name: GroundTrigger
+  m_Name: OnGround
   m_TagString: MachineTrigger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -634,38 +631,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8726829505221852634}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.185, z: 0}
+  m_LocalPosition: {x: 0, y: -0.218, z: 0}
   m_LocalScale: {x: 0.5625, y: 0.225, z: 0.5625}
   m_Children: []
   m_Father: {fileID: 6496454241418624646}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4169179939473032796
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8726829505221852634}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b6fd64e3287f6444ae528579cb71b5d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  machine: {fileID: 2741030532716924176}
---- !u!135 &1800810930176465237
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8726829505221852634}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.15
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &9103872214966452409
 GameObject:
   m_ObjectHideFlags: 0
@@ -690,8 +661,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9103872214966452409}
-  m_LocalRotation: {x: 0.026945593, y: -0.000000017200133, z: 4.6356588e-10, w: 0.99963695}
-  m_LocalPosition: {x: 0, y: 1.6500002, z: -4.8656225}
+  m_LocalRotation: {x: 0.026945567, y: -0.000000017261511, z: 4.6521978e-10, w: 0.99963695}
+  m_LocalPosition: {x: 0, y: 1.6500002, z: -4.8656273}
   m_LocalScale: {x: 0.9375, y: 0.9302874, z: 0.9639499}
   m_Children:
   - {fileID: 3746242138214175221}

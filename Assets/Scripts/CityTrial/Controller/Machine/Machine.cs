@@ -23,15 +23,14 @@ public class Machine : Control
     #endregion
 
     #region Serialize
-    [SerializeField] protected bool debug = false;
     [SerializeField] protected AudioSource engineAudioSource;
     [SerializeField] protected AudioSource chargeAudioSource;
     [SerializeField] protected AudioClip groundSE;
     [SerializeField] protected MachineStatus status;
     [SerializeField] protected CinemachineVirtualCamera vcamera;
     [SerializeField] private ItemList itemList;
-    [SerializeField] private DebugText dText;
     [SerializeField] private Transform ridePosition;
+    [SerializeField] private Transform onGroundPosition;
     [SerializeField] protected float defaultChargeAmount = 1;
     #endregion
 
@@ -78,6 +77,7 @@ public class Machine : Control
     #region Control
     public override void Controller()
     {
+        Ground();
         Move();
         CheckPauseSound();
         EngineSound();
@@ -85,11 +85,6 @@ public class Machine : Control
         if (getOffPossible)
         {
             GetOff();
-        }
-
-        if (debug)
-        {
-            DebugDisplay();
         }
     }
 
@@ -317,39 +312,6 @@ public class Machine : Control
         return statusList[(int)name];
     }
 
-
-    /// <summary>
-    /// 接地判定
-    /// </summary>
-    /// <param name="other">地面</param>
-    public void OnGround(Collider other)
-    {
-        if (other.transform.tag == "StageObject" || other.transform.tag == "NotBackSObject")
-        {
-            //空中から接地した瞬間
-            if (!onGround)
-            {
-                //チャージ中じゃない場合
-                if (!InputManager.Instance.InputA(InputType.Hold))
-                {
-                    //自動的に溜まったチャージをリセット
-                    chargeAmount = defaultChargeAmount;
-                }
-                //接地SEを再生
-                AudioManager.Instance.PlaySE(groundSE);
-            }
-            onGround = true;
-        }
-    }
-
-    public void ExitGround(Collider other)
-    {
-        if (other.transform.tag == "StageObject" || other.transform.tag == "NotBackSObject")
-        {
-            onGround = false;
-        }
-    }
-
     public void RideThisMachine(Player _player)
     {
         //マシンのPlayerを割り当て
@@ -569,32 +531,30 @@ public class Machine : Control
         engineAudioSource.pitch = Mathf.Clamp(1 + rbody.velocity.magnitude * (maxPitch / maxPitchSpeed), 1, maxPitch + 1);
     }
 
-    /// <summary>
-    /// デバッグテキスト処理
-    /// </summary>
-    protected void DebugDisplay()
+    protected void Ground()
     {
-        dText.Debug(DebugText.Position.Right,
-            "GET ITEM"
-            + "\nMaxSpeed : " + getNumItemList[0]
-            + "\nAcceleration : " + getNumItemList[1]
-            + "\nTurning : " + getNumItemList[2]
-            + "\nCharge : " + getNumItemList[3]
-            + "\nWeight : " + getNumItemList[4]
-            + "\nFly : " + getNumItemList[5],
-            Player);
-
-        dText.Debug(DebugText.Position.Left,
-            "STATUS"
-            + "\nMaxSpeed : " + statusList[0]
-            + "\nAcceleration : " + statusList[1]
-            + "\nTurning : " + statusList[2]
-            + "\nBrake : " + statusList[3]
-            + "\nCharge : " + statusList[4]
-            + "\nChargeSpeed : " + statusList[5]
-            + "\nWeight : " + statusList[6]
-            + "\nFlySpeed : " + statusList[7],
-            Player);
+        Ray ray = new Ray(onGroundPosition.position, Vector3.down);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, 0.75f))
+        {
+            if (!onGround)
+            {
+                //チャージ中じゃない場合
+                if (!InputManager.Instance.InputA(InputType.Hold))
+                {
+                    //自動的に溜まったチャージをリセット
+                    chargeAmount = defaultChargeAmount;
+                }
+                //接地SEを再生
+                AudioManager.Instance.PlaySE(groundSE);
+            }
+            onGround = true;
+        }
+        else
+        {
+            onGround = false;
+        }
+        Debug.DrawRay(ray.origin, ray.direction, Color.red, 5f);
     }
 
     protected virtual void Start()
@@ -651,9 +611,6 @@ public class Machine : Control
             case "Item":
                 Item item = other.gameObject.GetComponent<Item>();
                 item.CatchItem(this); //入手したときの処理
-                break;
-            case "InfluenceObject":
-                speed += dashBoardUpSpeed;
                 break;
             case "DamageObject": //ダメージオブジェクト
                 float damageMag = 5.0f;

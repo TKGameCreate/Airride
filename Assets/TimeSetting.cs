@@ -6,17 +6,13 @@ using TMPro;
 public class TimeSetting : MonoBehaviour
 {
     private const int maxNo = 3;
-    public static float LastSetting { private set; get; }
+    public static float LastSetting { private set; get; } = 180;
     private static int selectNo = 0; //時間の設定は保存しておく
+    private int minute = 0;
 
     [SerializeField] private TextMeshProUGUI timeText = null;
 
     private bool selectCoolDown = false;
-
-    public void LastTimeSetting()
-    {
-        LastSetting = StateManager.Time;
-    }
 
     // Update is called once per frame
     public void Setting()
@@ -31,7 +27,6 @@ public class TimeSetting : MonoBehaviour
 
     private void SetTime()
     {
-        int minute = 0;
         switch (selectNo)
         {
             case 0:
@@ -47,7 +42,7 @@ public class TimeSetting : MonoBehaviour
                 break;
         }
         timeText.text = minute.ToString() + "分";
-        StateManager.Time = 60 * minute;
+        LastSetting = minute * 60;
     }
 
     private void Select()

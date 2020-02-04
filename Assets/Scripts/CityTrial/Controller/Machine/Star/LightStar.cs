@@ -11,6 +11,7 @@ public class LightStar : Machine
         CheckPauseSound();
         if (StateManager.State == StateManager.GameState.Game)
         {
+            Ground();
             Move();
 
             if (getOffPossible)
@@ -33,11 +34,6 @@ public class LightStar : Machine
                 chargeAmount = 1;
             }
             rbody.constraints = RigidbodyConstraints.FreezeAll;
-        }
-
-        if (debug)
-        {
-            DebugDisplay();
         }
     }
 

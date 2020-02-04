@@ -48,7 +48,6 @@ public class TitleSceneManager : MonoBehaviour
                 if (InputManager.Instance.InputB)
                 {
                     AudioManager.Instance.PlaySystemSE(0);
-                    timeSetting.LastTimeSetting();
                     ChangeScene(optionScene, modeSelectScene);
                     scene = Scene.ModeSelect;
                 }

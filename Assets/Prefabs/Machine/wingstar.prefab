@@ -181,10 +181,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 586886159}
-  - component: {fileID: 586886161}
-  - component: {fileID: 586886160}
   m_Layer: 12
-  m_Name: GroundTrigger
+  m_Name: OnGround
   m_TagString: MachineTrigger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -198,38 +196,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 586886158}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.135, z: -0.409}
+  m_LocalPosition: {x: 0, y: -0.217, z: -0.213}
   m_LocalScale: {x: 0.6, y: 0.24, z: 0.6}
   m_Children: []
   m_Father: {fileID: 1316287348932401148}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &586886161
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 586886158}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b6fd64e3287f6444ae528579cb71b5d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  machine: {fileID: 78869047717542934}
---- !u!135 &586886160
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 586886158}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.15
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &725341430
 GameObject:
   m_ObjectHideFlags: 0
@@ -254,8 +226,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 725341430}
-  m_LocalRotation: {x: 0.06570326, y: -0.000000018233667, z: 0.0000000012008905, w: 0.9978392}
-  m_LocalPosition: {x: 0, y: 2.3600001, z: -6.653333}
+  m_LocalRotation: {x: 0.06570331, y: -0.000000020588436, z: 0.0000000013559428, w: 0.9978392}
+  m_LocalPosition: {x: 0, y: 2.3600001, z: -6.653331}
   m_LocalScale: {x: 1, y: 0.9923066, z: 1.0282134}
   m_Children:
   - {fileID: 779223248}
@@ -734,4 +706,5 @@ MonoBehaviour:
     type: 3}
   dText: {fileID: 0}
   ridePosition: {fileID: 0}
+  onGroundPosition: {fileID: 586886159}
   defaultChargeAmount: 1

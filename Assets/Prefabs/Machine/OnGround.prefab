@@ -410,7 +410,7 @@ GameObject:
   - component: {fileID: 228125669606648489}
   - component: {fileID: 5330919628899196196}
   m_Layer: 10
-  m_Name: wagonstar
+  m_Name: OnGround
   m_TagString: Machine
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -462,11 +462,11 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -8657442495611329697, guid: e25055dce462d9a4e9447faa82a4bc13, type: 3}
-  - {fileID: -876546973899608171, guid: e25055dce462d9a4e9447faa82a4bc13, type: 3}
-  - {fileID: -9130586711530211351, guid: e25055dce462d9a4e9447faa82a4bc13, type: 3}
-  - {fileID: 2377376760783321371, guid: e25055dce462d9a4e9447faa82a4bc13, type: 3}
-  - {fileID: 8122850955595500952, guid: e25055dce462d9a4e9447faa82a4bc13, type: 3}
+  - {fileID: 2100000, guid: 66e81e0d7f571464bb6e743611673d05, type: 2}
+  - {fileID: 2100000, guid: 14a3dff9e28206c408efd2f5dc8a3e6d, type: 2}
+  - {fileID: 2100000, guid: d0e52019b09ff164189d54866bdf6aac, type: 2}
+  - {fileID: 2100000, guid: 80404c87e303b8743ba21bac9ced68ab, type: 2}
+  - {fileID: 2100000, guid: 7ee5349650b7fb74e9148a251ac49882, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -626,16 +626,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rbody: {fileID: 461902550938830032}
-  debug: 1
   engineAudioSource: {fileID: 228125669606648489}
   chargeAudioSource: {fileID: 3342083671394492262}
   groundSE: {fileID: 8300000, guid: 18b67932e0fc7c14aa3cfa6d9fb7e13e, type: 3}
   status: {fileID: 11400000, guid: 94b613cc3255ef74fa7cd6c503f3a6e3, type: 2}
-  vcamera: {fileID: 0}
+  vcamera: {fileID: 340708769780171208}
   itemList: {fileID: 5345072973367110292, guid: e8985f5aab01c384fb45c344a2456320,
     type: 3}
-  dText: {fileID: 0}
   ridePosition: {fileID: 1930033162469305099}
+  onGroundPosition: {fileID: 3114020218195971943}
   defaultChargeAmount: 1
 --- !u!1 &7679183090432497526
 GameObject:
@@ -720,10 +719,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3114020218195971943}
-  - component: {fileID: 699626543510966804}
-  - component: {fileID: 7135123459095275595}
   m_Layer: 12
-  m_Name: GroundTrigger
+  m_Name: OnGround
   m_TagString: MachineTrigger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -743,29 +740,3 @@ Transform:
   m_Father: {fileID: 9175079559621742756}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &699626543510966804
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9000089633596744699}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b6fd64e3287f6444ae528579cb71b5d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  machine: {fileID: 5330919628899196196}
---- !u!135 &7135123459095275595
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9000089633596744699}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.15
-  m_Center: {x: 0, y: 0, z: 0}

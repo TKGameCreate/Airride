@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class GroundMachineColider : MonoBehaviour
 {
-    [SerializeField] private Machine machine;
+    //[SerializeField] private Machine machine;
 
-    private void OnTriggerStay(Collider other)
-    {
-        machine.OnGround(other);
-    }
+    //private void OnTriggerStay(Collider other)
+    //{
+    //    machine.OnGround();
+    //}
 
-    private void OnTriggerExit(Collider other)
-    {
-        machine.ExitGround(other);
-    }
+    //private void OnTriggerExit(Collider other)
+    //{
+    //    machine.ExitGround();
+    //}
 }
