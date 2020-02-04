@@ -107,7 +107,7 @@ public class StateManager : MonoBehaviour
             case GameState.End:
                 if (InputManager.Instance.InputA(InputType.Down))
                 {
-                    AirrideSceneManager.Instance.LoadScene(AirrideScene.CityTrial);
+                    AirrideSceneManager.Instance.LoadScene(AirrideScene.Title);
                 }
                 break;
             case GameState.Pause:
