@@ -8,9 +8,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Title.unity
     guid: ab9a821fed25f264f90d363945f586ef
-  - enabled: 1
-    path: Assets/Scenes/CityTrial.unity
-    guid: 285f00edf9814d248b972cdcfcb541f9
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/Scenes/Stadium.unity
     guid: dda9ee6b026041f41924de445ed2caed
